@@ -103,7 +103,7 @@ export const NarrowScreen: FC = () => {
 				style={[sharedStyle.heading, styles.heading]}
 				responsiveSizes={headingSize}
 			>
-				3 Types of Cards
+				Know Your Army
 			</Text>
 			<View style={styles.titleContainer}>
 				{cardTypeList.map((item, index) => (

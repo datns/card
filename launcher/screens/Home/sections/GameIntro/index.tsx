@@ -41,28 +41,24 @@ export const GameIntroSection: FC<Props> = ({ dimension, responsiveLevel }) => {
 			>
 				<Image source={resources.home.cardsImage} style={imageSize} />
 				<Text style={styles.content}>
-					Under Realm: Rise of Magic takes place in a chaotic, fragmented world
-					of ATEM where human and other races are constantly fighting each
-					other, to wrench the endless thirst for power, wealth, and gradually
-					take control over ATEM.
+					Under Realm: Rise of Magic takes place in the chaotic, fragmented
+					world of ATEM, where humans and other races are constantly fighting
+					each other, to quench the endless thirst for power, and wealth, and
+					gradually take control over ATEM.
 				</Text>
 				<Text style={styles.content}>
-					Under Realm: Rise of Magic takes place in a chaotic, fragmented world
-					of ATEM where human and other races are constantly fighting each
-					other, to wrench the endless thirst for power, wealth, and gradually
-					take control over ATEM. Steel, blood and brute force were the main
-					material of the savage battles until mysteriously, mankind discovered
-					the long-lost magical scripts that allow them to summon mighty,
-					ancient creatures/ entities that can turn the tide in no time. And no
-					one wants to be left behind in this race. Adventurers across ATEM are
-					desired by factions to discover the forgotten dungeons across this
-					continent. Players join the Under Realm as Adventurers who will
-					confront each other in the search for the long-lost scripts in hidden
-					dungeon across ATEM.
+					Steel, blood, and brute force were the main material of the savage
+					battles until mysteriously, mankind discovered the long-lost magical
+					scripts that allow them to summon mighty, ancient creatures/ entities
+					that can turn the tide in no time. And no one wants to be left behind
+					in this race. Adventurers across ATEM are desired by factions to
+					discover the forgotten dungeons across this continent. Players join
+					the Under Realm as adventurers who will confront each other in the
+					search for the long-lost scripts in hidden dungeons across ATEM.
 				</Text>
 				<Text style={styles.content}>
 					Are you ready to discover the forgotten stories of this world,
-					Adventurer?
+					adventurer?
 				</Text>
 			</View>
 		</View>

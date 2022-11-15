@@ -11,22 +11,27 @@ export const cardTypeList: CardTypeItem[] = [
 	{
 		title: 'Hero',
 		content: [
-			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos saepe nam, magni, quo error debitis molestiae commodi ea laborum ipsa est esse illum voluptatum illo. Deleniti iste neque ex blanditiis odit, fugiat quia sed quod. Vel suscipit officia ullam quisquam!',
+			'Every hero card has a distinctively high set amount of Attack/ Defense/ Health Points and usually has a special ability described in the card text.',
+			'Hero cards can be placed on the board and used to attack the opponent’s hero or adventurer.',
+			'The hero card is destroyed when its health is reduced to 0 and it is sent to the graveyard.',
 		],
 		image: resources.home.cardTypesSpellVisual,
 	},
 	{
 		title: 'Spell',
 		content: [
-			'Spell cards do not have **a** set amount of attack/ defense/ health points on the card design.',
-			'Spell cards can be used to cast potentially match-turning spells determined by their text. Use spell cards to reinforce your creatures and play style, from supportive to damaging spells. Once a spell card has been used, the card will be sent to the void.',
+			'Spell cards do not have a set amount of Attack/ Defense/ Health points on the card design.',
+			'Spell cards can be used to cast potentially match-turning spells determined by their abilities. Use spell cards to reinforce your creatures and play style, from supportive to damaging spells.',
+			'Once a spell card has been used, the card will be sent to the void. The spell card is destroyed when it is used.',
 		],
 		image: resources.home.cardTypesSpellVisual,
 	},
 	{
 		title: 'Troop',
 		content: [
-			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos saepe nam, magni, quo error debitis molestiae commodi ea laborum ipsa est esse illum voluptatum illo. Deleniti iste neque ex blanditiis odit, fugiat quia sed quod. Vel suscipit officia ullam quisquam!',
+			'Troop Card usually just has a set of Attack/ Defense/ Health Points, without special ability.',
+			'Troop cards can be used to reinforce the hero card on the battlefield.',
+			'The troop card is destroyed when its health is reduced to 0 and it is sent to the graveyard.',
 		],
 		image: resources.home.cardTypesSpellVisual,
 	},

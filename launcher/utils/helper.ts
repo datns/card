@@ -1,11 +1,18 @@
 import { LayoutRectangle } from 'react-native';
 import { Amount } from '@metaplex-foundation/js';
+import { WalletAdapterNetwork as Network } from '@solana/wallet-adapter-base';
+import { clusterApiUrl } from '@solana/web3.js';
 import BN from 'bn.js';
 import dayjs, { Dayjs } from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import numeral from 'numeral';
 
 export const resourceUri = (url: string): string => `/${url}`;
+export const clusterUrl = (network: Network): string => {
+	if (network === Network.Mainnet) {
+		return 'https://solana-mainnet.g.alchemy.com/v2/bR8GpIKSKAKyUqb9hNV0HRRNgyjh9eIg';
+	} else return clusterApiUrl(network);
+};
 
 export const shortenAddress = (address: string, length = 11): string => {
 	const innerLength = length - 3;

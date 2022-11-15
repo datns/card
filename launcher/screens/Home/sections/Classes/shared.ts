@@ -33,7 +33,7 @@ export const classList: ClassItem[] = [
 		},
 		description:
 			'The Summoner Clan Chieftain is Indlovu the Beast, and his people are well-known for their extraordinary ability to communicate to wild beast and make them into reliable combat partners.',
-		specialty: ['Summon troop card', "Control enemy's card"],
+		specialty: ['Summoning troop card', "Taking control opponent's card"],
 		position: {
 			x: 0,
 			y: 0,
@@ -51,8 +51,8 @@ export const classList: ClassItem[] = [
 			logoActive: resources.home.classes.assassin.logoActive,
 		},
 		description:
-			'The Summoner Clan Chieftain is Indlovu the Beast, and his people are well-known for their extraordinary ability to communicate to wild beast and make them into reliable combat partners.',
-		specialty: ['Summon troop card', "Control enemy's card"],
+			'No one knows who is the leader of this notorious organization but the person bears the Raven Mask. Assassins never show their true identity. When the Assassin Guild sets its sights on someone, that person has no chance of evading death. ',
+		specialty: ['Ignore Defense', '1-hit-1-kill'],
 		position: {
 			x: 233,
 			y: 0,
@@ -69,8 +69,8 @@ export const classList: ClassItem[] = [
 			logoActive: resources.home.classes.wizard.logoActive,
 		},
 		description:
-			'The Summoner Clan Chieftain is Indlovu the Beast, and his people are well-known for their extraordinary ability to communicate to wild beast and make them into reliable combat partners.',
-		specialty: ['Summon troop card', "Control enemy's card"],
+			'The Wizard Council, overseen by the powerful wizard Meztli the Wise, is admired for its mythological healing practices. But their magical power can also be terrifying and destructive, capable of destroying an entire army in the blink of an eye.',
+		specialty: ['Mass damage', 'Health restoration'],
 		position: {
 			x: 460,
 			y: 0,
@@ -87,8 +87,8 @@ export const classList: ClassItem[] = [
 			logoActive: resources.home.classes.tanker.logoActive,
 		},
 		description:
-			'The Summoner Clan Chieftain is Indlovu the Beast, and his people are well-known for their extraordinary ability to communicate to wild beast and make them into reliable combat partners.',
-		specialty: ['Summon troop card', "Control enemy's card"],
+			"The soldiers of the Tanker Guild, led by the ruthless Warlord Alvis the Short, are legendary for being the most formidable of all mercenaries. They're only loyal to the person who has the deepest pocket stuffed with gold.",
+		specialty: ['High Defense & Health', 'Boosting Defense'],
 		position: {
 			x: 460,
 			y: 324,
@@ -105,8 +105,8 @@ export const classList: ClassItem[] = [
 			logoActive: resources.home.classes.knight.logoActive,
 		},
 		description:
-			'The Summoner Clan Chieftain is Indlovu the Beast, and his people are well-known for their extraordinary ability to communicate to wild beast and make them into reliable combat partners.',
-		specialty: ['Summon troop card', "Control enemy's card"],
+			'The Knight Legion, led by Maximus the Strong, is composed of brave warriors who put their faith in and worship the enormous fire of Ignis Mountain.',
+		specialty: ['Balance Attack & Defense', 'Boosting Attack'],
 		position: {
 			x: 0,
 			y: 324,

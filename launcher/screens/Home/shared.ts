@@ -15,4 +15,11 @@ export const sharedStyle = StyleSheet.create({
 		textAlign: 'center',
 		color: '#fff',
 	},
+	subContent: {
+		textAlign: 'center',
+		maxWidth: 800,
+		paddingBottom: 20,
+		paddingHorizontal: 15,
+		color: '#fff',
+	},
 });

@@ -40,12 +40,12 @@ const ClassessSection: FC<Props> = ({ responsiveLevel, dimension }) => {
 					/>
 				))}
 			<Text style={[sharedStyle.heading]} responsiveSizes={headingSize}>
-				5 Hero Classes
+				Choose Your Hero, Choose Your Style
 			</Text>
 			<Text style={styles.content}>
-				In the ATEM, there are 5 main classes that represents different
-				philosophies, playstyle and strategies. Knowing the specialty of your
-				card class will create a huge advantage for you on the battlefield.
+				In the world of ATEM, there are 5 main powerhouses, which have
+				significant differences in abilities and playstyle. Knowing your heroes
+				holds a huge advantage on the battlefield.
 			</Text>
 			<ClassSummary
 				responsiveLevel={responsiveLevel}

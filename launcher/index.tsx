@@ -8,9 +8,9 @@ import {
 	WalletProvider,
 } from '@solana/wallet-adapter-react';
 import { SolflareWalletAdapter } from '@solana/wallet-adapter-solflare';
-import { clusterApiUrl } from '@solana/web3.js';
 import BrowserStack from 'stacks/Browser';
 import { graphQlClient } from 'utils/graphql';
+import { clusterUrl } from 'utils/helper';
 import { useAppInit, useSnapshot } from 'utils/hook';
 import { accountState } from 'utils/state/account';
 import { appState } from 'utils/state/app';
@@ -18,7 +18,7 @@ import { launcherTheme } from 'utils/theme';
 
 export const App: FC = () => {
 	const { network } = useSnapshot(appState);
-	const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+	const endpoint = useMemo(() => clusterUrl(network), [network]);
 	const { profile, loading, forceConnect } = useSnapshot(accountState);
 	const autoConnect = forceConnect || (!loading && !profile.id);
 

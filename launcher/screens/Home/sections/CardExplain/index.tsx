@@ -38,13 +38,13 @@ export const CardExplainSection: FC<Props> = ({
 			>
 				<View>
 					<Text style={sharedStyle.heading} responsiveSizes={headingSize}>
-						Collect Cards, Build Decks
+						Recruit Heroes, Build Your Army, Fight Battles!
 					</Text>
 					<Text style={styles.subText}>
-						Whether they are Hero or Spells, it&rsquo;s your own strategy to
-						choose your Class and Elemental. Build your unique strategy, own it
-						and become the best Adventurer at ATEM. The battlefield is all
-						yours!
+						Collect cards, combine them as you see fit, and test them in the
+						heat of the battlefield. That’s where the fun is. Knowing your card
+						deck and how to combine them in the battle is the key to winning.
+						The limit is your imagination!
 					</Text>
 				</View>
 				<Image source={resources.home.cardExplain} style={imageStyle} />

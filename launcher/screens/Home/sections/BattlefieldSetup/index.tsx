@@ -29,8 +29,16 @@ const BattlefieldSetupSection: FC<Props> = ({ dimension }) => {
 			source={resources.home.battlefieldBackground}
 			style={[iStyles.wideContainer, container]}
 		>
-			<Text style={sharedStyle.heading} responsiveSizes={headingSize}>
+			<Text
+				style={[sharedStyle.heading, styles.textShadow]}
+				responsiveSizes={headingSize}
+			>
 				Battlefield Setup
+			</Text>
+			<Text style={[sharedStyle.subContent, styles.textShadow]}>
+				Under Realm: Rise of Magic is designed to be well balance between using
+				the combination of your cards and deploy them in an effective formation
+				on the battlefield.
 			</Text>
 			<UnderRealmButton style={styles.button}>
 				<Text style={styles.buttonText}>How to play</Text>
@@ -44,6 +52,9 @@ export default BattlefieldSetupSection;
 const styles = StyleSheet.create({
 	button: {
 		width: 220,
+	},
+	textShadow: {
+		textShadow: '0 0 10px black',
 	},
 	buttonText: {
 		textAlign: 'center',
