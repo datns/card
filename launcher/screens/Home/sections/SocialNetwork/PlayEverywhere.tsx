@@ -3,10 +3,17 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from '@metacraft/ui';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { headingSize, sharedStyle } from 'screens/Home/shared';
+import { navigate } from 'stacks/Browser/shared';
 
-import { buttonList } from './shared';
+import { buttonList, ButtonText } from './shared';
 
 const PlayEverywhere: FC = () => {
+	const onButtonPress = (item: ButtonText) => {
+		if (item.title === 'Play on Web') {
+			navigate('Game', { screen: 'Duel', params: { id: 'demo' } });
+		}
+	};
+
 	return (
 		<View style={styles.container}>
 			<Text style={sharedStyle.heading} responsiveSizes={headingSize}>
@@ -23,6 +30,7 @@ const PlayEverywhere: FC = () => {
 						style={styles.button}
 						isSubButton={!item.isAvailable}
 						disabled={!item.isAvailable}
+						onPress={() => onButtonPress(item)}
 					>
 						<View style={{ alignItems: 'center' }}>
 							<Text

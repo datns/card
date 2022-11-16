@@ -1,4 +1,4 @@
-interface ButtonText {
+export interface ButtonText {
 	title: string;
 	isAvailable: boolean;
 	link?: string;

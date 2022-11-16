@@ -51,7 +51,12 @@ export const InternalNavigation: FC = () => {
 				</View>
 				<View style={styles.commandContainer}>
 					<View style={styles.buttonContainer}>
-						<UnderRealmButton style={styles.button}>
+						<UnderRealmButton
+							style={styles.button}
+							onPress={() =>
+								navigate('Game', { screen: 'Duel', params: { id: 'demo' } })
+							}
+						>
 							<Text style={styles.buttonText}>Play Demo</Text>
 						</UnderRealmButton>
 					</View>
