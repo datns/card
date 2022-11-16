@@ -31,7 +31,10 @@ export const HomeScreen: FC = () => {
 				dimension={windowSize}
 				responsiveLevel={responsiveLevel}
 			/>
-			<ElementalInteractionSection responsiveLevel={responsiveLevel} />
+			<ElementalInteractionSection
+				dimension={windowSize}
+				responsiveLevel={responsiveLevel}
+			/>
 			<ClassessSection
 				dimension={windowSize}
 				responsiveLevel={responsiveLevel}

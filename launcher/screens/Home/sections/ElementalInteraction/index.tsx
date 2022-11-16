@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Image, ImageBackground, StyleSheet } from 'react-native';
+import { Image, ImageBackground, ScaledSize, StyleSheet } from 'react-native';
 import { Text } from '@metacraft/ui';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { headingSize, sharedStyle } from 'screens/Home/shared';
@@ -7,11 +7,20 @@ import resources from 'utils/resources';
 
 interface Props {
 	responsiveLevel: number;
+	dimension: ScaledSize;
 }
 
-const ElementalInteractionSection: FC<Props> = ({ responsiveLevel }) => {
+const ElementalInteractionSection: FC<Props> = ({
+	responsiveLevel,
+	dimension,
+}) => {
+	const maxWidthSubContent = Math.min(
+		sharedStyle.subContent.maxWidth,
+		dimension.width,
+	);
 	const visualSize = [700, 600, 500, 360][responsiveLevel];
-	const backgroundHeight = visualSize + 300;
+	const marginVertical = [40, 40, 40, 15][responsiveLevel];
+	const backgroundHeight = visualSize + 200;
 	const backgroundImageSize = {
 		width: backgroundHeight * 1.4085,
 		height: backgroundHeight,
@@ -19,29 +28,35 @@ const ElementalInteractionSection: FC<Props> = ({ responsiveLevel }) => {
 	const visualImageSize = {
 		width: visualSize,
 		height: visualSize,
-		marginVertical: 40,
+		marginVertical,
 	};
 
 	return (
 		<ImageBackground
-			style={styles.container}
+			style={[styles.container, { paddingVertical: 40 }]}
 			source={resources.home.elementalInteractionFirstBackground}
 		>
+			<Text
+				style={[sharedStyle.heading, styles.heading, styles.blackText]}
+				responsiveSizes={headingSize}
+			>
+				Elemental Interaction
+			</Text>
 			<ImageBackground
 				source={resources.home.elementalInteractionSecondBackground}
 				style={[backgroundImageSize, styles.imageContainer]}
 			>
 				<Text
-					style={[sharedStyle.heading, styles.heading, styles.blackText]}
-					responsiveSizes={headingSize}
+					style={[
+						sharedStyle.subContent,
+						styles.blackText,
+						{ maxWidth: maxWidthSubContent },
+					]}
 				>
-					Elemental Interaction
-				</Text>
-				<Text style={styles.blackText}>
-					Generating vs. overcoming interaction
-				</Text>
-				<Text style={styles.blackText}>
-					Generating vs. overcoming interaction
+					Each card will have an element and the element will interact uniquely
+					on the battlefield as the Generating and Overcoming processes. Knowing
+					this will give you an extra chance to win a battle by combining the
+					action of cards accordingly.
 				</Text>
 				<Image
 					source={resources.home.elementalInteractionVisual}
@@ -66,12 +81,13 @@ const styles = StyleSheet.create({
 	},
 	blackText: {
 		color: '#000',
+		paddingBottom: 0,
 	},
 	imageContainer: {
 		paddingHorizontal: 15,
-		paddingVertical: 40,
 		alignItems: 'center',
 		justifyContent: 'center',
+		flex: 1,
 	},
 	button: {
 		width: 200,
