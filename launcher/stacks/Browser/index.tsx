@@ -7,6 +7,7 @@ import { useSnapshot } from 'utils/hook';
 
 import CardsStack from './Cards';
 import GameStack from './Game';
+import GuideScreen from './Guide';
 import MarketplaceStack from './Marketplace';
 import MintStack from './Mint';
 import { linking, navigationRef, RootParamList, screenOptions } from './shared';
@@ -24,6 +25,7 @@ export const BrowserStack: FC = () => {
 				<Stack.Screen name="Cards" component={CardsStack} />
 				<Stack.Screen name="Marketplace" component={MarketplaceStack} />
 				<Stack.Screen name="Mint" component={MintStack} />
+				<Stack.Screen name="Guide" component={GuideScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
