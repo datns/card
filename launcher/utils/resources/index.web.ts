@@ -143,5 +143,9 @@ export default {
 				logoActive: { uri: '/home/classes/knight/logo-active.png' },
 			},
 		},
+		socialNetworkBackground: { uri: '/home/social-network-background.png' },
+		socialNetworkMiddleBackground: {
+			uri: '/home/social-network-middle-background.png',
+		},
 	},
 };
