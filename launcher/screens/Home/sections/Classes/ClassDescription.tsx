@@ -26,8 +26,10 @@ const ClassDescription: FC<Props> = ({ style, classActive, classInfo }) => {
 			<Text style={[styles.classTitle, { color: classInfo.color }]}>
 				{classInfo.title}
 			</Text>
-			<Text style={styles.text}>{classInfo.description}</Text>
-			<Text style={styles.boldText}>Specialty:</Text>
+			<Text style={[styles.text, { marginBottom: 10 }]}>
+				{classInfo.description}
+			</Text>
+			<Text style={styles.boldText}>Specialties:</Text>
 			{classInfo.specialty.map((item, index) => (
 				<Text style={styles.text} key={index}>
 					{item}
