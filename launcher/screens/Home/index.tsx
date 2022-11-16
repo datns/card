@@ -12,6 +12,7 @@ import ElementalInteractionSection from './sections/ElementalInteraction';
 import FooterSection from './sections/Footer';
 import GameIntroSection from './sections/GameIntro';
 import HeadingSection from './sections/Heading';
+import SocialNetworkSection from './sections/SocialNetwork';
 
 export const HomeScreen: FC = () => {
 	const { windowSize, responsiveLevel } =
@@ -32,6 +33,10 @@ export const HomeScreen: FC = () => {
 			/>
 			<ElementalInteractionSection responsiveLevel={responsiveLevel} />
 			<ClassessSection
+				dimension={windowSize}
+				responsiveLevel={responsiveLevel}
+			/>
+			<SocialNetworkSection
 				dimension={windowSize}
 				responsiveLevel={responsiveLevel}
 			/>
