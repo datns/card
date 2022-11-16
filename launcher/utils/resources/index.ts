@@ -115,5 +115,7 @@ export default {
 				logoActive: require('../../../assets/home/classes/knight/logo-active.png'),
 			},
 		},
+		socialNetworkBackground: require('../../../assets/home/social-network-background.png'),
+		socialNetworkMiddleBackground: require('../../../assets/home/social-network-middle-background.png'),
 	},
 };
