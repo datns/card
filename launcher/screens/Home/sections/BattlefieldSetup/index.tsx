@@ -8,6 +8,7 @@ import {
 import { Text } from '@metacraft/ui';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { headingSize, sharedStyle } from 'screens/Home/shared';
+import { navigate } from 'stacks/Browser/shared';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
@@ -23,6 +24,9 @@ const BattlefieldSetupSection: FC<Props> = ({ dimension }) => {
 		alignItems: 'center',
 		justifyContent: 'center',
 	} as ViewStyle;
+
+	const onHowToPlayButtonPressed = () =>
+		navigate('Guide', { screen: 'Dashboard' });
 
 	return (
 		<ImageBackground
@@ -40,7 +44,10 @@ const BattlefieldSetupSection: FC<Props> = ({ dimension }) => {
 				the combination of your cards and deploy them in an effective formation
 				on the battlefield.
 			</Text>
-			<UnderRealmButton style={styles.button}>
+			<UnderRealmButton
+				style={styles.button}
+				onPress={onHowToPlayButtonPressed}
+			>
 				<Text style={styles.buttonText}>How to play</Text>
 			</UnderRealmButton>
 		</ImageBackground>
