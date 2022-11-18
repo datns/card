@@ -7,7 +7,7 @@ export interface ButtonText {
 export const buttonList: ButtonText[] = [
 	{
 		title: 'Play on Web',
-		isAvailable: true,
+		isAvailable: false,
 	},
 	{
 		title: 'Mobile App',
