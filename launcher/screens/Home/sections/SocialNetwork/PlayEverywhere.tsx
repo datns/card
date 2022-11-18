@@ -14,6 +14,13 @@ const PlayEverywhere: FC = () => {
 		}
 	};
 
+	const buttonSubText = (index: number, isAvailable: boolean) =>
+		index === 0
+			? 'Available in Dec 2022'
+			: isAvailable
+			? 'Now Available'
+			: 'Coming soon';
+
 	return (
 		<View style={styles.container}>
 			<Text style={sharedStyle.heading} responsiveSizes={headingSize}>
@@ -47,7 +54,7 @@ const PlayEverywhere: FC = () => {
 									!item.isAvailable && styles.disableTextColor,
 								]}
 							>
-								{item.isAvailable ? 'Now Available' : 'Coming soon'}
+								{buttonSubText(index, item.isAvailable)}
 							</Text>
 						</View>
 					</UnderRealmButton>
