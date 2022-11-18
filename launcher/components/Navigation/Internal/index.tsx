@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import {
 	Image,
 	ImageBackground,
+	Linking,
 	StyleSheet,
 	TouchableOpacity,
 	View,
@@ -54,7 +55,10 @@ export const InternalNavigation: FC = () => {
 						<UnderRealmButton
 							style={styles.button}
 							onPress={() =>
-								navigate('Game', { screen: 'Duel', params: { id: 'demo' } })
+								// navigate('Game', { screen: 'Duel', params: { id: 'demo' } })
+								Linking.openURL(
+									'https://underrealm.stormgate.io/game/duel/demo',
+								)
 							}
 						>
 							<Text style={styles.buttonText}>Play Demo</Text>
