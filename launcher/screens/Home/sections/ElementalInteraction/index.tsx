@@ -62,9 +62,9 @@ const ElementalInteractionSection: FC<Props> = ({
 					source={resources.home.elementalInteractionVisual}
 					style={visualImageSize}
 				/>
-				<UnderRealmButton style={styles.button}>
+				{/* <UnderRealmButton style={styles.button}>
 					<Text style={sharedStyle.buttonText}>Explore more</Text>
-				</UnderRealmButton>
+				</UnderRealmButton> */}
 			</ImageBackground>
 		</ImageBackground>
 	);
