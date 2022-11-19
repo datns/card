@@ -39,12 +39,17 @@ export type MintParamList = {
 	};
 };
 
+export type GuideParamList = {
+	Dashboard: undefined;
+};
+
 export type RootParamList = {
 	Home: NavigatorScreenParams<HomeParamList>;
 	Game: NavigatorScreenParams<GameParamList>;
 	Cards: NavigatorScreenParams<CardsParamList>;
 	Marketplace: NavigatorScreenParams<MarketplaceParamList>;
 	Mint: NavigatorScreenParams<MintParamList>;
+	Guide: NavigatorScreenParams<GuideParamList>;
 	AuthResponse: undefined;
 };
 
@@ -83,6 +88,12 @@ export const linking: LinkingOptions<RootParamList> = {
 				screens: {
 					Dashboard: '/',
 					DetailPack: '/:id',
+				},
+			},
+			Guide: {
+				path: '/guide',
+				screens: {
+					Dashboard: '/',
 				},
 			},
 			AuthResponse: '/authreponse',
