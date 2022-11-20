@@ -61,7 +61,7 @@ export const InternalNavigation: FC = () => {
 								)
 							}
 						>
-							<Text style={styles.buttonText}>Play Demo</Text>
+							<Text style={styles.buttonText}>Demo</Text>
 						</UnderRealmButton>
 					</View>
 				</View>
