@@ -118,4 +118,13 @@ export default {
 		socialNetworkBackground: require('../../../assets/home/social-network-background.png'),
 		socialNetworkMiddleBackground: require('../../../assets/home/social-network-middle-background.png'),
 	},
+	guide: {
+		headingBackground: require('../../../assets/guide/heading-background.png'),
+		battlefieldIconNormal: require('../../../assets/guide/battlefield-icon-normal.png'),
+		battlefieldIconActive: require('../../../assets/guide/battlefield-icon-active.png'),
+		playIconNormal: require('../../../assets/guide/play-icon-normal.png'),
+		playIconActive: require('../../../assets/guide/play-icon-active.png'),
+		cardIconNormal: require('../../../assets/guide/card-icon-normal.png'),
+		cardIconActive: require('../../../assets/guide/card-icon-active.png'),
+	},
 };
