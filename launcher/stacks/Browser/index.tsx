@@ -10,7 +10,12 @@ import GameStack from './Game';
 import GuideScreen from './Guide';
 import MarketplaceStack from './Marketplace';
 import MintStack from './Mint';
-import { linking, navigationRef, RootParamList, screenOptions } from './shared';
+import {
+	linking,
+	navigationRef,
+	RootParamList,
+	stackScreenOptions,
+} from './shared';
 
 const Stack = createStackNavigator<RootParamList>();
 
@@ -19,7 +24,7 @@ export const BrowserStack: FC = () => {
 
 	return (
 		<NavigationContainer ref={navigationRef} linking={linking} theme={theme}>
-			<Stack.Navigator screenOptions={screenOptions}>
+			<Stack.Navigator screenOptions={stackScreenOptions}>
 				<Stack.Screen name="Home" component={HomeScreen} />
 				<Stack.Screen name="Game" component={GameStack} />
 				<Stack.Screen name="Cards" component={CardsStack} />

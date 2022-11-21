@@ -15,7 +15,7 @@ import {
 	NavigationConfig,
 	navigationHeight,
 } from 'components/Navigation/shared';
-import { navigate } from 'stacks/Browser/shared';
+import { drawerHelper, navigate } from 'stacks/Browser/shared';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
@@ -33,6 +33,14 @@ export const InternalNavigation: FC = () => {
 			resizeMode="repeat"
 		>
 			<View style={[iStyles.contentContainer, styles.contentContainer]}>
+				<Text
+					onPress={() => {
+						console.log('hmm', drawerHelper);
+						drawerHelper.navigation?.openDrawer();
+					}}
+				>
+					MENU
+				</Text>
 				<TouchableOpacity
 					activeOpacity={0.9}
 					onPress={() => onNavigate(homeNav)}
