@@ -6,9 +6,11 @@ import Animated, {
 	useDerivedValue,
 	useSharedValue,
 } from 'react-native-reanimated';
+import { dimensionState } from '@metacraft/ui';
 import InternalNavigation from 'components/Navigation/Internal';
 import { navigationHeight } from 'components/Navigation/shared';
 import StormNavigation from 'components/Navigation/Storm';
+import { useSnapshot } from 'utils/hook';
 
 interface Props {
 	children?: ReactNode;
@@ -21,8 +23,10 @@ export const ScrollLayout: FC<Props> = ({
 	style,
 	contentContainerStyle,
 }) => {
+	const { isMobile } = useSnapshot(dimensionState);
 	const scrollOffset = useSharedValue(0);
 	const translate = useDerivedValue(() => {
+		if (isMobile) return 0;
 		return scrollOffset.value > navigationHeight.storm
 			? navigationHeight.storm
 			: scrollOffset.value;
@@ -32,6 +36,12 @@ export const ScrollLayout: FC<Props> = ({
 			scrollOffset.value = contentOffset.y;
 		},
 	});
+
+	const dualHeight =
+		(isMobile ? 0 : navigationHeight.storm) + navigationHeight.local;
+	const contentContainer = {
+		paddingTop: dualHeight,
+	};
 
 	const navigationStyle = useAnimatedStyle(() => ({
 		zIndex: 1,
@@ -45,11 +55,11 @@ export const ScrollLayout: FC<Props> = ({
 	return (
 		<View style={[styles.container, style]}>
 			<Animated.View style={navigationStyle}>
-				<StormNavigation />
-				<InternalNavigation />
+				{!isMobile && <StormNavigation />}
+				<InternalNavigation isMobile={isMobile} />
 			</Animated.View>
 			<Animated.ScrollView
-				style={[styles.contentContainer, contentContainerStyle]}
+				style={[contentContainer, contentContainerStyle]}
 				onScroll={scrollHandler}
 				scrollEventThrottle={5}
 			>
@@ -61,13 +71,9 @@ export const ScrollLayout: FC<Props> = ({
 
 export default ScrollLayout;
 
-const dualHeight = navigationHeight.storm + navigationHeight.local;
 export const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-	},
-	contentContainer: {
-		paddingTop: dualHeight,
 	},
 	navContainer: {
 		position: 'absolute',
