@@ -1,3 +1,5 @@
+import { DrawerNavigationOptions } from '@react-navigation/drawer';
+import { DrawerNavigationHelpers } from '@react-navigation/drawer/src/types';
 import {
 	createNavigationContainerRef,
 	LinkingOptions,
@@ -5,9 +7,13 @@ import {
 } from '@react-navigation/native';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
-export const screenOptions: StackNavigationOptions = {
+export const stackScreenOptions: StackNavigationOptions = {
 	headerShown: false,
 	animationEnabled: false,
+};
+
+export const drawerScreenOptions: DrawerNavigationOptions = {
+	headerShown: false,
 };
 
 export type HomeParamList = {
@@ -111,3 +117,9 @@ export const navigate = (
 		navigationRef.navigate(name as never, params as never);
 	}
 };
+
+interface DrawerHelper {
+	navigation?: DrawerNavigationHelpers;
+}
+
+export const drawerHelper: DrawerHelper = {};

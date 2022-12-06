@@ -1,13 +1,17 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import {
 	Image,
 	ImageBackground,
+	ImageStyle,
 	Linking,
 	StyleSheet,
 	TouchableOpacity,
 	View,
+	ViewStyle,
 } from 'react-native';
 import { Text } from '@metacraft/ui';
+import BurgerIcon from 'components/icons/Burger';
+import UserSolidIcon from 'components/icons/UserSolid';
 import UnderRealmButton from 'components/Marketplace/Button';
 import {
 	homeNav,
@@ -15,55 +19,104 @@ import {
 	NavigationConfig,
 	navigationHeight,
 } from 'components/Navigation/shared';
-import { navigate } from 'stacks/Browser/shared';
+import { drawerHelper, navigate } from 'stacks/Browser/shared';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
 import NavigationItem from './Item';
 
-export const InternalNavigation: FC = () => {
+interface Props {
+	isMobile?: boolean;
+}
+
+export const InternalNavigation: FC<Props> = ({ isMobile }) => {
+	const backgroundResizeMode = isMobile ? 'cover' : 'repeat';
 	const onNavigate = (item: NavigationConfig) => {
 		navigate(item.route as never, item.params);
 	};
+
+	const mobileContentContainerStyle = isMobile
+		? ({
+				paddingLeft: 15,
+				justifyContent: 'space-between',
+		  } as ViewStyle)
+		: {};
+
+	const mobileLogo = isMobile
+		? ({
+				marginRight: 0,
+				marginLeft: 0,
+		  } as ImageStyle)
+		: {};
+
+	const rightContent = isMobile ? (
+		<TouchableOpacity>
+			<UserSolidIcon size={28} />
+		</TouchableOpacity>
+	) : (
+		<UnderRealmButton
+			style={styles.button}
+			onPress={() =>
+				// navigate('Game', { screen: 'Duel', params: { id: 'demo' } })
+				Linking.openURL('https://underrealm.stormgate.io/game/duel/demo')
+			}
+		>
+			<Text style={styles.buttonText}>Demo</Text>
+		</UnderRealmButton>
+	);
 
 	return (
 		<ImageBackground
 			style={styles.container}
 			source={resources.navigation.bg}
-			resizeMode="repeat"
+			resizeMode={backgroundResizeMode}
 		>
-			<View style={[iStyles.contentContainer, styles.contentContainer]}>
-				<TouchableOpacity
-					activeOpacity={0.9}
-					onPress={() => onNavigate(homeNav)}
-				>
-					<Image source={resources.navigation.logo} style={styles.logo} />
-				</TouchableOpacity>
-				<View style={styles.navigationContainer}>
-					{localNavigations.map((item) => {
-						return (
-							<NavigationItem
-								key={item.title}
-								item={item}
-								onNavigate={onNavigate}
-							/>
-						);
-					})}
-				</View>
+			<View
+				style={[
+					iStyles.contentContainer,
+					styles.contentContainer,
+					mobileContentContainerStyle,
+				]}
+			>
+				{isMobile && (
+					<TouchableOpacity
+						style={styles.buttonContainer}
+						onPress={() => {
+							console.log('hmm', drawerHelper);
+							drawerHelper.navigation?.openDrawer();
+						}}
+					>
+						<BurgerIcon size={26} />
+					</TouchableOpacity>
+				)}
+
+				<Fragment>
+					<TouchableOpacity
+						activeOpacity={0.9}
+						onPress={() => onNavigate(homeNav)}
+					>
+						<Image
+							source={resources.navigation.logo}
+							style={[styles.logo, mobileLogo]}
+						/>
+					</TouchableOpacity>
+					{!isMobile && (
+						<View style={styles.navigationContainer}>
+							{localNavigations.map((item) => {
+								return (
+									<NavigationItem
+										key={item.title}
+										item={item}
+										onNavigate={onNavigate}
+									/>
+								);
+							})}
+						</View>
+					)}
+				</Fragment>
+
 				<View style={styles.commandContainer}>
-					<View style={styles.buttonContainer}>
-						<UnderRealmButton
-							style={styles.button}
-							onPress={() =>
-								// navigate('Game', { screen: 'Duel', params: { id: 'demo' } })
-								Linking.openURL(
-									'https://underrealm.stormgate.io/game/duel/demo',
-								)
-							}
-						>
-							<Text style={styles.buttonText}>Demo</Text>
-						</UnderRealmButton>
-					</View>
+					<View style={styles.buttonContainer}>{rightContent}</View>
 				</View>
 			</View>
 		</ImageBackground>
@@ -93,7 +146,7 @@ const styles = StyleSheet.create({
 	},
 	commandContainer: {
 		flexDirection: 'row',
-		paddingRight: 20,
+		paddingRight: 15,
 	},
 	buttonContainer: {
 		justifyContent: 'center',

@@ -8,7 +8,7 @@ import {
 	WalletProvider,
 } from '@solana/wallet-adapter-react';
 import { SolflareWalletAdapter } from '@solana/wallet-adapter-solflare';
-import BrowserStack from 'stacks/Browser';
+import BrowserStack from 'stacks/Browser/Container';
 import { graphQlClient } from 'utils/graphql';
 import { clusterUrl } from 'utils/helper';
 import { useAppInit, useSnapshot } from 'utils/hook';
