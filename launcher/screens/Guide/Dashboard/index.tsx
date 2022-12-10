@@ -1,13 +1,15 @@
 import React, { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
+import BattlefieldOverview from './BattlefieldOverview';
 import Header from './Header';
 
 const GuideDashboard: FC = () => {
 	return (
-		<View style={styles.container}>
+		<ScrollView style={styles.container}>
 			<Header />
-		</View>
+			<BattlefieldOverview />
+		</ScrollView>
 	);
 };
 

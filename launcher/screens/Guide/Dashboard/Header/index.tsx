@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import { Text } from '@metacraft/ui';
+import { headingSize, sharedStyle } from 'screens/Guide/shared';
 
 import resources from '../../../../utils/resources';
 
@@ -46,8 +48,15 @@ const Header: FC = () => {
 				style={[styles.headingBackground, headingBackgroundStyle]}
 			/>
 			<View style={styles.container}>
-				<Text style={styles.heading}>{labels.heading}</Text>
-				<Text style={styles.subHeading}>{labels.subHeading}</Text>
+				<Text
+					style={[sharedStyle.heading, sharedStyle.textShadow]}
+					responsiveSizes={headingSize}
+				>
+					{labels.heading}
+				</Text>
+				<Text style={[sharedStyle.subContent, styles.subHeading]}>
+					{labels.subHeading}
+				</Text>
 				<View style={styles.icons}>
 					<Icon
 						type={ViewType.Battlefield}
@@ -90,19 +99,18 @@ const styles = StyleSheet.create({
 		fontFamily: 'Volkhov',
 	},
 	subHeading: {
-		fontSize: 10,
-		color: '#EBEBEB',
+		// fontSize: 10,
+		// color: '#EBEBEB',
 		textAlign: 'center',
-		maxWidth: 600,
-		marginHorizontal: 24,
-		marginTop: 18,
+		// maxWidth: 600,
+		// marginHorizontal: 24,
+		// marginTop: 18,
 	},
 	icons: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		width: 250,
-		marginTop: 24,
+		minWidth: 380,
 	},
 });
 

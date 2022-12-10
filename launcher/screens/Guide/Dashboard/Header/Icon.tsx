@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text } from '@metacraft/ui';
 
 import resources from '../../../../utils/resources';
 
@@ -46,11 +47,11 @@ const Icon: FC<Props> = ({ type, onPress, isActive = false }: Props) => {
 
 const styles = StyleSheet.create({
 	image: {
-		width: 60,
-		height: 60,
+		width: 100,
+		height: 100,
 	},
 	label: {
-		fontSize: 9,
+		// fontSize: 9,
 		color: '#fff',
 		textAlign: 'center',
 		marginTop: 8,
