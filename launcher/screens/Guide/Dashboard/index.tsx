@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import PlayingUnderRealm from 'screens/Guide/Dashboard/PlayingUnderRealm';
 
 import BattlefieldOverview from './BattlefieldOverview';
 import Header from './Header';
@@ -9,13 +10,14 @@ const GuideDashboard: FC = () => {
 		<ScrollView style={styles.container}>
 			<Header />
 			<BattlefieldOverview />
+			<PlayingUnderRealm />
 		</ScrollView>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		// flex: 1,
 		backgroundColor: '#000',
 	},
 	background: {

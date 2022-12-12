@@ -3,13 +3,12 @@ import {
 	Image,
 	ImageBackground,
 	StyleSheet,
-	TouchableOpacity,
 	View,
 	ViewStyle,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
-import { DimensionState, dimensionState, Hoverable, Text } from '@metacraft/ui';
-import { sharedStyle, useHoveredStyle } from 'screens/Guide/shared';
+import { DimensionState, dimensionState, Text } from '@metacraft/ui';
+import ConceptButton from 'screens/Guide/Dashboard/ConceptButton';
+import { sharedStyle } from 'screens/Guide/shared';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
@@ -20,17 +19,6 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap',
 		justifyContent: 'space-evenly',
 		marginTop: 40,
-	},
-	conceptButton: {
-		alignItems: 'center',
-		marginHorizontal: 20,
-	},
-	conceptIcon: {
-		width: 40,
-		aspectRatio: 1,
-	},
-	hoverable: {
-		alignItems: 'center',
 	},
 	battlefieldImage: {
 		width: 803,
@@ -101,20 +89,16 @@ const BattlefieldOverview: React.FC<Record<string, unknown>> = () => {
 			>
 				Battlefield Overview
 			</Text>
-			<View style={styles.conceptContainer}>
-				{concepts.map(({ label, icon }) => {
+			<View style={[styles.conceptContainer, { width: imageWidth }]}>
+				{concepts.map(({ label, icon }, index) => {
 					return (
-						<TouchableOpacity key={label} style={styles.conceptButton}>
-							<Hoverable
-								animatedStyle={useHoveredStyle}
-								style={styles.hoverable}
-							>
-								<Animated.View>
-									<Image source={icon} style={styles.conceptIcon} />
-									<Text style={sharedStyle.textShadow}>{label}</Text>
-								</Animated.View>
-							</Hoverable>
-						</TouchableOpacity>
+						<ConceptButton
+							label={label}
+							icon={icon}
+							key={label}
+							isFirst={index === 0}
+							isLast={index === concepts.length - 1}
+						/>
 					);
 				})}
 			</View>
