@@ -87,6 +87,7 @@ export default {
 			uri: '/home/elemental-interaction-visual.png',
 		},
 		cardTypesBackground: { uri: '/home/card-type-background.png' },
+		cardTypesHeroVisual: { uri: '/home/card-type-hero-visual.png' },
 		cardTypesSpellVisual: { uri: '/home/card-type-spell-visual.png' },
 		classes: {
 			background: { uri: '/home/classes/background.png' },

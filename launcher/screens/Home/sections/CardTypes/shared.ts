@@ -15,7 +15,7 @@ export const cardTypeList: CardTypeItem[] = [
 			'Hero cards can be placed on the board and used to attack the opponent’s hero or adventurer.',
 			'The hero card is destroyed when its health is reduced to 0 and it is sent to the graveyard.',
 		],
-		image: resources.home.cardTypesSpellVisual,
+		image: resources.home.cardTypesHeroVisual,
 	},
 	{
 		title: 'Spell',

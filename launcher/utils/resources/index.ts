@@ -81,6 +81,7 @@ export default {
 		elementalInteractionSecondBackground: require('../../../assets/home/elemental-interaction-second-background.png'),
 		elementalInteractionVisual: require('../../../assets/home/elemental-interaction-visual.png'),
 		cardTypesBackground: require('../../../assets/home/card-type-background.png'),
+		cardTypesHeroVisual: require('../../../assets/home/card-type-hero-visual.png'),
 		cardTypesSpellVisual: require('../../../assets/home/card-type-spell-visual.png'),
 		classes: {
 			background: require('../../../assets/home/classes/background.png'),
