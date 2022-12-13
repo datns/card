@@ -161,4 +161,7 @@ export default {
 		cardIconNormal: { uri: '/guide/card-icon-normal.png' },
 		cardIconActive: { uri: '/guide/card-icon-active.png' },
 	},
+	lobby: {
+		lobbyBackground: { uri: '/lobby/lobby-background.png' },
+	},
 };

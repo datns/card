@@ -131,4 +131,7 @@ export default {
 		cardIconNormal: require('../../../assets/guide/card-icon-normal.png'),
 		cardIconActive: require('../../../assets/guide/card-icon-active.png'),
 	},
+	lobby: {
+		lobbyBackground: require('../../../assets/lobby/lobby-background.png'),
+	},
 };
