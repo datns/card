@@ -10,8 +10,7 @@ export class LoadingManager extends Component {
 	start(): void {
 		director.preloadScene(
 			'Duel',
-			(completedCount: number, totalCount: number, item) => {
-				console.log(completedCount, totalCount, item);
+			(completedCount: number, totalCount: number) => {
 				this.progressBar.progress = completedCount / totalCount;
 			},
 			() => {
