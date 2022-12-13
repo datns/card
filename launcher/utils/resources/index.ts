@@ -81,6 +81,7 @@ export default {
 		elementalInteractionSecondBackground: require('../../../assets/home/elemental-interaction-second-background.png'),
 		elementalInteractionVisual: require('../../../assets/home/elemental-interaction-visual.png'),
 		cardTypesBackground: require('../../../assets/home/card-type-background.png'),
+		cardTypesHeroVisual: require('../../../assets/home/card-type-hero-visual.png'),
 		cardTypesSpellVisual: require('../../../assets/home/card-type-spell-visual.png'),
 		classes: {
 			background: require('../../../assets/home/classes/background.png'),
@@ -129,5 +130,8 @@ export default {
 		playIconActive: require('../../../assets/guide/play-icon-active.png'),
 		cardIconNormal: require('../../../assets/guide/card-icon-normal.png'),
 		cardIconActive: require('../../../assets/guide/card-icon-active.png'),
+	},
+	lobby: {
+		lobbyBackground: require('../../../assets/lobby/lobby-background.png'),
 	},
 };
