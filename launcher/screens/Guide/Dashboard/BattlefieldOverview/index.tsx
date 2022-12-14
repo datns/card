@@ -89,27 +89,29 @@ const BattlefieldOverview: React.FC<Record<string, unknown>> = () => {
 			>
 				Battlefield Overview
 			</Text>
-			<View style={[styles.conceptContainer, { width: imageWidth }]}>
-				{concepts.map(({ label, icon }, index) => {
-					return (
-						<ConceptButton
-							label={label}
-							icon={icon}
-							key={label}
-							isFirst={index === 0}
-							isLast={index === concepts.length - 1}
-						/>
-					);
-				})}
+			<View style={{ width: imageWidth }}>
+				<View style={[styles.conceptContainer, { width: imageWidth }]}>
+					{concepts.map(({ label, icon }, index) => {
+						return (
+							<ConceptButton
+								label={label}
+								icon={icon}
+								key={label}
+								isFirst={index === 0}
+								isLast={index === concepts.length - 1}
+							/>
+						);
+					})}
+				</View>
+				<Text style={sharedStyle.subHeading}>
+					Cards on your hand are drawn from your Deck. You will start with 5
+					Cards and receive more cards at each turn. At each turn, a glowing
+					green border indicates your turn to play and which card is playable.
+					Max. 7 cards can be held in your hand. Once exceed, you will have to
+					discard ....
+				</Text>
+				<Image source={resources.guide.battlefieldImage} style={imageSize} />
 			</View>
-			<Text style={sharedStyle.subContent}>
-				Cards on your hand are drawn from your Deck. You will start with 5 Cards
-				and receive more cards at each turn. At each turn, a glowing green
-				border indicates your turn to play and which card is playable. Max. 7
-				cards can be held in your hand. Once exceed, you will have to discard
-				....
-			</Text>
-			<Image source={resources.guide.battlefieldImage} style={imageSize} />
 		</ImageBackground>
 	);
 };

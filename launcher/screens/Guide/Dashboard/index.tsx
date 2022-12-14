@@ -3,6 +3,8 @@ import { ScrollView, StyleSheet } from 'react-native';
 import PlayingUnderRealm from 'screens/Guide/Dashboard/PlayingUnderRealm';
 
 import BattlefieldOverview from './BattlefieldOverview';
+import Cards from './Cards';
+import Footer from './Footer';
 import Header from './Header';
 
 const GuideDashboard: FC = () => {
@@ -11,6 +13,8 @@ const GuideDashboard: FC = () => {
 			<Header />
 			<BattlefieldOverview />
 			<PlayingUnderRealm />
+			<Cards />
+			<Footer />
 		</ScrollView>
 	);
 };

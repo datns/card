@@ -23,6 +23,11 @@ const styles = StyleSheet.create({
 		width: 40,
 		aspectRatio: 1,
 	},
+	label: {
+		fontFamily: 'Poppins',
+		textAlign: 'center',
+		color: '#FFFBDF',
+	},
 });
 
 const ConceptButton: FC<Props> = ({
@@ -45,7 +50,7 @@ const ConceptButton: FC<Props> = ({
 			<Hoverable animatedStyle={useHoveredStyle} style={styles.content}>
 				<Animated.View>
 					<Image source={icon} style={styles.icon} />
-					<Text style={sharedStyle.textShadow}>{label}</Text>
+					<Text style={[sharedStyle.textShadow, styles.label]}>{label}</Text>
 				</Animated.View>
 			</Hoverable>
 		</TouchableOpacity>

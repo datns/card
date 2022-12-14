@@ -174,5 +174,11 @@ export default {
 		summonZoneIcon: { uri: '/guide/summon-zone-icon.png' },
 		troopIcon: { uri: '/guide/troop-icon.png' },
 		battlefieldImage: { uri: '/guide/battlefield-image.png' },
+		cardExplain: { uri: '/guide/card-explain.png' },
+		elementalInteractionVisual: {
+			uri: '/guide/elemental-interaction-visual.png',
+		},
+		footerMainBackground: { uri: '/guide/footer-main-background.png' },
+		footerContentBackground: { uri: '/guide/footer-content-background.png' },
 	},
 };

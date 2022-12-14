@@ -144,5 +144,9 @@ export default {
 		summonZoneIcon: require('../../../assets/guide/summon-zone-icon.png'),
 		troopIcon: require('../../../assets/guide/troop-icon.png'),
 		battlefieldImage: require('../../../assets/guide/battlefield-image.png'),
+		cardExplain: require('../../../assets/guide/card-explain.png'),
+		elementalInteractionVisual: require('../../../assets/guide/elemental-interaction-visual.png'),
+		footerMainBackground: require('../../../assets/guide/footer-main-background.png'),
+		footerContentBackground: require('../../../assets/guide/footer-content-background.png'),
 	},
 };

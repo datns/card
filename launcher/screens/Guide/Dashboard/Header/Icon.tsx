@@ -5,6 +5,7 @@ import { Text } from '@metacraft/ui';
 import resources from '../../../../utils/resources';
 
 import { ViewType } from '.';
+import {sharedStyle} from "screens/Guide/shared";
 
 interface Props {
 	type: ViewType;
@@ -40,7 +41,7 @@ const Icon: FC<Props> = ({ type, onPress, isActive = false }: Props) => {
 	return (
 		<TouchableOpacity onPress={onPress}>
 			<Image source={resource} style={styles.image} resizeMode="contain" />
-			<Text style={styles.label}>{label}</Text>
+			<Text style={[styles.label, sharedStyle.textShadow]}>{label}</Text>
 		</TouchableOpacity>
 	);
 };
@@ -51,8 +52,9 @@ const styles = StyleSheet.create({
 		height: 100,
 	},
 	label: {
-		// fontSize: 9,
 		color: '#fff',
+		fontFamily: 'Volkhov',
+		fontWeight: 'bold',
 		textAlign: 'center',
 		marginTop: 8,
 	},

@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 	conceptContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginVertical: 40,
+		marginBottom: 40,
 	},
 });
 
@@ -67,7 +67,7 @@ const PlayingUnderRealm: FC<Record<string, unknown>> = () => {
 			>
 				Playing Under Realm
 			</Text>
-			<Text style={styles.subHeading}>
+			<Text style={[sharedStyle.subHeading, styles.subHeading]}>
 				{
 					"To win the game, player is required to: Reduce the opposing player's Health Points to zero"
 				}
@@ -87,7 +87,7 @@ const PlayingUnderRealm: FC<Record<string, unknown>> = () => {
 					);
 				})}
 			</View>
-			<Text style={{ width: imageWidth }}>
+			<Text style={{ width: imageWidth, fontFamily: 'Poppins' }}>
 				{concepts[selectedConcept].content}
 			</Text>
 			<Image source={resources.guide.battlefieldImage} style={imageStyle} />

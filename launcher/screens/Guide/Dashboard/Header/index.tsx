@@ -54,7 +54,7 @@ const Header: FC = () => {
 				>
 					{labels.heading}
 				</Text>
-				<Text style={[sharedStyle.subContent, styles.subHeading]}>
+				<Text style={[sharedStyle.subHeading, styles.subHeading]}>
 					{labels.subHeading}
 				</Text>
 				<View style={styles.icons}>
@@ -92,19 +92,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-around',
 		position: 'absolute',
 	},
-	heading: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		color: '#fff',
-		fontFamily: 'Volkhov',
-	},
 	subHeading: {
-		// fontSize: 10,
-		// color: '#EBEBEB',
 		textAlign: 'center',
-		// maxWidth: 600,
-		// marginHorizontal: 24,
-		// marginTop: 18,
 	},
 	icons: {
 		flexDirection: 'row',
