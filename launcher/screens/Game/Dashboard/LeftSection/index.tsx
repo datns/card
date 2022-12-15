@@ -6,6 +6,7 @@ import { useSnapshot } from 'utils/hook';
 import { iStyles } from 'utils/styles';
 
 import LeaderBoard from './LeaderBoard';
+import StatisticBoard from './StatisticBoard';
 
 export const LeftSection: FC = () => {
 	const { windowSize } = useSnapshot(dimensionState);
@@ -31,6 +32,7 @@ export const LeftSection: FC = () => {
 			</View>
 			<View style={styles.rowContainer}>
 				<LeaderBoard windowSize={windowSize} />
+				<StatisticBoard />
 			</View>
 		</View>
 	);

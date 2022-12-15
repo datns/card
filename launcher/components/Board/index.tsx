@@ -2,15 +2,22 @@ import React, { FC, ReactNode } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 
 interface Props {
-	style?: ViewStyle;
+	style?: ViewStyle | ViewStyle[];
+	contentContainerStyle?: ViewStyle;
 	children: ReactNode;
 }
 
-export const UnderRealmBoard: FC<Props> = ({ style, children }) => {
+export const UnderRealmBoard: FC<Props> = ({
+	style,
+	contentContainerStyle,
+	children,
+}) => {
 	return (
 		<View style={[styles.container, style]}>
 			<View style={styles.overlay} />
-			<View style={styles.contentContainer}>{children}</View>
+			<View style={[styles.contentContainer, contentContainerStyle]}>
+				{children}
+			</View>
 		</View>
 	);
 };
@@ -33,5 +40,6 @@ const styles = StyleSheet.create({
 	},
 	contentContainer: {
 		width: '100%',
+		flex: 1,
 	},
 });

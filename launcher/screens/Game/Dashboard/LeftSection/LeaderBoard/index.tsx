@@ -23,7 +23,7 @@ export const LeaderBoard: FC<Props> = ({ windowSize }) => {
 		<UnderRealmBoard style={styles.container}>
 			<View style={styles.titleContainer}>
 				<TopTitleSeparator size={400} style={styles.topSeparator} />
-				<Text style={styles.tableTitle}>Hall of Fame</Text>
+				<Text style={styles.boardTitle}>Hall of Fame</Text>
 				<BottomTitleSeparator size={400} />
 			</View>
 			<View style={styles.optionRowContainer}>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginBottom: 20,
 	},
-	tableTitle: {
+	boardTitle: {
 		paddingVertical: 15,
 		fontFamily: 'Volkhov',
 		fontSize: 22,
