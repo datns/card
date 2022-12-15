@@ -12,6 +12,7 @@ import BrowserStack from 'stacks/Browser/Container';
 import { graphQlClient } from 'utils/graphql';
 import { clusterUrl } from 'utils/helper';
 import { useAppInit, useSnapshot } from 'utils/hook';
+import { stateActions } from 'utils/state';
 import { accountState } from 'utils/state/account';
 import { appState } from 'utils/state/app';
 import { launcherTheme } from 'utils/theme';
@@ -35,6 +36,9 @@ export const App: FC = () => {
 
 	useAppInit({
 		withProfileFetch: true,
+		onSignOut: () => {
+			stateActions.clearAll();
+		},
 	});
 
 	return (
