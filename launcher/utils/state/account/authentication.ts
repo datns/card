@@ -32,10 +32,6 @@ export const syncProfile = async (): Promise<Profile | null> => {
 	return null;
 };
 
-export const clearProfile = (): void => {
-	accountState.profile = {} as never;
-};
-
 export interface LoginPayload {
 	publicKey: PublicKey | null;
 	signMessage?: (message: Uint8Array) => Promise<Uint8Array>;
