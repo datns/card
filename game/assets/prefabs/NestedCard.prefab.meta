@@ -2,12 +2,12 @@
   "ver": "1.1.40",
   "importer": "prefab",
   "imported": true,
-  "uuid": "8e375b4c-a7fc-44c8-9c04-d7f35c19afb9",
+  "uuid": "185cc89a-4633-4f1f-a2be-b46cbd5468f0",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "Card"
+    "syncNodeName": "NestedCard"
   }
 }

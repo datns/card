@@ -2,12 +2,12 @@
   "ver": "1.1.40",
   "importer": "prefab",
   "imported": true,
-  "uuid": "8e375b4c-a7fc-44c8-9c04-d7f35c19afb9",
+  "uuid": "7697367f-48d9-48f3-a011-965400d1f361",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "Card"
+    "syncNodeName": "Deck"
   }
 }
