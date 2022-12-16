@@ -133,5 +133,7 @@ export default {
 	},
 	lobby: {
 		lobbyBackground: require('../../../assets/lobby/lobby-background.png'),
+		playBannerBackground: require('../../../assets/lobby/play-banner-background.png'),
+		buildBannerBackground: require('../../../assets/lobby/build-banner-background.png'),
 	},
 };

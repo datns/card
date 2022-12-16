@@ -163,5 +163,7 @@ export default {
 	},
 	lobby: {
 		lobbyBackground: { uri: '/lobby/lobby-background.png' },
+		playBannerBackground: { uri: '/lobby/play-banner-background.png' },
+		buildBannerBackground: { uri: '/lobby/build-banner-background.png' },
 	},
 };
