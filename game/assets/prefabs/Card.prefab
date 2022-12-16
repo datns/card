@@ -1717,14 +1717,11 @@
     "playOnLoad": false,
     "_clips": [
       {
-        "__uuid__": "76959d72-465e-4e5f-a498-72063bc1c6b5",
+        "__uuid__": "bdaa5bde-4157-4a1a-951c-37a6fb134b17",
         "__expectedType__": "cc.AnimationClip"
       }
     ],
-    "_defaultClip": {
-      "__uuid__": "76959d72-465e-4e5f-a498-72063bc1c6b5",
-      "__expectedType__": "cc.AnimationClip"
-    },
+    "_defaultClip": null,
     "_id": ""
   },
   {
