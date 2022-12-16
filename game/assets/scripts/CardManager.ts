@@ -4,6 +4,7 @@ import { playAnimation } from './util/animation';
 import { PreviewManager } from './PreviewManager';
 
 const { ccclass } = _decorator;
+const NodeEvents = Node.EventType;
 
 interface Props {
 	animation?: Animation;
@@ -14,6 +15,7 @@ interface Props {
 @ccclass('CardManager')
 export class CardManager extends Component {
 	props: Props = {};
+
 	start(): void {
 		this.props = {
 			animation: this.node.getComponent('cc.Animation') as Animation,
@@ -25,7 +27,7 @@ export class CardManager extends Component {
 	}
 
 	bindMouseEvents(): void {
-		this.node.on('mouse-enter', this.onMouseEnter.bind(this));
+		this.node.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
 	}
 
 	onMouseEnter(): void {
