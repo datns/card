@@ -20,7 +20,7 @@ export const LobbyScreen: FC = () => {
 			style={styles.container}
 		>
 			<StormNavigation />
-			<InternalNavigation />
+			<InternalNavigation isHidingPlayButton />
 			<View style={styles.contentContainer}>
 				<View style={[styles.leftContainer, { height }]}>
 					<LeftSection />
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 15,
 		paddingHorizontal: 15,
 		flex: 1,
-		justifyContent: 'flex-end',
 	},
 	rightContainer: {
 		paddingVertical: 15,

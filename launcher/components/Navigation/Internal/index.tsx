@@ -3,7 +3,6 @@ import {
 	Image,
 	ImageBackground,
 	ImageStyle,
-	Linking,
 	StyleSheet,
 	TouchableOpacity,
 	View,
@@ -27,9 +26,13 @@ import NavigationItem from './Item';
 
 interface Props {
 	isMobile?: boolean;
+	isHidingPlayButton?: boolean;
 }
 
-export const InternalNavigation: FC<Props> = ({ isMobile }) => {
+export const InternalNavigation: FC<Props> = ({
+	isMobile,
+	isHidingPlayButton,
+}) => {
 	const backgroundResizeMode = isMobile ? 'cover' : 'repeat';
 	const onNavigate = (item: NavigationConfig) => {
 		navigate(item.route as never, item.params);
@@ -53,12 +56,14 @@ export const InternalNavigation: FC<Props> = ({ isMobile }) => {
 		<TouchableOpacity>
 			<UserSolidIcon size={28} />
 		</TouchableOpacity>
+	) : isHidingPlayButton ? (
+		<View />
 	) : (
 		<UnderRealmButton
 			style={styles.button}
-			onPress={() =>
-				// navigate('Game', { screen: 'Duel', params: { id: 'demo' } })
-				Linking.openURL('https://underrealm.stormgate.io/game/duel/demo')
+			onPress={
+				() => navigate('Game')
+				// Linking.openURL('https://underrealm.stormgate.io/game/duel/demo')
 			}
 		>
 			<Text style={styles.buttonText}>Demo</Text>
