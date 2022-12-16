@@ -1,9 +1,9 @@
 import { _decorator, Animation, Component, Node, UIOpacity } from 'cc';
 
 import { playAnimation } from './util/animation';
+import { PreviewManager } from './PreviewManager';
 
 const { ccclass } = _decorator;
-const { EventType } = Node;
 
 interface Props {
 	animation?: Animation;
@@ -25,14 +25,17 @@ export class CardManager extends Component {
 	}
 
 	bindMouseEvents(): void {
-		this.node.on(EventType.MOUSE_ENTER, this.onMouseEnter.bind(this));
-		this.node.on(EventType.MOUSE_LEAVE, this.onMouseLeave.bind(this));
+		this.node.on('mouse-enter', this.onMouseEnter.bind(this));
 	}
 
 	onMouseEnter(): void {
 		const { cardPreview, uiOpacity } = this.props;
+		const previewManager = cardPreview.getComponent(
+			'PreviewManager',
+		) as PreviewManager;
 
-		uiOpacity.opacity = 50;
+		previewManager.cardManager = this;
+		uiOpacity.opacity = 30;
 		playAnimation(cardPreview, 'fade-in');
 		cardPreview.setPosition(0, -180);
 	}
