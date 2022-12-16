@@ -6,31 +6,44 @@ import { useSnapshot } from 'utils/hook';
 import { iStyles } from 'utils/styles';
 
 import LeaderBoard from './LeaderBoard';
+import StatisticBoard from './StatisticBoard';
+import UnderRealmInfo from './UnderRealmInfo';
 
 export const LeftSection: FC = () => {
 	const { windowSize } = useSnapshot(dimensionState);
 
 	return (
-		<View style={iStyles.contentContainer}>
-			<Text style={styles.heading}>Blind Duel</Text>
-			<View style={[styles.rowContainer, { marginBottom: 40 }]}>
-				<Text style={styles.subText}>
-					Are you ready to face the unknown enemy? Do your best and winning
-					might be on your side, Adventurer!
-				</Text>
-				<UnderRealmButton style={styles.button}>
-					<Text
-						style={styles.buttonText}
-						onPress={() =>
-							Linking.openURL('https://underrealm.stormgate.io/game/duel/demo')
-						}
-					>
-						Play
+		<View
+			style={[
+				iStyles.contentContainer,
+				{ justifyContent: 'space-evenly', flex: 1 },
+			]}
+		>
+			<View>
+				<Text style={styles.heading}>Blind Duel</Text>
+				<View style={[styles.rowContainer, { marginBottom: 40 }]}>
+					<Text style={styles.subText}>
+						Are you ready to face the unknown enemy? Do your best and winning
+						might be on your side, Adventurer!
 					</Text>
-				</UnderRealmButton>
+					<UnderRealmButton style={styles.button}>
+						<Text
+							style={styles.buttonText}
+							onPress={() =>
+								Linking.openURL(
+									'https://underrealm.stormgate.io/game/duel/demo',
+								)
+							}
+						>
+							Play
+						</Text>
+					</UnderRealmButton>
+				</View>
 			</View>
 			<View style={styles.rowContainer}>
 				<LeaderBoard windowSize={windowSize} />
+				<StatisticBoard />
+				<UnderRealmInfo />
 			</View>
 		</View>
 	);
@@ -47,7 +60,7 @@ const styles = StyleSheet.create({
 	},
 	rowContainer: {
 		flexDirection: 'row',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 		justifyContent: 'space-between',
 	},
 	subText: {
