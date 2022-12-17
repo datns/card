@@ -1,0 +1,10 @@
+card.png
+size:1134,404
+filter:Linear,Linear
+pma:true
+card/anonymous
+bounds:2,2,400,570
+rotate:90
+card/front
+bounds:574,2,400,558
+rotate:90

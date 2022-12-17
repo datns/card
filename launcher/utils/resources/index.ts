@@ -81,6 +81,7 @@ export default {
 		elementalInteractionSecondBackground: require('../../../assets/home/elemental-interaction-second-background.png'),
 		elementalInteractionVisual: require('../../../assets/home/elemental-interaction-visual.png'),
 		cardTypesBackground: require('../../../assets/home/card-type-background.png'),
+		cardTypesHeroVisual: require('../../../assets/home/card-type-hero-visual.png'),
 		cardTypesSpellVisual: require('../../../assets/home/card-type-spell-visual.png'),
 		classes: {
 			background: require('../../../assets/home/classes/background.png'),
@@ -149,5 +150,10 @@ export default {
 		footerMainBackground: require('../../../assets/guide/footer-main-background.png'),
 		footerContentBackground: require('../../../assets/guide/footer-content-background.png'),
 		effectOverlay: require('../../../assets/guide/effect-overlay.png'),
+	},
+	lobby: {
+		lobbyBackground: require('../../../assets/lobby/lobby-background.png'),
+		playBannerBackground: require('../../../assets/lobby/play-banner-background.png'),
+		buildBannerBackground: require('../../../assets/lobby/build-banner-background.png'),
 	},
 };

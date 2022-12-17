@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "K4XFNbMlaIY", "spine": "4.1.17", "x": -984.41, "y": -626.16, "width": 1950.76, "height": 1196.14 },
+"skeleton": { "hash": "8uGeDiDqD6A", "spine": "4.1.17", "x": -996.32, "y": -626.16, "width": 1950.76, "height": 1196.14 },
 "bones": [
 	{ "name": "root", "rotation": 0.04, "x": -1.63 },
 	{ "name": "top-left-chain", "parent": "root", "x": -700.62, "y": 342.27 },
@@ -34,7 +34,7 @@
 		"name": "default",
 		"attachments": {
 			"base": {
-				"ground/base": { "x": -7.42, "y": -29.2, "width": 1950, "height": 1101 }
+				"ground/base": { "x": -19.33, "y": -30.97, "width": 1950, "height": 1101 }
 			},
 			"base-orb": {
 				"ground/base-orb": { "x": 0.5, "width": 307, "height": 274 }
