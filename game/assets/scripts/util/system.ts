@@ -3,11 +3,13 @@ import { Node, Vec2, Vec3 } from 'cc';
 const screenSize = new Vec2(1280, 720);
 
 export interface System {
+	previewing: boolean;
 	dragging: boolean;
 	activeCard?: Node;
 }
 
 export const system: System = {
+	previewing: false,
 	dragging: false,
 };
 
