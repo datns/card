@@ -1,5 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import {
+	Dimensions,
+	Image,
+	ImageBackground,
+	StyleSheet,
+	View,
+} from 'react-native';
 import { Text } from '@metacraft/ui';
 import { headingSize, sharedStyle } from 'screens/Guide/shared';
 
@@ -42,39 +48,40 @@ const Header: FC = () => {
 
 	return (
 		<View style={{ alignItems: 'center', justifyContent: 'center' }}>
-			<Image
+			<ImageBackground
 				source={resources.guide.headingBackground}
 				resizeMode="cover"
 				style={[styles.headingBackground, headingBackgroundStyle]}
-			/>
-			<View style={styles.container}>
-				<Text
-					style={[sharedStyle.heading, sharedStyle.textShadow]}
-					responsiveSizes={headingSize}
-				>
-					{labels.heading}
-				</Text>
-				<Text style={[sharedStyle.subHeading, styles.subHeading]}>
-					{labels.subHeading}
-				</Text>
-				<View style={styles.icons}>
-					<Icon
-						type={ViewType.Battlefield}
-						onPress={() => onIconPress(0)}
-						isActive={activeIconIndex === 0}
-					/>
-					<Icon
-						type={ViewType.Play}
-						onPress={() => onIconPress(1)}
-						isActive={activeIconIndex === 1}
-					/>
-					<Icon
-						type={ViewType.Card}
-						onPress={() => onIconPress(2)}
-						isActive={activeIconIndex === 2}
-					/>
+			>
+				<View style={styles.container}>
+					<Text
+						style={[sharedStyle.heading, sharedStyle.textShadow]}
+						responsiveSizes={headingSize}
+					>
+						{labels.heading}
+					</Text>
+					<Text style={[sharedStyle.subHeading, styles.subHeading]}>
+						{labels.subHeading}
+					</Text>
+					<View style={styles.icons}>
+						<Icon
+							type={ViewType.Battlefield}
+							onPress={() => onIconPress(0)}
+							isActive={activeIconIndex === 0}
+						/>
+						<Icon
+							type={ViewType.Play}
+							onPress={() => onIconPress(1)}
+							isActive={activeIconIndex === 1}
+						/>
+						<Icon
+							type={ViewType.Card}
+							onPress={() => onIconPress(2)}
+							isActive={activeIconIndex === 2}
+						/>
+					</View>
 				</View>
-			</View>
+			</ImageBackground>
 		</View>
 	);
 };
@@ -90,7 +97,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		alignItems: 'center',
 		justifyContent: 'space-around',
-		position: 'absolute',
+		// position: 'absolute',
 	},
 	subHeading: {
 		textAlign: 'center',

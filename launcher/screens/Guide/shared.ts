@@ -26,6 +26,7 @@ export const sharedStyle = StyleSheet.create({
 		fontFamily: 'Poppins',
 		maxWidth: 1100,
 		paddingVertical: 40,
+		color: 'white',
 	},
 	buttonText: {
 		textAlign: 'center',

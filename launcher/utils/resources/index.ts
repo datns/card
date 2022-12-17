@@ -148,5 +148,6 @@ export default {
 		elementalInteractionVisual: require('../../../assets/guide/elemental-interaction-visual.png'),
 		footerMainBackground: require('../../../assets/guide/footer-main-background.png'),
 		footerContentBackground: require('../../../assets/guide/footer-content-background.png'),
+		effectOverlay: require('../../../assets/guide/effect-overlay.png'),
 	},
 };

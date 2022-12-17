@@ -180,5 +180,6 @@ export default {
 		},
 		footerMainBackground: { uri: '/guide/footer-main-background.png' },
 		footerContentBackground: { uri: '/guide/footer-content-background.png' },
+		effectOverlay: { uri: '/guide/effect-overlay.png' },
 	},
 };
