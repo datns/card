@@ -6,8 +6,10 @@ import {
 	StyleSheet,
 	View,
 } from 'react-native';
-import { Text } from '@metacraft/ui';
+import { DimensionState, dimensionState, Text } from '@metacraft/ui';
 import { headingSize, sharedStyle } from 'screens/Guide/shared';
+import { useSnapshot } from 'utils/hook';
+import { iStyles } from 'utils/styles';
 
 import resources from '../../../../utils/resources';
 
@@ -28,66 +30,63 @@ export enum ViewType {
 }
 
 const Header: FC = () => {
-	const window = Dimensions.get('window');
-
-	const [dimensions, setDimensions] = useState({ window });
 	const [activeIconIndex, setActiveIconIndex] = useState(0);
-
-	useEffect(() => {
-		const subscription = Dimensions.addEventListener('change', ({ window }) => {
-			setDimensions({ window });
-		});
-		return () => subscription?.remove();
-	});
+	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
+	const width = Math.min(windowSize.width, iStyles.wideContainer.maxWidth);
 
 	const headingBackgroundStyle = {
-		height: dimensions.window.width * headingBackgroundRatio,
+		width,
+		height: width * headingBackgroundRatio,
 	};
 
 	const onIconPress = (index: number) => setActiveIconIndex(index);
 
 	return (
-		<View style={{ alignItems: 'center', justifyContent: 'center' }}>
-			<ImageBackground
+		<View style={styles.container}>
+			<Image
 				source={resources.guide.headingBackground}
-				resizeMode="cover"
 				style={[styles.headingBackground, headingBackgroundStyle]}
-			>
-				<View style={styles.container}>
-					<Text
-						style={[sharedStyle.heading, sharedStyle.textShadow]}
-						responsiveSizes={headingSize}
-					>
-						{labels.heading}
-					</Text>
-					<Text style={[sharedStyle.subHeading, styles.subHeading]}>
-						{labels.subHeading}
-					</Text>
-					<View style={styles.icons}>
-						<Icon
-							type={ViewType.Battlefield}
-							onPress={() => onIconPress(0)}
-							isActive={activeIconIndex === 0}
-						/>
-						<Icon
-							type={ViewType.Play}
-							onPress={() => onIconPress(1)}
-							isActive={activeIconIndex === 1}
-						/>
-						<Icon
-							type={ViewType.Card}
-							onPress={() => onIconPress(2)}
-							isActive={activeIconIndex === 2}
-						/>
-					</View>
+			/>
+			<View style={styles.contentContainer}>
+				<Text
+					style={[sharedStyle.heading, sharedStyle.textShadow]}
+					responsiveSizes={headingSize}
+				>
+					{labels.heading}
+				</Text>
+				<Text style={[sharedStyle.subHeading, styles.subHeading]}>
+					{labels.subHeading}
+				</Text>
+				<View style={styles.icons}>
+					<Icon
+						type={ViewType.Battlefield}
+						onPress={() => onIconPress(0)}
+						isActive={activeIconIndex === 0}
+					/>
+					<Icon
+						type={ViewType.Play}
+						onPress={() => onIconPress(1)}
+						isActive={activeIconIndex === 1}
+					/>
+					<Icon
+						type={ViewType.Card}
+						onPress={() => onIconPress(2)}
+						isActive={activeIconIndex === 2}
+					/>
 				</View>
-			</ImageBackground>
+			</View>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'black',
+		paddingBottom: 20,
+	},
+	contentContainer: {
 		paddingHorizontal: 24,
 		paddingVertical: 40,
 		alignItems: 'center',
@@ -96,8 +95,8 @@ const styles = StyleSheet.create({
 	headingBackground: {
 		width: '100%',
 		alignItems: 'center',
-		justifyContent: 'space-around',
-		// position: 'absolute',
+		position: 'absolute',
+		top: 0,
 	},
 	subHeading: {
 		textAlign: 'center',
