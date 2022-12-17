@@ -1,7 +1,14 @@
-import { _decorator, Animation, Component, Node, UIOpacity } from 'cc';
+import {
+	_decorator,
+	Animation,
+	Component,
+	Node,
+	tween,
+	UIOpacity,
+	Vec3,
+} from 'cc';
 
 import { playAnimation } from './util/animation';
-import { PreviewManager } from './PreviewManager';
 
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
@@ -9,6 +16,7 @@ const NodeEvents = Node.EventType;
 interface Props {
 	animation?: Animation;
 	uiOpacity?: UIOpacity;
+	cardFront?: Node;
 	cardPreview?: Node;
 }
 
@@ -20,6 +28,7 @@ export class CardManager extends Component {
 		this.props = {
 			animation: this.node.getComponent('cc.Animation') as Animation,
 			uiOpacity: this.node.getComponent('cc.UIOpacity') as UIOpacity,
+			cardFront: this.node.getChildByPath('front'),
 			cardPreview: this.node.parent.parent.getChildByPath('Card Preview'),
 		};
 
@@ -27,25 +36,27 @@ export class CardManager extends Component {
 	}
 
 	bindMouseEvents(): void {
-		this.node.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
+		const { cardFront } = this.props;
+		cardFront.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
+		cardFront.on(NodeEvents.MOUSE_LEAVE, this.onMouseLeave.bind(this));
 	}
 
 	onMouseEnter(): void {
-		const { cardPreview, uiOpacity } = this.props;
-		const previewManager = cardPreview.getComponent(
-			'PreviewManager',
-		) as PreviewManager;
+		const { cardPreview } = this.props;
 
-		previewManager.cardManager = this;
-		uiOpacity.opacity = 30;
+		cardPreview.setPosition(0, -58);
+		tween(this.node)
+			.by(0.2, { position: new Vec3(0, 20, 0) }, { easing: 'cubicInOut' })
+			.start();
 		playAnimation(cardPreview, 'fade-in');
-		cardPreview.setPosition(0, -180);
 	}
 
 	onMouseLeave(): void {
-		const { cardPreview, uiOpacity } = this.props;
+		const { cardPreview } = this.props;
 
-		uiOpacity.opacity = 255;
 		cardPreview.setPosition(190, 740);
+		tween(this.node)
+			.by(0.2, { position: new Vec3(0, -20, 0) }, { easing: 'cubicInOut' })
+			.start();
 	}
 }

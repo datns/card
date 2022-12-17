@@ -8,7 +8,7 @@
       "__id__": 1
     },
     "optimizationPolicy": 0,
-    "persistent": false,
+    "persistent": true,
     "asyncLoadAssets": false
   },
   {
@@ -1729,6 +1729,10 @@
       },
       {
         "__uuid__": "0871485e-1617-464a-98fb-ebc7cbbabfc9",
+        "__expectedType__": "cc.AnimationClip"
+      },
+      {
+        "__uuid__": "e90c5a91-147c-449b-962e-e440a93ac1da",
         "__expectedType__": "cc.AnimationClip"
       }
     ],

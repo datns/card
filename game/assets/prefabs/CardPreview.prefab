@@ -285,12 +285,12 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 240,
-      "height": 360
+      "height": 336
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.534
+      "y": 0.5
     },
     "_id": ""
   },
@@ -346,7 +346,7 @@
     "fileId": "34aI6ansFJr4AFduDLw0DC"
   },
   {
-    "__type__": "f8921Q/UoZKPZiDANqrkaPZ",
+    "__type__": "cc.BlockInputEvents",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -360,7 +360,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "68Jt5RBwVChotnYujo3AEF"
+    "fileId": "6bEPv0l2VDdZg7Ur/gj1aC"
   },
   {
     "__type__": "cc.PrefabInfo",
