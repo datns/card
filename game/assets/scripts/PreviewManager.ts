@@ -1,14 +1,6 @@
-import {
-	_decorator,
-	Component,
-	EventMouse,
-	Node,
-	tween,
-	UIOpacity,
-	Vec3,
-} from 'cc';
+import { _decorator, Component, EventMouse, Node, UIOpacity, Vec2 } from 'cc';
 
-import { extractMouseLocation, setCursor, system } from './util/system';
+import { setCursor, system } from './util/system';
 
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
@@ -16,7 +8,7 @@ const NodeEvents = Node.EventType;
 interface Props {
 	card?: Node;
 	dragging?: boolean;
-	dragOffset?: Vec3;
+	dragOffset?: Vec2;
 }
 
 @ccclass('PreviewManager')
@@ -43,10 +35,8 @@ export class PreviewManager extends Component {
 	}
 
 	onMouseDown(e: EventMouse): void {
-		const mouseLocation = e.getLocation();
-		const nodeLocation = extractMouseLocation(mouseLocation);
 		this.props.dragging = true;
-		this.props.dragOffset = nodeLocation;
+		this.props.dragOffset = e.getLocation();
 	}
 
 	onMouseUp(): void {
@@ -56,16 +46,12 @@ export class PreviewManager extends Component {
 	onMouseMove(e: EventMouse): void {
 		if (!this.props.dragging) return;
 
-		const mouseLocation = e.getLocation();
-		const nodeLocation = extractMouseLocation(mouseLocation);
-		const distance = Vec3.distance(nodeLocation, this.props.dragOffset);
+		const location = e.getLocation();
+		const distance = Vec2.distance(location, this.props.dragOffset);
 
 		if (distance > 5) {
 			this.hidePreview();
 			system.dragging = true;
-			tween(system.activeCard)
-				.to(0.1, { scale: new Vec3(0.3, 0.3, 1) }, { easing: 'elasticIn' })
-				.start();
 		}
 	}
 

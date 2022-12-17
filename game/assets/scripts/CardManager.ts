@@ -48,7 +48,7 @@ export class CardManager extends Component {
 		uiOpacity.opacity = 50;
 		system.previewing = true;
 		system.activeCard = this.node;
-		cardPreview.setPosition(0, -168);
+		cardPreview.setPosition(this.node.position.x, -168);
 		playAnimation(cardPreview, 'fade-in');
 	}
 }

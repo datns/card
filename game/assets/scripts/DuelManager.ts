@@ -1,6 +1,6 @@
 import { _decorator, Component, EventMouse, Node } from 'cc';
 
-import { extractMouseLocation, system } from './util/system';
+import { system } from './util/system';
 import { BoardManager } from './BoardManager';
 
 const { ccclass, property } = _decorator;
@@ -35,8 +35,8 @@ export class DuelManager extends Component {
 
 	onMouseMove(e: EventMouse): void {
 		if (system.dragging && system.activeCard) {
-			const mouseLocation = e.getLocation();
-			system.activeCard.setPosition(extractMouseLocation(mouseLocation));
+			const { x, y } = e.getUILocation();
+			system.activeCard.setWorldPosition(x, y, 0);
 		}
 	}
 }
