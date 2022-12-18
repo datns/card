@@ -35,6 +35,6 @@ export class BoardManager extends Component {
 		const node = instantiate(cardTemplate);
 		node.parent = this.node.parent;
 		const cardAnimate = node.getComponent('cc.Animation') as Animation;
-		cardAnimate.play('deck-to-hand');
+		cardAnimate.play('distribute-card');
 	}
 }
