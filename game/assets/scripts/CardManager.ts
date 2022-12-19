@@ -1,12 +1,13 @@
 import { _decorator, Component, Node, UIOpacity } from 'cc';
 
 import { playAnimation } from './util/animation';
-import { system } from './util/system';
+import { setCursor, system } from './util/system';
 
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
 
 interface Props {
+	ready?: boolean;
 	animation?: Animation;
 	uiOpacity?: UIOpacity;
 	cardFront?: Node;
@@ -15,7 +16,6 @@ interface Props {
 
 @ccclass('CardManager')
 export class CardManager extends Component {
-	dragging = false;
 	props: Props = {};
 
 	start(): void {
@@ -28,6 +28,7 @@ export class CardManager extends Component {
 		};
 
 		cardFront.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
+		cardFront.on(NodeEvents.MOUSE_LEAVE, this.onMouseLeave.bind(this));
 	}
 
 	showPreview(): void {
@@ -42,13 +43,18 @@ export class CardManager extends Component {
 	}
 
 	onMouseEnter(): void {
-		if (system.dragging) return;
-		const { cardPreview, uiOpacity } = this.props;
+		setCursor('grab');
+		const { ready, cardPreview, uiOpacity } = this.props;
+		if (!ready || system.dragging) return;
 
 		uiOpacity.opacity = 50;
 		system.previewing = true;
 		system.activeCard = this.node;
 		cardPreview.setPosition(this.node.position.x, -168);
 		playAnimation(cardPreview, 'fade-in');
+	}
+
+	onMouseLeave(): void {
+		setCursor('auto');
 	}
 }

@@ -1,5 +1,7 @@
 import { Node, Quat, Tween, tween, Vec3 } from 'cc';
 
+import { CardManager } from '../CardManager';
+
 export const expoCard = (node: Node, speed = 1): Tween<Node> => {
 	let flipped = false;
 	const r1 = Quat.fromEuler(new Quat(), 90, 90, 91);
@@ -39,7 +41,14 @@ export const expoCard = (node: Node, speed = 1): Tween<Node> => {
 };
 
 export const revealPlayerCard = (node: Node): void => {
+	const manager = node.getComponent(CardManager);
+	const markAsReady = () => {
+		manager.props.ready = true;
+	};
+
+	manager.props.ready = false;
 	expoCard(node)
 		.to(1, { position: new Vec3(0, -360, 0) }, { easing: 'expoOut' })
+		.call(markAsReady)
 		.start();
 };
