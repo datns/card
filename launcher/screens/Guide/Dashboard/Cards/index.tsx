@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
 	cardInfo: {
 		fontFamily: 'Poppins',
 		marginTop: 50,
+		width: '100%',
 	},
 	propertyTitle: {
 		fontFamily: 'Poppins',
@@ -144,6 +145,7 @@ const Cards: React.FC<Record<string, unknown>> = () => {
 							isLast={index === concepts.length - 1}
 							key={concept.label}
 							onPress={() => setSelectedConcept(index)}
+							isSelected={index === selectedConcept}
 						/>
 					);
 				})}

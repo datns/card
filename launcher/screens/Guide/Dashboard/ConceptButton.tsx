@@ -17,25 +17,6 @@ interface Props {
 	isSelected: boolean;
 }
 
-const styles = StyleSheet.create({
-	container: {
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	content: {
-		alignItems: 'center',
-	},
-	icon: {
-		width: 40,
-		aspectRatio: 1,
-	},
-	label: {
-		fontFamily: 'Poppins',
-		textAlign: 'center',
-		color: '#FFFBDF',
-	},
-});
-
 const ConceptButton: FC<Props> = ({
 	label,
 	icon,
@@ -44,13 +25,11 @@ const ConceptButton: FC<Props> = ({
 	onPress,
 	isSelected,
 }) => {
-	const containerStyle = StyleSheet.flatten([
-		styles.container,
-		{
-			marginLeft: isFirst ? 0 : 20,
-			marginRight: isLast ? 0 : 20,
-		},
-	]);
+	const containerStyle = {
+		...styles.container,
+		marginLeft: isFirst ? 0 : 20,
+		marginRight: isLast ? 0 : 20,
+	};
 
 	const animatedImage = useAnimatedStyle(() => {
 		return {
@@ -81,3 +60,21 @@ const ConceptButton: FC<Props> = ({
 };
 
 export default ConceptButton;
+
+const styles = StyleSheet.create({
+	container: {
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	content: {
+		alignItems: 'center',
+	},
+	icon: {
+		width: 40,
+		aspectRatio: 1,
+	},
+	label: {
+		textAlign: 'center',
+		color: '#FFFBDF',
+	},
+});

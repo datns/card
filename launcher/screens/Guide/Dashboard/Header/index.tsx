@@ -29,7 +29,11 @@ export enum ViewType {
 	Card,
 }
 
-const Header: FC = () => {
+interface Props {
+	onPress: (index: number) => void;
+}
+
+const Header: FC<Props> = ({ onPress }) => {
 	const [activeIconIndex, setActiveIconIndex] = useState(0);
 	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
 	const width = Math.min(windowSize.width, iStyles.wideContainer.maxWidth);
@@ -39,7 +43,10 @@ const Header: FC = () => {
 		height: width * headingBackgroundRatio,
 	};
 
-	const onIconPress = (index: number) => setActiveIconIndex(index);
+	const onIconPress = (index: number) => {
+		onPress(index);
+		setActiveIconIndex(index);
+	};
 
 	return (
 		<View style={styles.container}>

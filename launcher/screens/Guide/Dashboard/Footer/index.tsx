@@ -1,91 +1,105 @@
 import React from 'react';
-import {
-	Image,
-	ImageBackground,
-	ImageStyle,
-	View,
-	ViewStyle,
-} from 'react-native';
+import { Image, ImageStyle, StyleSheet, View } from 'react-native';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
 import UnderRealmButton from 'components/Marketplace/Button';
-import { useDefaultHoveredStyle } from 'components/Marketplace/Button/shared';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
 const Footer: React.FC<Record<string, unknown>> = () => {
-	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
+	const { windowSize, responsiveLevel } =
+		useSnapshot<DimensionState>(dimensionState);
 	const width = Math.min(windowSize.width, iStyles.contentContainer.maxWidth);
-	const backgroundContainer = {
+	const backgroundImage = {
 		width,
 		height: (width * 385) / 1555,
-		alignItems: 'center',
-		justifyContent: 'center',
-	} as ViewStyle;
+		position: 'absolute',
+		bottom: 0,
+	} as ImageStyle;
 
 	const imageSize = {
-		width: '50%',
-		aspectRatio: 884 / 222,
+		width: '45%',
+		height: windowSize.width * 0.45 * (222 / 884),
 	} as ImageStyle;
+
+	const ratio = responsiveLevel > 1 ? responsiveLevel : 1;
 	return (
-		<ImageBackground
-			source={resources.guide.footerMainBackground}
-			style={[iStyles.wideContainer, backgroundContainer]}
+		<View
+			style={[
+				styles.container,
+				{
+					height: backgroundImage.height,
+				},
+			]}
 		>
-			<View style={imageSize}>
-				<ImageBackground
-					source={resources.guide.footerContentBackground}
-					style={{ flex: 1, alignItems: 'center', paddingTop: 20 }}
+			<Image
+				source={resources.guide.footerMainBackground}
+				style={[iStyles.wideContainer, backgroundImage]}
+			/>
+			<Image
+				source={resources.guide.footerContentBackground}
+				style={imageSize}
+			/>
+			<View
+				style={[
+					styles.contentContainer,
+					{
+						height: imageSize.height,
+					},
+				]}
+			>
+				<Text
+					style={[
+						styles.title,
+						{
+							marginTop: 30 / ratio,
+						},
+					]}
+					responsiveSizes={[35 / ratio]}
 				>
-					<Text style={{ color: 'black', fontWeight: 'bold', fontSize: 45 }}>
-						GET STARTED TO PLAY
-					</Text>
-					<Text style={{ color: 'black', fontSize: 25 }}>
-						Create your account to start playing
-					</Text>
-					<View
+					GET STARTED TO PLAY
+				</Text>
+				<Text style={{ color: '#000' }} responsiveSizes={[20 / ratio]}>
+					Create your account to start playing
+				</Text>
+				<UnderRealmButton
+					style={{
+						...styles.button,
+						width: 250 / ratio,
+					}}
+				>
+					<Text
 						style={{
-							flexDirection: 'row',
-							width: '70%',
-							justifyContent: 'space-between',
-							height: 50,
-							position: 'absolute',
-							bottom: 0
+							textAlign: 'center',
 						}}
+						responsiveSizes={[14 / ratio]}
 					>
-						<UnderRealmButton
-							style={{
-								width: '48%',
-								justifyContent: 'center'
-							}}
-						>
-							<Text
-								style={{
-									textAlign: 'center',
-								}}
-							>
-								{'Card Library'}
-							</Text>
-						</UnderRealmButton>
-						<UnderRealmButton
-							style={{
-								width: '48%',
-								justifyContent: 'center'
-							}}
-						>
-							<Text
-								style={{
-									textAlign: 'center',
-								}}
-							>
-								{'Ready to play?\nPlay now'}
-							</Text>
-						</UnderRealmButton>
-					</View>
-				</ImageBackground>
+						{'Ready to play?\nPlay now'}
+					</Text>
+				</UnderRealmButton>
 			</View>
-		</ImageBackground>
+		</View>
 	);
 };
 
 export default Footer;
+
+const styles = StyleSheet.create({
+	container: {
+		marginTop: 100,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	contentContainer: {
+		position: 'absolute',
+		alignItems: 'center',
+	},
+	title: {
+		color: '#000',
+		fontWeight: 'bold',
+	},
+	button: {
+		position: 'absolute',
+		bottom: -25,
+	},
+});

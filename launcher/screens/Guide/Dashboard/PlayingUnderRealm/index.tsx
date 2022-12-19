@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
 import { play } from 'screens/Guide/content';
@@ -8,23 +8,9 @@ import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
-const styles = StyleSheet.create({
-	container: {
-		alignItems: 'center',
-	},
-	subHeading: {
-		textAlign: 'center',
-	},
-	conceptContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		marginBottom: 40,
-	},
-});
-
-const PlayingUnderRealm: FC<Record<string, unknown>> = () => {
+const PlayingUnderRealm: React.FC = () => {
 	const { responsiveLevel } = useSnapshot<DimensionState>(dimensionState);
-	const [selectedConcept, setSelectedConcept] = useState<number>(0);
+	const [selectedConcept, setSelectedConcept] = React.useState<number>(0);
 	const imageWidth = responsiveLevel > 1 ? 803 * (1 / responsiveLevel) : 803;
 	const imageStyle = {
 		width: imageWidth,
@@ -67,3 +53,17 @@ const PlayingUnderRealm: FC<Record<string, unknown>> = () => {
 };
 
 export default PlayingUnderRealm;
+
+const styles = StyleSheet.create({
+	container: {
+		alignItems: 'center',
+	},
+	subHeading: {
+		textAlign: 'center',
+	},
+	conceptContainer: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		marginBottom: 40,
+	},
+});
