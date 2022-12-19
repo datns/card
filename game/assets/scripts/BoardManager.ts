@@ -1,5 +1,7 @@
 import { _decorator, Animation, Component, instantiate, Node } from 'cc';
 
+import { revealPlayerCard } from './tween/card';
+
 const { ccclass } = _decorator;
 
 interface Props {
@@ -33,8 +35,8 @@ export class BoardManager extends Component {
 	distributeCard(): void {
 		const { cardTemplate } = this.props;
 		const node = instantiate(cardTemplate);
+
 		node.parent = this.node.parent;
-		const cardAnimate = node.getComponent('cc.Animation') as Animation;
-		cardAnimate.play('distribute-card');
+		revealPlayerCard(node);
 	}
 }
