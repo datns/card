@@ -24,20 +24,20 @@ export const battlefield: ContentType = {
 				'In the Beta version, Adventurers can construct the deck as they want to serve the best of their playing styles.',
 		},
 		{
-			label: 'Spell',
+			label: 'Magic Tower',
 			icon: resources.guide.spellIcon,
 			content:
 				'During a match, Spell Cards must be placed in the magic tower before being activated base on each card’s condition. \n' +
 				'\n' +
 				'At the beginning of the match, only 2 slots for Spell Card will be available. Every 5 turns, 1 more slot will be added. The maximum number of Spell Cards that can be stored in the Magic Tower is 5. ',
 		},
-		{
-			label: 'Grave',
-			icon: resources.guide.graveIcon,
-			content:
-				'Destroyed/ used cards will be gathered in the Graveyard area.\n' +
-				'From the Graveyard, cards with special abilities can be brought back to the match.',
-		},
+		// {
+		// 	label: 'Grave',
+		// 	icon: resources.guide.graveIcon,
+		// 	content:
+		// 		'Destroyed/ used cards will be gathered in the Graveyard area.\n' +
+		// 		'From the Graveyard, cards with special abilities can be brought back to the match.',
+		// },
 		{
 			label: 'Summon Zone',
 			icon: resources.guide.summonZoneIcon,

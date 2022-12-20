@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
 	title: {
 		color: '#000',
 		fontWeight: 'bold',
+		fontFamily: 'Volkov',
 	},
 	button: {
 		position: 'absolute',
