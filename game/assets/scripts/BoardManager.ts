@@ -1,40 +1,36 @@
 import { _decorator, Animation, Component, instantiate, Node } from 'cc';
 
 import { revealPlayerCard } from './tween/card';
+import { system } from './util/system';
 
 const { ccclass } = _decorator;
 
 interface Props {
 	animation?: Animation;
-	cardTemplate?: Node;
-	playerFoil?: Node;
-	enemyFoil?: Node;
 }
 
 @ccclass('BoardManager')
 export class BoardManager extends Component {
+	animation: Animation;
 	props: Props = {};
 
 	start(): void {
-		const animation = this.node.getComponent('cc.Animation') as Animation;
 		const cardTemplate = this.node.getChildByPath('Card Template') as Node;
-		const playerFoil = this.node.getChildByPath('Player Deck/foil') as Node;
-		const enemyFoil = this.node.getChildByPath('Enemy Deck/foil') as Node;
+		const playerDeck = this.node.getChildByPath('Player Deck/foil') as Node;
+		const enemyDeck = this.node.getChildByPath('Enemy Deck/foil') as Node;
 
-		this.props = {
-			animation,
-			cardTemplate,
-			playerFoil,
-			enemyFoil,
-		};
+		this.animation = this.node.getComponent('cc.Animation') as Animation;
+		system.board = this.node;
+		system.cardTemplate = cardTemplate;
+		system.playerDeck = playerDeck;
+		system.enemyDeck = enemyDeck;
 
-		animation.play('ground-reveal');
+		this.animation.play('ground-reveal');
 		this.distributeCard();
 	}
 
 	distributeCard(): void {
-		const { cardTemplate } = this.props;
-		const node = instantiate(cardTemplate);
+		const node = instantiate(system.cardTemplate);
 
 		node.parent = this.node.parent;
 		revealPlayerCard(node);

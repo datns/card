@@ -10,7 +10,7 @@ export const expoCard = (node: Node, speed = 1): Tween<Node> => {
 	const translate = tween(node)
 		.set({ position: new Vec3(425, -232, 0) })
 		.to(0.5 / speed, { position: new Vec3(440, -15, 0) }, { easing: 'cubicIn' })
-		.by(1.5 / speed, { position: new Vec3(0, 15, 0) }, { easing: 'quadOut' });
+		.by(1 / speed, { position: new Vec3(0, 15, 0) }, { easing: 'quadOut' });
 
 	const rotate = tween(node)
 		.set({ rotation: r1, active: true })
@@ -35,20 +35,14 @@ export const expoCard = (node: Node, speed = 1): Tween<Node> => {
 	const scale = tween(node)
 		.set({ scale: new Vec3(0.22, 0.22, 1) })
 		.to(0.5 / speed, { scale: new Vec3(0.48, 0.48, 1) }, { easing: 'quadIn' })
-		.to(1.5 / speed, { scale: new Vec3(0.5, 0.5, 1) }, { easing: 'quadOut' });
+		.to(1 / speed, { scale: new Vec3(0.5, 0.5, 1) }, { easing: 'quadOut' });
 
 	return tween(node).parallel(translate, rotate, scale);
 };
 
 export const revealPlayerCard = (node: Node): void => {
-	const manager = node.getComponent(CardManager);
-	const markAsReady = () => {
-		manager.props.ready = true;
-	};
-
-	manager.props.ready = false;
 	expoCard(node)
 		.to(1, { position: new Vec3(0, -360, 0) }, { easing: 'expoOut' })
-		.call(markAsReady)
+		.call(() => node.emit('ready'))
 		.start();
 };
