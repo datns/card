@@ -1,6 +1,6 @@
 import { WalletAdapterNetwork as Network } from '@solana/wallet-adapter-base';
 
-const isDevBranch = gitBranch === 'dev';
+export const isDevBranch = gitBranch === 'dev';
 
 interface Configs {
 	clientKey: string;

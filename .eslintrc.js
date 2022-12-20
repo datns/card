@@ -58,7 +58,7 @@ module.exports = {
 	},
 	ignorePatterns: [
 		'launcher/utils/types/graphql.ts',
-		'game/assets/scripts/lib/graphql.ts',
+		'game/assets/scripts/util/graphql.ts',
 	],
 	env: {
 		node: true,

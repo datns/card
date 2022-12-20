@@ -1,0 +1,30 @@
+{
+"skeleton": { "hash": "Whc6gYl5tCY", "spine": "4.1.17", "x": -125, "y": -125, "width": 250, "height": 250 },
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "base", "bone": "root", "attachment": "base" }
+],
+"skins": [
+	{
+		"name": "base/blue",
+		"attachments": {
+			"base": {
+				"base": { "name": "tower/tower-blue", "width": 250, "height": 250 }
+			}
+		}
+	},
+	{
+		"name": "base/red",
+		"attachments": {
+			"base": {
+				"base": { "name": "tower/tower-red", "width": 250, "height": 248 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {}
+}
+}

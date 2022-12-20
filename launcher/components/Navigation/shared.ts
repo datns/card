@@ -47,6 +47,7 @@ export const mintNav: NavigationConfig = {
 };
 
 export const localNavigations: NavigationConfig[] = [
+	homeNav,
 	mintNav,
 	// {
 	// 	title: 'Game',

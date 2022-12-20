@@ -87,6 +87,7 @@ export default {
 			uri: '/home/elemental-interaction-visual.png',
 		},
 		cardTypesBackground: { uri: '/home/card-type-background.png' },
+		cardTypesHeroVisual: { uri: '/home/card-type-hero-visual.png' },
 		cardTypesSpellVisual: { uri: '/home/card-type-spell-visual.png' },
 		classes: {
 			background: { uri: '/home/classes/background.png' },
@@ -159,5 +160,10 @@ export default {
 		playIconActive: { uri: '/guide/play-icon-active.png' },
 		cardIconNormal: { uri: '/guide/card-icon-normal.png' },
 		cardIconActive: { uri: '/guide/card-icon-active.png' },
+	},
+	lobby: {
+		lobbyBackground: { uri: '/lobby/lobby-background.png' },
+		playBannerBackground: { uri: '/lobby/play-banner-background.png' },
+		buildBannerBackground: { uri: '/lobby/build-banner-background.png' },
 	},
 };

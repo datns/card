@@ -1,0 +1,7 @@
+atmosphere.png
+size:1269,856
+filter:Linear,Linear
+pma:true
+ground/light-beam
+bounds:2,2,1265,852
+offsets:1,1,1296,853
