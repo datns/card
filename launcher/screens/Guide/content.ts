@@ -1,13 +1,5 @@
+import { ContentType } from 'screens/Guide/shared';
 import resources from 'utils/resources';
-
-interface ContentType {
-	intro: string;
-	concepts: {
-		label: string;
-		icon: number;
-		content: string;
-	}[];
-}
 
 export const battlefield: ContentType = {
 	intro:

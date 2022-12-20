@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
-import ConceptButton from 'screens/Guide/Dashboard/ConceptButton';
+import Concept from 'screens/Guide/Dashboard/Concept';
 import { headingSize, sharedStyle } from 'screens/Guide/shared';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
 		fontFamily: 'Poppins',
 		marginTop: 50,
 		width: '100%',
+		paddingHorizontal: 20,
 	},
 	propertyTitle: {
 		fontFamily: 'Poppins',
@@ -109,6 +110,10 @@ const Cards: React.FC<Record<string, unknown>> = () => {
 		height: (imageWidth * 756) / 1060,
 		marginVertical: 40,
 	};
+
+	const renderDescription = (des: string) => {
+		return <Text style={styles.cardInfo}>{des}</Text>;
+	};
 	return (
 		<View
 			style={[
@@ -128,29 +133,14 @@ const Cards: React.FC<Record<string, unknown>> = () => {
 				and ideas on the kinds of strategy you can build.
 			</Text>
 			<Image source={resources.guide.cardExplain} style={imageStyle} />
-			<View
-				style={[
-					styles.conceptContainer,
-					{
-						width: imageWidth,
-					},
-				]}
-			>
-				{concepts.map((concept, index) => {
-					return (
-						<ConceptButton
-							label={concept.label}
-							icon={concept.icon}
-							isFirst={index === 0}
-							isLast={index === concepts.length - 1}
-							key={concept.label}
-							onPress={() => setSelectedConcept(index)}
-							isSelected={index === selectedConcept}
-						/>
-					);
-				})}
-			</View>
-			<Text style={styles.cardInfo}>{concepts[selectedConcept].content}</Text>
+			<Concept
+				content={{ intro: '', concepts }}
+				containerStyle={{
+					justifyContent: 'flex-start',
+					width: imageWidth + 40,
+				}}
+				renderDescription={renderDescription}
+			/>
 			<Text style={styles.propertyTitle}>Card Rarity</Text>
 			<Text style={styles.propertyContent}>
 				Card rarity can be recognized by the gems on the top of the card. Cards

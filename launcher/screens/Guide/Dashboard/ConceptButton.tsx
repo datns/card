@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
 	withTiming,
@@ -17,6 +17,8 @@ interface Props {
 	isSelected: boolean;
 }
 
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+
 const ConceptButton: FC<Props> = ({
 	label,
 	icon,
@@ -25,11 +27,14 @@ const ConceptButton: FC<Props> = ({
 	onPress,
 	isSelected,
 }) => {
-	const containerStyle = {
-		...styles.container,
+	const extraStyle = {
 		marginLeft: isFirst ? 0 : 20,
 		marginRight: isLast ? 0 : 20,
 	};
+
+	const animatedContainer = useAnimatedStyle(() => ({
+		opacity: withTiming(isSelected ? 1 : 0.5),
+	}));
 
 	const animatedImage = useAnimatedStyle(() => {
 		return {
@@ -41,21 +46,40 @@ const ConceptButton: FC<Props> = ({
 		};
 	});
 
+	const outlineStyle = useAnimatedStyle(() => ({
+		borderColor: withTiming(isSelected ? '#786442' : 'transparent'),
+	}));
+
+	const indicatorStyle = useAnimatedStyle(() => ({
+		backgroundColor: withTiming(isSelected ? '#edede8' : '#423c36'),
+	}));
+
 	return (
-		<TouchableOpacity key={label} style={containerStyle} onPress={onPress}>
-			{isSelected && (
-				<Animated.Image
-					source={resources.guide.effectOverlay}
-					style={animatedImage}
-				/>
-			)}
-			<Hoverable animatedStyle={useHoveredStyle} style={styles.content}>
-				<Animated.View>
-					<Image source={icon} style={styles.icon} />
-					<Text style={[sharedStyle.textShadow, styles.label]}>{label}</Text>
-				</Animated.View>
-			</Hoverable>
-		</TouchableOpacity>
+		<View>
+			<AnimatedTouchable
+				key={label}
+				style={[styles.container, extraStyle, animatedContainer]}
+				onPress={onPress}
+			>
+				{isSelected && (
+					<Animated.Image
+						source={resources.guide.effectOverlay}
+						style={animatedImage}
+					/>
+				)}
+				<Hoverable animatedStyle={useHoveredStyle} style={styles.content}>
+					<Animated.View>
+						<Image source={icon} style={styles.icon} />
+						<Text style={[sharedStyle.textShadow, styles.label]}>{label}</Text>
+					</Animated.View>
+				</Hoverable>
+			</AnimatedTouchable>
+			<Animated.View
+				style={[outlineStyle, styles.indicatorOutline, extraStyle]}
+			>
+				<Animated.View style={[indicatorStyle, styles.indicator]} />
+			</Animated.View>
+		</View>
 	);
 };
 
@@ -76,5 +100,29 @@ const styles = StyleSheet.create({
 	label: {
 		textAlign: 'center',
 		color: '#FFFBDF',
+	},
+	indicatorOutline: {
+		width: 12,
+		height: 12,
+		backgroundColor: 'transparent',
+		borderWidth: 1,
+		marginTop: 40,
+		alignItems: 'center',
+		justifyContent: 'center',
+		alignSelf: 'center',
+		transform: [
+			{
+				rotate: '45deg',
+			},
+		],
+	},
+	indicator: {
+		width: 5,
+		height: 5,
+		transform: [
+			{
+				rotate: '90deg',
+			},
+		],
 	},
 });

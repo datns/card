@@ -1,20 +1,25 @@
 import React from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
 import { battlefield } from 'screens/Guide/content';
-import ConceptButton from 'screens/Guide/Dashboard/ConceptButton';
+import Concept from 'screens/Guide/Dashboard/Concept';
 import { sharedStyle } from 'screens/Guide/shared';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 
 const BattlefieldOverview: React.FC = () => {
-	const [selectedConcept, setSelectedConcept] = React.useState<number>(0);
 	const { responsiveLevel } = useSnapshot<DimensionState>(dimensionState);
 	const imageWidth = responsiveLevel > 1 ? 803 * (1 / responsiveLevel) : 803;
 	const imageSize = {
 		width: imageWidth,
 		height: (imageWidth * 483) / 803,
 		marginBottom: 20,
+	};
+
+	const renderDescription = (des: string) => {
+		return (
+			<Text style={[sharedStyle.subHeading, styles.conceptContent]}>{des}</Text>
+		);
 	};
 
 	return (
@@ -26,33 +31,10 @@ const BattlefieldOverview: React.FC = () => {
 				Battlefield Overview
 			</Text>
 			<View style={{ width: imageWidth + 40 }}>
-				<ScrollView
-					horizontal
-					contentContainerStyle={[
-						styles.conceptContainer,
-						{
-							width: '100%',
-						},
-					]}
-					showsHorizontalScrollIndicator={false}
-				>
-					{battlefield.concepts.map(({ label, icon }, index) => {
-						return (
-							<ConceptButton
-								label={label}
-								icon={icon}
-								key={label}
-								isFirst={index === 0}
-								isLast={index === battlefield.concepts.length - 1}
-								onPress={() => setSelectedConcept(index)}
-								isSelected={index === selectedConcept}
-							/>
-						);
-					})}
-				</ScrollView>
-				<Text style={[sharedStyle.subHeading, styles.conceptContent]}>
-					{battlefield.concepts[selectedConcept].content}
-				</Text>
+				<Concept
+					content={battlefield}
+					renderDescription={renderDescription}
+				/>
 				<View style={styles.imageWrapper}>
 					<Image source={resources.guide.battlefieldImage} style={imageSize} />
 				</View>
@@ -69,9 +51,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingTop: 40,
 		paddingHorizontal: 20,
+		paddingBottom: 20,
 	},
 	conceptContent: {
 		paddingHorizontal: 20,
+		paddingTop: 0,
 	},
 	imageWrapper: {
 		alignSelf: 'center',
