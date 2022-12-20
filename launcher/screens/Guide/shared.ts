@@ -11,7 +11,11 @@ export interface ContentType {
 	concepts: {
 		label: string;
 		icon: number;
-		content: string;
+		description: string;
+		additional?: {
+			title: string;
+			text: string;
+		}[];
 	}[];
 }
 

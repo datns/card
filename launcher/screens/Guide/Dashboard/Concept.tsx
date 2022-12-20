@@ -13,7 +13,10 @@ import { ContentType } from 'screens/Guide/shared';
 interface Props {
 	content: ContentType;
 	containerStyle?: StyleProp<ViewStyle>;
-	renderDescription?: (des: string) => React.ReactNode;
+	renderDescription?: (
+		des: string,
+		additional?: { title: string; text: string }[],
+	) => React.ReactNode;
 }
 const Concept: React.FC<Props> = ({
 	content,
@@ -51,7 +54,10 @@ const Concept: React.FC<Props> = ({
 				})}
 			</ScrollView>
 			{renderDescription &&
-				renderDescription(content.concepts[selectedConcept].content)}
+				renderDescription(
+					content.concepts[selectedConcept].description,
+					content.concepts[selectedConcept].additional,
+				)}
 		</View>
 	);
 };
@@ -63,7 +69,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingTop: 40,
 		paddingHorizontal: 20,
-		paddingBottom: 20,
+		paddingBottom: 40,
 	},
 	indicatorLine: {
 		width: '100%',
