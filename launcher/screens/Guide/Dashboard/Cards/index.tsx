@@ -33,74 +33,6 @@ const concepts: { label: string; icon: number; content: string }[] = [
 	},
 ];
 
-const styles = StyleSheet.create({
-	container: {
-		paddingTop: 50,
-		paddingBottom: 150,
-	},
-	subHeading: {
-		fontFamily: 'Poppins',
-		fontSize: 30,
-		textAlign: 'center',
-		marginTop: 15,
-		marginBottom: 8,
-	},
-	content: {
-		fontFamily: 'Poppins',
-		textAlign: 'center',
-	},
-	conceptContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-	},
-	cardInfo: {
-		fontFamily: 'Poppins',
-		marginTop: 50,
-		width: '100%',
-		paddingHorizontal: 20,
-	},
-	propertyTitle: {
-		fontFamily: 'Poppins',
-		fontSize: 30,
-		marginTop: 40,
-		marginBottom: 8,
-		color: '#67564C',
-		alignSelf: 'flex-start',
-	},
-	propertyContent: {
-		fontFamily: 'Poppins',
-	},
-	elementVisual: {
-		flexDirection: 'row',
-		marginTop: 40,
-		flexWrap: 'wrap',
-		justifyContent: 'center',
-		width: '100%',
-	},
-	elementVisualImg: {
-		width: '55%',
-		aspectRatio: 701 / 703,
-		marginHorizontal: 60,
-	},
-	elementVisualContent: {
-		justifyContent: 'center',
-		paddingTop: 80,
-	},
-	interactionTitle: {
-		fontFamily: 'Volkhov',
-		fontWeight: 'bold',
-		fontSize: 18,
-	},
-	interactionContent: {
-		fontFamily: 'Poppins',
-		fontSize: 12,
-	},
-	interactionNote: {
-		fontStyle: 'italic',
-		opacity: 0.7,
-	},
-});
-
 const Cards: React.FC<Record<string, unknown>> = () => {
 	const { responsiveLevel } = useSnapshot<DimensionState>(dimensionState);
 	const [selectedConcept, setSelectedConcept] = useState<number>(0);
@@ -158,37 +90,47 @@ const Cards: React.FC<Record<string, unknown>> = () => {
 				playstyle and strategies. Knowing the specialty of your card class will
 				create a huge advantage for you on the battlefield.
 			</Text>
-			<Text style={styles.propertyTitle}>Elemental</Text>
-			<Text style={styles.propertyContent}>
-				Card elements can be identified by the color of the orb. Each card will
-				have an element and the element will interact uniquely on the
-				battlefield as the Generating and Overcoming processes. Knowing this
-				will give you an extra chance to win a battle by combining the action of
-				cards accordingly.
-			</Text>
-			<View style={styles.elementVisual}>
-				<Image
-					source={resources.guide.elementalInteractionVisual}
-					style={styles.elementVisualImg}
-				/>
-				<View style={styles.elementVisualContent}>
-					<Text style={styles.interactionTitle}>
-						{'Overcoming Interactions\n\n'}
-					</Text>
-					<Text style={styles.interactionContent}>
-						{'Fire melts Metal\n\n' +
-							'Metal penetrates Wood\n\n' +
-							'Wood separates Earth\n\n' +
-							'Earth absorbs Water\n\n' +
-							'Water quenches Fire\n\n'}
-					</Text>
-					<Text style={[styles.interactionContent, styles.interactionNote]}>
-						*Light & Dark: Not available in Alpha yet.
-					</Text>
-				</View>
-			</View>
 		</View>
 	);
 };
 
 export default Cards;
+
+const styles = StyleSheet.create({
+	container: {
+		paddingTop: 50,
+		paddingBottom: 150,
+	},
+	subHeading: {
+		fontFamily: 'Poppins',
+		fontSize: 30,
+		textAlign: 'center',
+		marginTop: 15,
+		marginBottom: 8,
+	},
+	content: {
+		fontFamily: 'Poppins',
+		textAlign: 'center',
+	},
+	conceptContainer: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+	},
+	cardInfo: {
+		fontFamily: 'Poppins',
+		marginTop: 50,
+		width: '100%',
+		paddingHorizontal: 20,
+	},
+	propertyTitle: {
+		fontFamily: 'Poppins',
+		fontSize: 30,
+		marginTop: 40,
+		marginBottom: 8,
+		color: '#67564C',
+		alignSelf: 'flex-start',
+	},
+	propertyContent: {
+		fontFamily: 'Poppins',
+	},
+});

@@ -24,6 +24,7 @@ export const sharedStyle = StyleSheet.create({
 	sectionContainer: {
 		alignItems: 'center',
 		...iStyles.wideContainer,
+		paddingHorizontal: 15,
 	},
 	heading: {
 		fontFamily: 'Volkhov',

@@ -6,6 +6,7 @@ import Animated, {
 	useSharedValue,
 } from 'react-native-reanimated';
 import { DimensionState, dimensionState } from '@metacraft/ui';
+import Elemental from 'screens/Guide/Dashboard/Elemental';
 import PlayingUnderRealm from 'screens/Guide/Dashboard/PlayingUnderRealm';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
@@ -84,6 +85,7 @@ const GuideDashboard: React.FC = () => {
 				<View onLayout={(e) => (cardRef.current = e.nativeEvent.layout.y)}>
 					<Cards />
 				</View>
+				<Elemental />
 				<Footer />
 			</Animated.ScrollView>
 		</View>
