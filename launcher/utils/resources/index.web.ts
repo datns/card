@@ -182,6 +182,12 @@ export default {
 		footerMainBackground: { uri: '/guide/footer-main-background.png' },
 		footerContentBackground: { uri: '/guide/footer-content-background.png' },
 		effectOverlay: { uri: '/guide/effect-overlay.png' },
+		handImage: { uri: '/guide/hand-image.png' },
+		deckImage: { uri: '/guide/deck-image.png' },
+		magicTowerImage: { uri: '/guide/magic-tower-image.png' },
+		summonImage: { uri: '/guide/summon-image.png' },
+		endTurnImage: { uri: '/guide/end-turn-image.png' },
+		healthPointImage: { uri: '/guide/health-point-image.png' },
 	},
 	lobby: {
 		lobbyBackground: { uri: '/lobby/lobby-background.png' },

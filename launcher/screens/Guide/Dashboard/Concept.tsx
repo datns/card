@@ -17,13 +17,16 @@ interface Props {
 		des: string,
 		additional?: { title: string; text: string }[],
 	) => React.ReactNode;
+	renderImage?: (source: number) => React.ReactNode;
 }
 const Concept: React.FC<Props> = ({
 	content,
 	containerStyle,
 	renderDescription,
+	renderImage,
 }) => {
 	const [selectedConcept, setSelectedConcept] = React.useState<number>(0);
+	const imageSource = content.concepts[selectedConcept]?.image;
 
 	return (
 		<View style={{ width: '100%' }}>
@@ -53,13 +56,14 @@ const Concept: React.FC<Props> = ({
 					);
 				})}
 			</ScrollView>
-			<View style={styles.descriptionContainer}>
+			<View style={styles.descriptionContainer} key={selectedConcept}>
 				{renderDescription &&
 					renderDescription(
 						content.concepts[selectedConcept].description,
 						content.concepts[selectedConcept].additional,
 					)}
 			</View>
+			{renderImage && !!imageSource && renderImage(imageSource)}
 		</View>
 	);
 };

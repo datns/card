@@ -15,6 +15,7 @@ interface Props {
 	isLast: boolean;
 	onPress?: () => void;
 	isSelected: boolean;
+	disabled?: boolean;
 }
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
@@ -60,6 +61,7 @@ const ConceptButton: FC<Props> = ({
 				key={label}
 				style={[styles.container, extraStyle, animatedContainer]}
 				onPress={onPress}
+				disabled={isSelected}
 			>
 				{isSelected && (
 					<Animated.Image

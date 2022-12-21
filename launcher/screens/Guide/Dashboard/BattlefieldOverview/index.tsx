@@ -3,7 +3,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
 import { battlefield } from 'screens/Guide/content';
 import Concept from 'screens/Guide/Dashboard/Concept';
-import { sharedStyle } from 'screens/Guide/shared';
+import { headingSize, sharedStyle } from 'screens/Guide/shared';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 
@@ -22,10 +22,18 @@ const BattlefieldOverview: React.FC = () => {
 		);
 	};
 
+	const renderImage = (source: number) => {
+		return (
+			<View style={styles.imageWrapper}>
+				<Image source={source} style={imageSize} />
+			</View>
+		);
+	};
+
 	return (
 		<View style={sharedStyle.sectionContainer}>
 			<Text
-				responsiveSizes={[35]}
+				responsiveSizes={headingSize}
 				style={[sharedStyle.heading, sharedStyle.textShadow]}
 			>
 				Battlefield Overview
@@ -33,10 +41,9 @@ const BattlefieldOverview: React.FC = () => {
 			<Concept
 				content={battlefield}
 				renderDescription={renderDescription}
+				renderImage={renderImage}
 			/>
-			<View style={styles.imageWrapper}>
-				<Image source={resources.guide.battlefieldImage} style={imageSize} />
-			</View>
+
 			<View />
 		</View>
 	);

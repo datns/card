@@ -150,6 +150,12 @@ export default {
 		footerMainBackground: require('../../../assets/guide/footer-main-background.png'),
 		footerContentBackground: require('../../../assets/guide/footer-content-background.png'),
 		effectOverlay: require('../../../assets/guide/effect-overlay.png'),
+		handImage: require('../../../assets/guide/hand-image.png'),
+		deckImage: require('../../../assets/guide/deck-image.png'),
+		magicTowerImage: require('../../../assets/guide/magic-tower-image.png'),
+		summonImage: require('../../../assets/guide/summon-image.png'),
+		endTurnImage: require('../../../assets/guide/end-turn-image.png'),
+		healthPointImage: require('../../../assets/guide/health-point-image.png'),
 	},
 	lobby: {
 		lobbyBackground: require('../../../assets/lobby/lobby-background.png'),

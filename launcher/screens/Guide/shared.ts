@@ -12,6 +12,7 @@ export interface ContentType {
 		label: string;
 		icon: number;
 		description: string;
+		image?: number;
 		additional?: {
 			title: string;
 			text: string;

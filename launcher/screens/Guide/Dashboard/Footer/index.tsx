@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, ImageStyle, StyleSheet, View } from 'react-native';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
 import UnderRealmButton from 'components/Marketplace/Button';
+import { navigate } from 'stacks/Browser/shared';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
@@ -18,11 +19,14 @@ const Footer: React.FC<Record<string, unknown>> = () => {
 	} as ImageStyle;
 
 	const imageSize = {
-		width: '45%',
+		width: '100%',
 		height: windowSize.width * 0.45 * (222 / 884),
 	} as ImageStyle;
 
 	const ratio = responsiveLevel > 1 ? responsiveLevel : 1;
+
+	const navigateToGame = () => navigate('Game', { screen: 'Dashboard' });
+
 	return (
 		<View
 			style={[
@@ -39,6 +43,7 @@ const Footer: React.FC<Record<string, unknown>> = () => {
 			<Image
 				source={resources.guide.footerContentBackground}
 				style={imageSize}
+				resizeMode="contain"
 			/>
 			<View
 				style={[
@@ -68,6 +73,7 @@ const Footer: React.FC<Record<string, unknown>> = () => {
 						bottom: responsiveLevel > 1 ? -30 : -15,
 						width: 250 / ratio,
 					}}
+					onPress={navigateToGame}
 				>
 					<Text
 						style={{

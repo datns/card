@@ -8,6 +8,7 @@ export const battlefield: ContentType = {
 		{
 			label: 'Hand',
 			icon: resources.guide.handIcon,
+			image: resources.guide.handImage,
 			description:
 				'Here are the cards you have available to summon on the battlefield each turn.\n' +
 				'At the beginning of each turn, Adventurer will be able to draw 2 Cards from their deck. \n' +
@@ -19,6 +20,7 @@ export const battlefield: ContentType = {
 		{
 			label: 'Deck',
 			icon: resources.guide.deckIcon,
+			image: resources.guide.deckImage,
 			description:
 				'The deck contains all the cards available to summon each match. The maximum number of cards in the deck is 40. \n' +
 				'\n' +
@@ -29,6 +31,7 @@ export const battlefield: ContentType = {
 		{
 			label: 'Magic Tower',
 			icon: resources.guide.spellIcon,
+			image: resources.guide.magicTowerImage,
 			description:
 				'During a match, Spell Cards must be placed in the magic tower before being activated base on each card’s condition. \n' +
 				'\n' +
@@ -44,6 +47,7 @@ export const battlefield: ContentType = {
 		{
 			label: 'Summon Zone',
 			icon: resources.guide.summonZoneIcon,
+			image: resources.guide.summonImage,
 			description:
 				'Summon Zone is where Hero and Troop cards will be summoned to engage in combat\n' +
 				'In the summon zone, cards will be placed on the left or right flank of the center card. \n' +
@@ -53,12 +57,14 @@ export const battlefield: ContentType = {
 		{
 			label: 'End Turn',
 			icon: resources.guide.endTurnIcon,
+			image: resources.guide.endTurnImage,
 			description:
 				'After finishing placing the Hero/ Troop card on the battlefield and activating Spell Card - Clicking End Turn to start engaging with the opponent’s cards.',
 		},
 		{
 			label: 'Health Point',
 			icon: resources.guide.healthPointIcon,
+			image: resources.guide.healthPointImage,
 			description:
 				'Health Point is the decisive element to the result of a match. By reducing the HP of the opponent to 0, Adventurer will win the game.\n' +
 				'\n' +
@@ -67,6 +73,7 @@ export const battlefield: ContentType = {
 		{
 			label: 'History',
 			icon: resources.guide.historyIcon,
+			image: resources.guide.battlefieldImage,
 			description:
 				'The history allows Adventurer to keep track of the match turn by turn',
 		},
