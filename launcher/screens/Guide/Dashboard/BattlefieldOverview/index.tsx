@@ -5,7 +5,6 @@ import { battlefield } from 'screens/Guide/content';
 import Concept from 'screens/Guide/Dashboard/Concept';
 import { headingSize, sharedStyle } from 'screens/Guide/shared';
 import { useSnapshot } from 'utils/hook';
-import resources from 'utils/resources';
 
 const BattlefieldOverview: React.FC = () => {
 	const { responsiveLevel } = useSnapshot<DimensionState>(dimensionState);
