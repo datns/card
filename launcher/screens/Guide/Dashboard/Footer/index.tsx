@@ -57,7 +57,7 @@ const Footer: React.FC<Record<string, unknown>> = () => {
 					]}
 					responsiveSizes={[35 / ratio]}
 				>
-					GET STARTED TO PLAY
+					START YOUR ADVENTURE
 				</Text>
 				<Text style={{ color: '#000' }} responsiveSizes={[20 / ratio]}>
 					Create your account to start playing
@@ -65,6 +65,7 @@ const Footer: React.FC<Record<string, unknown>> = () => {
 				<UnderRealmButton
 					style={{
 						...styles.button,
+						bottom: responsiveLevel > 1 ? -30 : -15,
 						width: 250 / ratio,
 					}}
 				>
@@ -101,6 +102,5 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		position: 'absolute',
-		bottom: -25,
 	},
 });

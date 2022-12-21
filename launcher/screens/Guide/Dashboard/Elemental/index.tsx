@@ -40,11 +40,9 @@ const Elemental: React.FC = () => {
 				Elemental
 			</Text>
 			<Text style={sharedStyle.subHeading}>
-				Card elements can be identified by the color of the orb. Each card will
-				have an element and the element will interact uniquely on the
-				battlefield as the Generating and Overcoming processes. Knowing this
-				will give you an extra chance to win a battle by combining the action of
-				cards accordingly.
+				{'In ATEM, there are 5  Natural Elements (Iron/ Wood/ Water/ Fire/ Earth) and 2 Ancient Elements (Lightning/ Darkness). \n' +
+					'\n' +
+					'Each card will have an element and the element will interact uniquely on the battlefield as the Generating and Overcoming processes. Knowing this will give you an extra chance to win a battle by combining the action of cards accordingly.'}
 			</Text>
 			{responsiveLevel > 1 ? (
 				renderNarrowContent()
@@ -87,12 +85,12 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	visualImg: {
-		width: '30%',
+		width: '40%',
 		aspectRatio: 701 / 703,
 	},
 	visualContent: {
 		justifyContent: 'center',
-		paddingTop: 80,
+		paddingTop: 60,
 		paddingHorizontal: 80,
 	},
 	interactionTitle: {
@@ -120,5 +118,6 @@ const styles = StyleSheet.create({
 	narrowContent: {
 		justifyContent: 'center',
 		paddingTop: 40,
+		alignSelf: 'center',
 	},
 });

@@ -30,14 +30,12 @@ const BattlefieldOverview: React.FC = () => {
 			>
 				Battlefield Overview
 			</Text>
-			<View style={{ width: imageWidth + 40 }}>
-				<Concept
-					content={battlefield}
-					renderDescription={renderDescription}
-				/>
-				<View style={styles.imageWrapper}>
-					<Image source={resources.guide.battlefieldImage} style={imageSize} />
-				</View>
+			<Concept
+				content={battlefield}
+				renderDescription={renderDescription}
+			/>
+			<View style={styles.imageWrapper}>
+				<Image source={resources.guide.battlefieldImage} style={imageSize} />
 			</View>
 			<View />
 		</View>
@@ -54,7 +52,6 @@ const styles = StyleSheet.create({
 		paddingBottom: 20,
 	},
 	conceptContent: {
-		paddingHorizontal: 20,
 		paddingTop: 0,
 	},
 	imageWrapper: {

@@ -22,7 +22,7 @@ const Cards: React.FC<Record<string, unknown>> = () => {
 	) => {
 		return (
 			<>
-				<Text style={styles.cardInfo}>{des}</Text>
+				<Text>{des}</Text>
 				{additional?.map((item) => {
 					return (
 						<React.Fragment key={item.title}>
@@ -35,29 +35,17 @@ const Cards: React.FC<Record<string, unknown>> = () => {
 		);
 	};
 	return (
-		<View
-			style={[
-				sharedStyle.sectionContainer,
-				styles.container,
-				{ width: imageWidth },
-			]}
-		>
+		<View style={[sharedStyle.sectionContainer, styles.container]}>
 			<Text responsiveSizes={headingSize} style={sharedStyle.heading}>
 				Cards
 			</Text>
 			<Text style={styles.subHeading}>Getting to know your Card</Text>
-			<Text style={styles.content}>
-				This quick read will teach you how to distinguish between the many types
-				and classes of cards that are available in Under Realm: Rise of Magic,
-				identify their characteristics, and maybe provide you with some advice
-				and ideas on the kinds of strategy you can build.
-			</Text>
+			<Text style={styles.content}>{card.intro}</Text>
 			<Image source={resources.guide.cardExplain} style={imageStyle} />
 			<Concept
 				content={card}
 				containerStyle={{
 					justifyContent: 'flex-start',
-					width: imageWidth + 40,
 				}}
 				renderDescription={renderDescription}
 			/>
@@ -70,26 +58,16 @@ export default Cards;
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: 50,
-		paddingBottom: 150,
+		paddingBottom: 80,
 	},
 	subHeading: {
-		fontFamily: 'Poppins',
 		fontSize: 30,
 		textAlign: 'center',
 		marginTop: 15,
 		marginBottom: 8,
 	},
 	content: {
-		fontFamily: 'Poppins',
 		textAlign: 'center',
-	},
-	conceptContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-	},
-	cardInfo: {
-		width: '100%',
-		paddingHorizontal: 20,
 	},
 	propertyTitle: {
 		fontFamily: 'Poppins',

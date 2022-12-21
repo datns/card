@@ -26,7 +26,7 @@ const Concept: React.FC<Props> = ({
 	const [selectedConcept, setSelectedConcept] = React.useState<number>(0);
 
 	return (
-		<View style={containerStyle}>
+		<View style={{ width: '100%' }}>
 			<View style={styles.indicatorLine} />
 			<ScrollView
 				horizontal
@@ -53,11 +53,13 @@ const Concept: React.FC<Props> = ({
 					);
 				})}
 			</ScrollView>
-			{renderDescription &&
-				renderDescription(
-					content.concepts[selectedConcept].description,
-					content.concepts[selectedConcept].additional,
-				)}
+			<View style={styles.descriptionContainer}>
+				{renderDescription &&
+					renderDescription(
+						content.concepts[selectedConcept].description,
+						content.concepts[selectedConcept].additional,
+					)}
+			</View>
 		</View>
 	);
 };
@@ -77,5 +79,8 @@ const styles = StyleSheet.create({
 		backgroundColor: '#423c36',
 		position: 'absolute',
 		top: 146.5,
+	},
+	descriptionContainer: {
+		paddingHorizontal: 40,
 	},
 });

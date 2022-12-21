@@ -10,8 +10,11 @@ export const battlefield: ContentType = {
 			icon: resources.guide.handIcon,
 			description:
 				'Here are the cards you have available to summon on the battlefield each turn.\n' +
-				'At the beginning of each turn, Adventurer will be able to draw 2 Cards from their deck.\n' +
-				'The maximum number of cards on hand is 7. When hitting the limit, the adventurer will have to choose to discard exceeded amount of cards after drawing from the deck.',
+				'At the beginning of each turn, Adventurer will be able to draw 2 Cards from their deck. \n' +
+				'\n' +
+				'For every 3 turns, the player will draw 5 spell cards select 3 to keep on hand and discard 2.\n' +
+				'\n' +
+				'The maximum number of cards on hand is 7.  When hitting the limit, the Adventurer will have to choose to discard exceeded amount before choosing to end their turn. At the Soft Launch, this function is not activated yet as we want the players to test out all the strategy as they want before we can close down to a suitable on-hand card limit.',
 		},
 		{
 			label: 'Deck',
@@ -78,54 +81,73 @@ export const play: ContentType = {
 			label: 'Draw',
 			icon: resources.guide.drawIcon,
 			description:
-				'Each turn, draw 1 Hero card + 1 Troop\n' +
-				'\n' +
-				'Each 3 turns both players draw 5 spell cards select 3 and discard 2',
+				'At each turn, draw from the deck 1 Hero Card + 1 Troop Card. Every 3 turns both players draw 5 spell cards select 3 and discard 2.',
 		},
 		{
 			label: 'Setup',
 			icon: resources.guide.setupIcon,
 			description:
-				'Place 1 Hero Card in the center and 1 Troop Card from any side (úp bài) (Turn 1)\n' +
-				'Setup spell if needed in the tower Initially, both teams have 2 towers. After every 5 turns, 1 more tower will be added\n' +
-				'X seconds to setup\n' +
-				'Confirm',
+				'- At turn 1, place 1 Hero Card in the center and 1 Troop Card faced down on any side.\n' +
+				'- Setup spell if needed in the tower Initially, both teams have 2 towers. At the beginning of the match, only 2 slots for Spell Card will be available. Every 5 turns, 1 more slot will be added. The maximum number of Spell Cards that can be stored in the Magic Tower is 5.\n' +
+				'- 30 seconds to setup\n' +
+				'- Confirm by clicking the End Turn button',
 		},
 		{
 			label: 'Battle',
 			icon: resources.guide.battleIcon,
 			description:
-				'After 2 players complete Card setup, Spell and all other card is played automatically\n' +
+				'After 2 Adventurers had completed the Card setup, Spell and all other card is automatically engaged on the battlefield\n' +
 				'\n' +
-				'Attack "Both sides attack at the same time\n' +
-				'\n' +
-				"Which card isn't face enemy card will attack directly to the wall.",
+				'Which card does not face the enemy card will attack directly to opposing Adventurer’s Health Point',
 		},
 	],
 };
 
 export const card: ContentType = {
-	intro: '',
+	intro:
+		'This quick read will teach you how to distinguish between the many types and classes of cards that are available in Under Realm: Rise of Magic, identify their characteristics, and maybe provide you with some advice and ideas on the kinds of strategy you can build.',
 	concepts: [
 		{
 			label: 'Hero',
 			icon: resources.guide.heroIcon,
 			description:
-				'Class: Each monster card will belong to a class, and each class will have different pros and cons.\n' +
-				'Attack Point\n' +
-				'Heath Point: when heath point reduce to 0, it will be move to grave yard\n' +
-				'Defense Point: (some monster will has it by default, but some will get by spell/ card or skill), reduce the damage it takes by %, maximum is 50%\n' +
-				'Skill:\n' +
-				'            - Passive: skill has no cooldown to active, It will active if meets the condition\n' +
-				'            - Active: Auto active before battle, after activated it will be countdown by turn before active it again (countdown by turn)',
+				'Every hero card has a distinctively high set amount of Attack/ Defense/ Health Points and usually has a special ability described in the card text. \n' +
+				'Hero cards can be placed on the board and used to attack the opponent’s hero or adventurer.\n' +
+				'The hero card is destroyed when its health is reduced to 0 and it is sent to the graveyard.',
 			additional: [
 				{
 					title: 'Card Rarity',
-					text: 'Card rarity can be recognized by the gems on the top of the card. Cards with higher rarities is harder to acquire in the [NFT Minting Event] as they have a lower drop rate. Cards can be 1 of 7 rarities: Card Rarity is going to be the most important index you need to get your attention as it will be determined how powerful this card is in general. Cards with higher rarities are harder to acquire in the NFT Minting Event as they have a lower drop rate. Cards can be 1 of 6 major rarities, and each major rarity includes 3 levels of minor rarities.',
+					text:
+						'Card rarity can be recognized by the gems on the top of the card. Cards with higher rarities are harder to acquire in the NFT Minting Event as they have a lower drop rate.\n' +
+						'\n' +
+						'There are 7 rarities:\n' +
+						'\n' +
+						'- Common (Non-NFT): 0 Gem Stone\n' +
+						'- Rare: 1 Ruby Gem Stone\n' +
+						'- Epic: 2 Ruby Gem Stones\n' +
+						'- Mystic: 3 Ruby Gem Stones\n' +
+						'- Legendary: 4 Ruby Gem Stones\n' +
+						'- Immortal: 5 Ruby Gem Stones\n' +
+						'- Sentinel: TBD',
 				},
 				{
 					title: '5 Hero Classes',
-					text: 'There are 5 main classes that represents different philosophies, playstyle and strategies. Knowing the specialty of your card class will create a huge advantage for you on the battlefield.',
+					text:
+						'Knight:\n' +
+						'The Knight Legion is composed of brave warriors who put their faith in and worship the enormous fire of Ignis Mountain. They are famous as warriors with balance Attack & Defense\n' +
+						'and boosting attack abilities\n' +
+						'\n' +
+						'Tanker:\n' +
+						'The soldiers of the Tanker Guild are legendary for being the most formidable of all mercenaries. With high defense, health points, plus boosting defense abilities, Tankers are an unbreakable defense line.\n' +
+						'\n' +
+						'Wizard:\n' +
+						'The Wizard Council’s members are admired for their mythological healing practices. But the magical power can also be terrifying and destructive, capable of destroying an entire army in the blink of an eye. With their mass destruction, and health restoration skills, Wizards are the nightmare of their enemies on the battlefield. \n' +
+						'\n' +
+						'Summoner\n' +
+						'The Summoner Clan is well-known for its members’ extraordinary ability to communicate with wild beasts and make them reliable combat partners. The summoner always can storm the battlefield by summoning reinforcement or even take control their enemy’s heroes and troops.\n' +
+						'\n' +
+						'Assassin\n' +
+						'Mastering the abilities to ignore the opponent’s defense and critical damage hit, when the Assassin Guild sets its sights on someone, that person has no chance of evading death.',
 				},
 			],
 		},
@@ -133,13 +155,17 @@ export const card: ContentType = {
 			label: 'Spell',
 			icon: resources.guide.spellIcon,
 			description:
-				'Spell cards do not have **a** set amount of attack/ defense/ health points on the card design.\n' +
-				'Spell cards can be used to cast potentially match-turning spells determined by their abilities. Use spell cards to reinforce your creatures and play style, from supportive to damaging spells. Once a spell card has been used, the card will be sent to the void.',
+				'Spell cards do not have a set amount of Attack/ Defense/ Health points on the card design.\n' +
+				'Spell cards can be used to cast potentially match-turning spells determined by their abilities. Use spell cards to reinforce your creatures and play style, from supportive to damaging spells.\n' +
+				'Once a spell card has been used, the card will be dusted and come to the graveyard.',
 		},
 		{
 			label: 'Troop',
 			icon: resources.guide.troopIcon,
-			description: 'Troop: \nSpecial Troop: summoned by Hero’s skill',
+			description:
+				'Troop Card usually just has a set of Attack/ Defense/ Health Points, without special ability.\n' +
+				'Troop cards can be used to reinforce the hero card on the battlefield.\n' +
+				'The troop card is destroyed when its health is reduced to 0 and it is sent to the graveyard',
 		},
 	],
 };

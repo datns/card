@@ -1,4 +1,4 @@
-import { StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { ScaledSizes } from '@metacraft/ui';
 import { HoveredStyleFunc } from 'components/Marketplace/Button/shared';

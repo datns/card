@@ -8,16 +8,16 @@ import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 
 const PlayingUnderRealm: React.FC = () => {
-	const { responsiveLevel } = useSnapshot<DimensionState>(dimensionState);
-	const imageWidth = responsiveLevel > 1 ? 803 * (1 / responsiveLevel) : 803;
-	const imageStyle = {
-		width: imageWidth,
-		height: (imageWidth * 483) / 803,
-		marginTop: 40,
-	};
+	// const { responsiveLevel } = useSnapshot<DimensionState>(dimensionState);
+	// const imageWidth = responsiveLevel > 1 ? 803 * (1 / responsiveLevel) : 803;
+	// const imageStyle = {
+	// 	width: imageWidth,
+	// 	height: (imageWidth * 483) / 803,
+	// 	marginTop: 40,
+	// };
 
 	const renderDescription = (des: string) => {
-		return <Text style={{ width: imageWidth }}>{des}</Text>;
+		return <Text>{des}</Text>;
 	};
 	return (
 		<View style={sharedStyle.sectionContainer}>
@@ -34,11 +34,10 @@ const PlayingUnderRealm: React.FC = () => {
 				content={play}
 				containerStyle={{
 					justifyContent: 'flex-start',
-					width: imageWidth + 40,
 				}}
 				renderDescription={renderDescription}
 			/>
-			<Image source={resources.guide.battlefieldImage} style={imageStyle} />
+			{/*<Image source={resources.guide.battlefieldImage} style={imageStyle} />*/}
 		</View>
 	);
 };

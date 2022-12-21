@@ -18,7 +18,8 @@ import Footer from './Footer';
 import Header from './Header';
 
 const GuideDashboard: React.FC = () => {
-	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
+	const { windowSize, responsiveLevel } =
+		useSnapshot<DimensionState>(dimensionState);
 	const width = Math.min(windowSize.width, iStyles.wideContainer.maxWidth);
 	const [mainBgTop, setMainBgTop] = React.useState<number>(0);
 
@@ -59,6 +60,8 @@ const GuideDashboard: React.FC = () => {
 			scrollRef?.current?.scrollTo(cardRef?.current || 0, 0, true);
 	};
 
+	const viewWidth = responsiveLevel > 1 ? '100%' : '60%';
+
 	return (
 		<View style={[styles.container, iStyles.wideContainer]}>
 			<Animated.Image
@@ -68,6 +71,7 @@ const GuideDashboard: React.FC = () => {
 			<Animated.ScrollView
 				onScroll={scrollHandler}
 				scrollEventThrottle={16}
+				contentContainerStyle={{ width: viewWidth, alignSelf: 'center' }}
 				ref={scrollRef}
 			>
 				<Header onPress={onPress} />
@@ -95,7 +99,7 @@ const GuideDashboard: React.FC = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#000',
+		backgroundColor: '#000'
 	},
 });
 
