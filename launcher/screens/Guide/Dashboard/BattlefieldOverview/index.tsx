@@ -24,7 +24,7 @@ const BattlefieldOverview: React.FC = () => {
 	const renderImage = (source: number) => {
 		return (
 			<View style={styles.imageWrapper}>
-				<Image source={source} style={imageSize} />
+				<Image source={source} style={imageSize} resizeMode="contain" />
 			</View>
 		);
 	};
