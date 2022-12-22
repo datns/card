@@ -194,4 +194,7 @@ export default {
 		playBannerBackground: { uri: '/lobby/play-banner-background.png' },
 		buildBannerBackground: { uri: '/lobby/build-banner-background.png' },
 	},
+	story: {
+		headerBackground: { uri: '/story/header-background.png' },
+	},
 };

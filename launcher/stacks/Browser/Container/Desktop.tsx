@@ -4,6 +4,7 @@ import HomeScreen from 'screens/Home';
 import CardsStack from 'stacks/Browser/Cards';
 import GameStack from 'stacks/Browser/Game';
 import GuideScreen from 'stacks/Browser/Guide';
+import StoryScreen from "screens/Story";
 import MarketplaceStack from 'stacks/Browser/Marketplace';
 import MintStack from 'stacks/Browser/Mint';
 import { RootParamList, stackScreenOptions } from 'stacks/Browser/shared';
@@ -19,6 +20,7 @@ export const BrowserStack: FC = () => {
 			<Stack.Screen name="Marketplace" component={MarketplaceStack} />
 			<Stack.Screen name="Mint" component={MintStack} />
 			<Stack.Screen name="Guide" component={GuideScreen} />
+			<Stack.Screen name="Story" component={StoryScreen} />
 		</Stack.Navigator>
 	);
 };

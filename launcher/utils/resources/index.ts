@@ -162,4 +162,7 @@ export default {
 		playBannerBackground: require('../../../assets/lobby/play-banner-background.png'),
 		buildBannerBackground: require('../../../assets/lobby/build-banner-background.png'),
 	},
+	story: {
+		headerBackground: require('../../../assets/story/header-background.png'),
+	},
 };
