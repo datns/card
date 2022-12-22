@@ -1,5 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import {
+	Dimensions,
+	Image,
+	ImageBackground,
+	StyleSheet,
+	View,
+} from 'react-native';
+import { DimensionState, dimensionState, Text } from '@metacraft/ui';
+import { headingSize, sharedStyle } from 'screens/Guide/shared';
+import { useSnapshot } from 'utils/hook';
+import { iStyles } from 'utils/styles';
 
 import resources from '../../../../utils/resources';
 
@@ -19,35 +29,41 @@ export enum ViewType {
 	Card,
 }
 
-const Header: FC = () => {
-	const window = Dimensions.get('window');
+interface Props {
+	onPress: (index: number) => void;
+}
 
-	const [dimensions, setDimensions] = useState({ window });
+const Header: FC<Props> = ({ onPress }) => {
 	const [activeIconIndex, setActiveIconIndex] = useState(0);
-
-	useEffect(() => {
-		const subscription = Dimensions.addEventListener('change', ({ window }) => {
-			setDimensions({ window });
-		});
-		return () => subscription?.remove();
-	});
+	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
+	const width = Math.min(windowSize.width, iStyles.wideContainer.maxWidth);
 
 	const headingBackgroundStyle = {
-		height: dimensions.window.width * headingBackgroundRatio,
+		width,
+		height: width * headingBackgroundRatio,
 	};
 
-	const onIconPress = (index: number) => setActiveIconIndex(index);
+	const onIconPress = (index: number) => {
+		onPress(index);
+		setActiveIconIndex(index);
+	};
 
 	return (
-		<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+		<View style={styles.container}>
 			<Image
 				source={resources.guide.headingBackground}
-				resizeMode="cover"
 				style={[styles.headingBackground, headingBackgroundStyle]}
 			/>
-			<View style={styles.container}>
-				<Text style={styles.heading}>{labels.heading}</Text>
-				<Text style={styles.subHeading}>{labels.subHeading}</Text>
+			<View style={styles.contentContainer}>
+				<Text
+					style={[sharedStyle.heading, sharedStyle.textShadow]}
+					responsiveSizes={headingSize}
+				>
+					{labels.heading}
+				</Text>
+				<Text style={[sharedStyle.subHeading, styles.subHeading]}>
+					{labels.subHeading}
+				</Text>
 				<View style={styles.icons}>
 					<Icon
 						type={ViewType.Battlefield}
@@ -72,6 +88,12 @@ const Header: FC = () => {
 
 const styles = StyleSheet.create({
 	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'black',
+		paddingBottom: 20,
+	},
+	contentContainer: {
 		paddingHorizontal: 24,
 		paddingVertical: 40,
 		alignItems: 'center',
@@ -80,29 +102,17 @@ const styles = StyleSheet.create({
 	headingBackground: {
 		width: '100%',
 		alignItems: 'center',
-		justifyContent: 'space-around',
 		position: 'absolute',
-	},
-	heading: {
-		fontSize: 24,
-		fontWeight: 'bold',
-		color: '#fff',
-		fontFamily: 'Volkhov',
+		top: 0,
 	},
 	subHeading: {
-		fontSize: 10,
-		color: '#EBEBEB',
 		textAlign: 'center',
-		maxWidth: 600,
-		marginHorizontal: 24,
-		marginTop: 18,
 	},
 	icons: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		width: 250,
-		marginTop: 24,
+		minWidth: 380,
 	},
 });
 
