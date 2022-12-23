@@ -2,14 +2,11 @@ import { _decorator, Component, EventMouse, Node } from 'cc';
 
 import { system } from './util/system';
 
-const { ccclass, property } = _decorator;
+const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
 
 @ccclass('DuelManager')
 export class DuelManager extends Component {
-	@property(Node)
-	ground: Node;
-
 	start(): void {
 		system.cardPreview = this.node.getChildByPath('Card Preview');
 

@@ -23,7 +23,7 @@ export interface CommandResponse {
 	payload: any;
 }
 
-export interface GameState {
+export interface ServerState {
 	jwt?: string;
 	context?: JwtPayload;
 	duel?: CardDuel;

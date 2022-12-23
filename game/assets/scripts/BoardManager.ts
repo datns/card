@@ -25,6 +25,9 @@ export class BoardManager extends Component {
 		system.playerDeck = playerDeck;
 		system.enemyDeck = enemyDeck;
 
+		system.board.on('stateReady', this.onStateReady.bind(this));
+		if (system.serverState) this.onStateReady();
+
 		this.animation.play('ground-reveal');
 		this.distributeCard();
 	}
@@ -34,5 +37,9 @@ export class BoardManager extends Component {
 
 		node.parent = this.node.parent;
 		revealPlayerCard(node);
+	}
+
+	onStateReady(): void {
+		console.log('hmm, seems like state ready', system.serverState, system.duel);
 	}
 }
