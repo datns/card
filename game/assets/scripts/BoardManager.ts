@@ -1,17 +1,26 @@
-import { _decorator, Animation, Component, instantiate, Node } from 'cc';
+import Engine from '@metacraft/murg-engine';
+import { _decorator, Animation, Component, instantiate, Label, Node } from 'cc';
 
 import { revealPlayerCard } from './tween/card';
 import { system } from './util/system';
 
 const { ccclass } = _decorator;
+const { selectDeck, selectPlayer } = Engine;
 
 interface Props {
 	animation?: Animation;
+	enemyDeckCount?: Label;
+	playerDeckCount?: Label;
 }
 
 @ccclass('BoardManager')
 export class BoardManager extends Component {
 	animation: Animation;
+	playerDeckCount: Label;
+	playerHealth: Label;
+	enemyDeckCount: Label;
+	enemyHealth: Label;
+
 	props: Props = {};
 
 	start(): void {
@@ -20,6 +29,19 @@ export class BoardManager extends Component {
 		const enemyDeck = this.node.getChildByPath('Enemy Deck/foil') as Node;
 
 		this.animation = this.node.getComponent('cc.Animation') as Animation;
+		this.playerDeckCount = this.node
+			.getChildByPath('playerDeckCount')
+			.getComponent('cc.Label') as Label;
+		this.playerHealth = this.node
+			.getChildByPath('playerHealth')
+			.getComponent('cc.Label') as Label;
+		this.enemyDeckCount = this.node
+			.getChildByPath('enemyDeckCount')
+			.getComponent('cc.Label') as Label;
+		this.enemyHealth = this.node
+			.getChildByPath('enemyHealth')
+			.getComponent('cc.Label') as Label;
+
 		system.board = this.node;
 		system.cardTemplate = cardTemplate;
 		system.playerDeck = playerDeck;
@@ -29,6 +51,7 @@ export class BoardManager extends Component {
 		if (system.serverState) this.onStateReady();
 
 		this.animation.play('ground-reveal');
+
 		this.distributeCard();
 	}
 
@@ -40,6 +63,14 @@ export class BoardManager extends Component {
 	}
 
 	onStateReady(): void {
-		console.log('hmm, seems like state ready', system.serverState, system.duel);
+		const player = selectPlayer(system.duel, system.playerIds.me);
+		const enemy = selectPlayer(system.duel, system.playerIds.enemy);
+		const playerDeck = selectDeck(system.duel, system.playerIds.me);
+		const enemyDeck = selectDeck(system.duel, system.playerIds.enemy);
+
+		this.playerDeckCount.string = playerDeck.length.toString();
+		this.playerHealth.string = player.health.toString();
+		this.enemyDeckCount.string = enemyDeck.length.toString();
+		this.enemyHealth.string = enemy.health.toString();
 	}
 }

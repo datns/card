@@ -1,5 +1,6 @@
 import Engine, { DuelConfig } from '@metacraft/murg-engine';
 
+import { extractPlayerIds } from '../util/helper';
 import { system } from '../util/system';
 import {
 	CommandPayload,
@@ -19,9 +20,15 @@ ws.onmessage = (item) => {
 	const { command, payload }: CommandResponse = JSON.parse(item.data);
 
 	if (command === DuelCommands.GetState) {
+		const { duel, context } = payload as ServerState;
+
 		system.serverState = payload as ServerState;
-		system.duel = getInitialState(system.serverState.duel.config as DuelConfig);
+		system.duel = getInitialState(duel.config as DuelConfig);
 		system.board?.emit('stateReady');
+		system.playerIds = extractPlayerIds(
+			context.userId,
+			duel.config as DuelConfig,
+		);
 	}
 };
 
