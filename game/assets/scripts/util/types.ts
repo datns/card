@@ -28,3 +28,8 @@ export interface ServerState {
 	context?: JwtPayload;
 	duel?: CardDuel;
 }
+
+export interface PlayerIds {
+	me: string;
+	enemy: string;
+}

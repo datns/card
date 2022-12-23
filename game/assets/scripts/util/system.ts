@@ -1,11 +1,12 @@
 import { DuelCommand, DuelState } from '@metacraft/murg-engine';
 import { Node, Vec2, Vec3 } from 'cc';
 
-import { ServerState } from '../util/types';
+import { PlayerIds, ServerState } from '../util/types';
 
 const screenSize = new Vec2(1280, 720);
 
 export interface System {
+	playerIds: PlayerIds;
 	serverState?: ServerState;
 	duel?: DuelState;
 	history: Array<DuelCommand[]>;
@@ -17,9 +18,14 @@ export interface System {
 	previewing: boolean;
 	dragging: boolean;
 	activeCard?: Node;
+	cardRefs?: Record<string, Node>;
 }
 
 export const system: System = {
+	playerIds: {
+		me: '',
+		enemy: '',
+	},
 	history: [],
 	previewing: false,
 	dragging: false,
