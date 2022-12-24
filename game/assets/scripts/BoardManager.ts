@@ -25,21 +25,21 @@ export class BoardManager extends Component {
 
 	start(): void {
 		const cardTemplate = this.node.getChildByPath('Card Template') as Node;
-		const playerDeck = this.node.getChildByPath('Player Deck/foil') as Node;
-		const enemyDeck = this.node.getChildByPath('Enemy Deck/foil') as Node;
+		const playerDeck = this.node.getChildByPath('Hud/Player Deck/foil') as Node;
+		const enemyDeck = this.node.getChildByPath('Hud/Enemy Deck/foil') as Node;
 
 		this.animation = this.node.getComponent('cc.Animation') as Animation;
 		this.playerDeckCount = this.node
-			.getChildByPath('playerDeckCount')
+			.getChildByPath('Hud/playerDeckCount')
 			.getComponent('cc.Label') as Label;
 		this.playerHealth = this.node
-			.getChildByPath('playerHealth')
+			.getChildByPath('Hud/playerHealth')
 			.getComponent('cc.Label') as Label;
 		this.enemyDeckCount = this.node
-			.getChildByPath('enemyDeckCount')
+			.getChildByPath('Hud/enemyDeckCount')
 			.getComponent('cc.Label') as Label;
 		this.enemyHealth = this.node
-			.getChildByPath('enemyHealth')
+			.getChildByPath('Hud/enemyHealth')
 			.getComponent('cc.Label') as Label;
 
 		system.board = this.node;
