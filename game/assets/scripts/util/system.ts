@@ -11,12 +11,15 @@ export interface System {
 	duel?: DuelState;
 	history: DuelCommandBundle[];
 	globalNodes: {
+		duel?: Node;
 		board?: Node;
 		cardTemplate?: Node;
 		cardPreview?: Node;
 		playerDeck?: Node;
 		enemyDeck?: Node;
-		expo?: Node /* <- reference position for Exposing cards */;
+		expoCenter?: Node /* <- reference position for Exposing cards */;
+		playerHand?: Node;
+		enemyHand?: Node;
 	};
 	cardRefs?: Record<string, Node>;
 	previewing: boolean;

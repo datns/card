@@ -8,6 +8,7 @@ const NodeEvents = Node.EventType;
 @ccclass('DuelManager')
 export class DuelManager extends Component {
 	start(): void {
+		system.globalNodes.duel = this.node;
 		system.globalNodes.cardPreview = this.node.getChildByPath('Card Preview');
 
 		this.node.on(NodeEvents.MOUSE_UP, this.onMouseUp.bind(this));

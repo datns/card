@@ -1,8 +1,7 @@
 import Engine from '@metacraft/murg-engine';
-import { _decorator, Animation, Component, instantiate, Label, Node } from 'cc';
+import { _decorator, Animation, Component, Label, Node } from 'cc';
 
 import { sendDuelConnect } from './network/instance';
-import { revealPlayerCard } from './tween/card';
 import { system } from './util/system';
 
 const { ccclass } = _decorator;
@@ -28,7 +27,9 @@ export class BoardManager extends Component {
 		const cardTemplate = this.node.getChildByPath('Card Template') as Node;
 		const playerDeck = this.node.getChildByPath('Hud/Player Deck/foil') as Node;
 		const enemyDeck = this.node.getChildByPath('Hud/Enemy Deck/foil') as Node;
-		const expo = this.node.getChildByPath('Guide/expo') as Node;
+		const expoCenter = this.node.getChildByPath('Guide/expoCenter') as Node;
+		const playerHand = this.node.getChildByPath('Guide/playerHand') as Node;
+		const enemyHand = this.node.getChildByPath('Guide/enemyHand') as Node;
 
 		this.animation = this.node.getComponent('cc.Animation') as Animation;
 		this.playerDeckCount = this.node
@@ -48,21 +49,15 @@ export class BoardManager extends Component {
 		system.globalNodes.cardTemplate = cardTemplate;
 		system.globalNodes.playerDeck = playerDeck;
 		system.globalNodes.enemyDeck = enemyDeck;
-		system.globalNodes.expo = expo;
+		system.globalNodes.expoCenter = expoCenter;
+		system.globalNodes.playerHand = playerHand;
+		system.globalNodes.enemyHand = enemyHand;
 
 		system.globalNodes.board.on('stateReady', this.onStateReady.bind(this));
 		if (system.serverState) this.onStateReady();
 
 		this.animation.play('ground-reveal');
-		this.distributeCard();
 		sendDuelConnect();
-	}
-
-	distributeCard(): void {
-		const node = instantiate(system.globalNodes.cardTemplate);
-
-		node.parent = this.node.parent;
-		revealPlayerCard(node);
 	}
 
 	onStateReady(): void {

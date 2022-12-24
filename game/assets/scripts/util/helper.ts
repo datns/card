@@ -18,3 +18,11 @@ export const extractPlayerIds = (
 		};
 	}
 };
+
+export const delay = (seconds = 0): Promise<void> => {
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve();
+		}, seconds);
+	});
+};
