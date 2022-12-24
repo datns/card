@@ -1,12 +1,14 @@
 import Engine, { DuelCommandBundle, DuelConfig } from '@metacraft/murg-engine';
 
+import { replayDuel } from '../replayer';
+import { CardDuel } from '../util/graphql';
 import { extractPlayerIds } from '../util/helper';
 import { system } from '../util/system';
 import {
 	CommandPayload,
 	CommandResponse,
 	DuelCommands,
-	ServerState,
+	JwtPayload,
 } from '../util/types';
 export const ws = new WebSocket('ws://localhost:3006');
 
@@ -20,16 +22,26 @@ ws.onmessage = (item) => {
 	const { command, payload }: CommandResponse = JSON.parse(item.data);
 
 	if (command === DuelCommands.GetState) {
-		const { duel, context } = payload as ServerState;
+		const { jwt, context, duel } = payload as {
+			jwt: string;
+			context: JwtPayload;
+			duel: CardDuel;
+		};
 
-		system.serverState = payload as ServerState;
+		system.serverState = {
+			jwt,
+			context,
+			config: duel.config as DuelConfig,
+			history: duel.history as DuelCommandBundle[],
+		};
 		system.duel = getInitialState(duel.config as DuelConfig);
-		system.history = duel.history as DuelCommandBundle[];
 		system.board?.emit('stateReady');
 		system.playerIds = extractPlayerIds(
 			context.userId,
 			duel.config as DuelConfig,
 		);
+
+		replayDuel();
 	}
 };
 
