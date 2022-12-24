@@ -10,15 +10,18 @@ export interface System {
 	serverState?: ServerState;
 	duel?: DuelState;
 	history: DuelCommandBundle[];
-	board?: Node;
-	cardTemplate?: Node;
-	cardPreview?: Node;
-	playerDeck?: Node;
-	enemyDeck?: Node;
+	globalNodes: {
+		board?: Node;
+		cardTemplate?: Node;
+		cardPreview?: Node;
+		playerDeck?: Node;
+		enemyDeck?: Node;
+		expo?: Node /* <- reference position for Exposing cards */;
+	};
+	cardRefs?: Record<string, Node>;
 	previewing: boolean;
 	dragging: boolean;
 	activeCard?: Node;
-	cardRefs?: Record<string, Node>;
 }
 
 export const system: System = {
@@ -26,6 +29,7 @@ export const system: System = {
 		me: '',
 		enemy: '',
 	},
+	globalNodes: {},
 	history: [],
 	previewing: false,
 	dragging: false,

@@ -24,12 +24,12 @@ export class CardManager extends Component {
 	}
 
 	showPreview(): void {
-		playAnimation(system.cardPreview, 'fade-in');
-		system.cardPreview.setPosition(0, -168);
+		playAnimation(system.globalNodes.cardPreview, 'fade-in');
+		system.globalNodes.cardPreview.setPosition(0, -168);
 	}
 
 	hidePreview(): void {
-		system.cardPreview.setPosition(190, 740);
+		system.globalNodes.cardPreview.setPosition(190, 740);
 	}
 
 	onMouseEnter(): void {
@@ -39,8 +39,8 @@ export class CardManager extends Component {
 		this.uiOpacity.opacity = 50;
 		system.previewing = true;
 		system.activeCard = this.node;
-		system.cardPreview.setPosition(this.node.position.x, -168);
-		playAnimation(system.cardPreview, 'fade-in');
+		system.globalNodes.cardPreview.setPosition(this.node.position.x, -168);
+		playAnimation(system.globalNodes.cardPreview, 'fade-in');
 	}
 
 	onMouseLeave(): void {

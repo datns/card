@@ -1,6 +1,6 @@
-import { DuelCommandBundle, DuelPhases } from '@metacraft/murg-engine';
+import { DuelCommandBundle } from '@metacraft/murg-engine';
 
-import { system } from '../util/system';
+import { expoLayout } from '../util/layout';
 
 export const runDraw = async ({
 	phase,
@@ -9,6 +9,7 @@ export const runDraw = async ({
 	turn,
 }: DuelCommandBundle) => {
 	if (turn === 0) {
-		console.log('initial draw');
+		const expoPositions = expoLayout();
+		console.log('initial draw', expoPositions);
 	}
 };

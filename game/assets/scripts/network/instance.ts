@@ -35,13 +35,12 @@ ws.onmessage = (item) => {
 			history: duel.history as DuelCommandBundle[],
 		};
 		system.duel = getInitialState(duel.config as DuelConfig);
-		system.board?.emit('stateReady');
 		system.playerIds = extractPlayerIds(
 			context.userId,
 			duel.config as DuelConfig,
 		);
-
-		replayDuel();
+		system.globalNodes.board?.emit('stateReady');
+		setTimeout(() => replayDuel(), 0); /* <-- semi delay execution */
 	}
 };
 
@@ -50,6 +49,10 @@ ws.onerror = (error) => {
 };
 
 ws.onopen = () => {
+	console.log('socket connected!');
+};
+
+export const sendDuelConnect = (): void => {
 	const searchParams = new URLSearchParams(location.search);
 	const jwt = searchParams.get('jwt');
 
