@@ -21,7 +21,7 @@ export interface System {
 		playerHand?: Node;
 		enemyHand?: Node;
 	};
-	cardRefs?: Record<string, Node>;
+	cardRefs: Record<string, Node>;
 	previewing: boolean;
 	dragging: boolean;
 	activeCard?: Node;
@@ -32,6 +32,7 @@ export const system: System = {
 		me: '',
 		enemy: '',
 	},
+	cardRefs: {},
 	globalNodes: {},
 	history: [],
 	previewing: false,

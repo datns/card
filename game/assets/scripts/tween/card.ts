@@ -73,10 +73,7 @@ export const animateDrawPlayerCard = ({
 				{ position: dest, scale: new Vec3(0.4, 0.4, 1) },
 				{ easing: 'expoOut' },
 			)
-			.call(() => {
-				node.emit('ready');
-				resolve();
-			})
+			.call(() => resolve())
 			.start();
 	});
 };

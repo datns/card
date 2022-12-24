@@ -28,20 +28,24 @@ export const runDraw = ({
 
 		for (let i = 0; i < commands.length; i += 1) {
 			const command = commands[i];
+			const { owner, id: cardId } = command.target.from;
 			const expoPosition = expoPositions[i];
 			const handPosition = handPositions[i];
-			const card = instantiate(system.globalNodes.cardTemplate);
+			const node = instantiate(system.globalNodes.cardTemplate);
 
-			card.parent = system.globalNodes.board;
-			system.cardRefs[command.target.from.id] = card;
+			node.parent = system.globalNodes.board;
+			system.cardRefs[cardId] = node;
 			system.duel = {
 				...system.duel,
 				...runCommand({ state: system.duel, command }),
 			};
 
+			const card = system.duel.map[cardId.substring(0, 9)];
+			setTimeout(() => node.emit('data', { owner, card }), 0);
+
 			if (isMyPhase) {
 				animateDrawPlayerCard({
-					node: card,
+					node,
 					from: fromPosition,
 					dest: handPosition,
 					expoDest: expoPosition,
@@ -49,7 +53,7 @@ export const runDraw = ({
 				});
 			} else {
 				animateDrawEnemyCard({
-					node: card,
+					node,
 					from: fromPosition,
 					dest: handPosition,
 					delay: i * 0.2,

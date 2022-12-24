@@ -1,3 +1,4 @@
+import { Card } from '@metacraft/murg-engine';
 import { _decorator, Animation, Component, Node, UIOpacity } from 'cc';
 
 import { playAnimation } from './util/animation';
@@ -6,9 +7,15 @@ import { setCursor, system } from './util/system';
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
 
+export interface CardData {
+	owner: string;
+	card: Card;
+}
+
 @ccclass('CardManager')
 export class CardManager extends Component {
-	ready = false;
+	isMouseInside = false;
+	data: CardData;
 	animation: Animation;
 	uiOpacity: UIOpacity;
 	cardFront: Node;
@@ -19,8 +26,10 @@ export class CardManager extends Component {
 		this.uiOpacity = this.node.getComponent(UIOpacity);
 
 		this.node.on('ready', this.onReady.bind(this));
-		this.cardFront.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
-		this.cardFront.on(NodeEvents.MOUSE_LEAVE, this.onMouseLeave.bind(this));
+		this.node.on('distance', this.onMouseDistance.bind(this));
+		this.node.on('data', (data) => {
+			this.data = data;
+		});
 	}
 
 	showPreview(): void {
