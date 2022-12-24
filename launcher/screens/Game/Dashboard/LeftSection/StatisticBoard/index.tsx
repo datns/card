@@ -24,14 +24,14 @@ const StatisticBoard: FC = () => {
 				style={styles.contentBoard}
 				contentContainerStyle={styles.innerContentBoard}
 			>
-				<Text style={styles.statisticValue}>0%</Text>
+				<Text style={styles.statisticValue}>...</Text>
 				<Text style={styles.statisticTitle}>Win Rate</Text>
 			</UnderRealmBoard>
 			<UnderRealmBoard
 				style={styles.contentBoard}
 				contentContainerStyle={styles.innerContentBoard}
 			>
-				<Text style={styles.statisticValue}>0 hrs</Text>
+				<Text style={styles.statisticValue}>...</Text>
 				<Text style={styles.statisticTitle}>Play Time</Text>
 			</UnderRealmBoard>
 			<UnderRealmBoard
@@ -42,11 +42,11 @@ const StatisticBoard: FC = () => {
 				<View style={[styles.separatorPoint, { top: 20 }]} />
 				<View style={[styles.separatorPoint, { bottom: 20 }]} />
 				<View style={[styles.innerContentBoard, { flex: 1 }]}>
-					<Text style={styles.statisticValue}>0</Text>
+					<Text style={styles.statisticValue}>...</Text>
 					<Text style={styles.statisticTitle}>Total Match</Text>
 				</View>
 				<View style={[styles.innerContentBoard, { flex: 1 }]}>
-					<Text style={styles.statisticValue}>0/0</Text>
+					<Text style={styles.statisticValue}>.../...</Text>
 					<Text style={styles.statisticTitle}>Win / Lose</Text>
 				</View>
 			</UnderRealmBoard>
