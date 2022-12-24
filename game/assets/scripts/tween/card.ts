@@ -1,6 +1,6 @@
 import { Node, Quat, Tween, tween, Vec3 } from 'cc';
 
-export interface PlayerCardRevealOption {
+export interface PlayerCardOption {
 	node: Node;
 	delay?: number;
 	from?: Vec3;
@@ -18,7 +18,7 @@ export const expoCard = ({
 	dest = defaultExpoDest,
 	delay = 0,
 	speed = 1,
-}: PlayerCardRevealOption): Tween<Node> => {
+}: PlayerCardOption): Tween<Node> => {
 	let flipped = false;
 	const r1 = Quat.fromEuler(new Quat(), 90, 90, 91);
 	const r2 = Quat.fromEuler(new Quat(), 12, 0, 0);
@@ -58,20 +58,55 @@ export const expoCard = ({
 
 const defaultRevealDest = new Vec3(0, -360, 0);
 
-export const revealPlayerCard = ({
+export const animateDrawPlayerCard = ({
 	node,
 	from = defaultFrom,
 	expoDest = defaultExpoDest,
 	dest = defaultRevealDest,
 	delay = 0,
 	speed = 1,
-}: PlayerCardRevealOption): void => {
-	expoCard({ node, from, dest: expoDest, delay, speed })
-		.to(
-			1,
-			{ position: dest, scale: new Vec3(0.4, 0.4, 1) },
-			{ easing: 'expoOut' },
-		)
-		.call(() => node.emit('ready'))
-		.start();
+}: PlayerCardOption): Promise<void> => {
+	return new Promise((resolve) => {
+		expoCard({ node, from, dest: expoDest, delay, speed })
+			.to(
+				1,
+				{ position: dest, scale: new Vec3(0.4, 0.4, 1) },
+				{ easing: 'expoOut' },
+			)
+			.call(() => {
+				node.emit('ready');
+				resolve();
+			})
+			.start();
+	});
+};
+
+export interface EnemyCardOption {
+	node: Node;
+	from: Vec3;
+	dest: Vec3;
+	delay: number;
+}
+
+export const animateDrawEnemyCard = ({
+	node,
+	from,
+	dest,
+	delay = 0,
+}: EnemyCardOption): Promise<void> => {
+	return new Promise((resolve) => {
+		const r1 = Quat.fromEuler(new Quat(), 0, 0, 90);
+		const r2 = Quat.fromEuler(new Quat(), 0, 0, 180);
+
+		tween(node)
+			.delay(delay)
+			.set({ position: from, rotation: r1, scale: new Vec3(0.22, 0.22, 1) })
+			.to(
+				1,
+				{ position: dest, rotation: r2, scale: new Vec3(0.22, 0.22, 1) },
+				{ easing: 'expoInOut' },
+			)
+			.call(() => resolve())
+			.start();
+	});
 };

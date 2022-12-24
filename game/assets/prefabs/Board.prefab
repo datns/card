@@ -61,17 +61,17 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 267
-      },
-      {
-        "__id__": 269
-      },
-      {
         "__id__": 271
+      },
+      {
+        "__id__": 273
+      },
+      {
+        "__id__": 275
       }
     ],
     "_prefab": {
-      "__id__": 273
+      "__id__": 277
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -4902,7 +4902,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -358.689,
+      "y": -430.634,
       "z": 0
     },
     "_lrot": {
@@ -4984,7 +4984,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 358.689,
+      "y": 405.591,
       "z": 0
     },
     "_lrot": {
@@ -5128,6 +5128,12 @@
       },
       {
         "__id__": 265
+      },
+      {
+        "__id__": 267
+      },
+      {
+        "__id__": 269
       }
     ],
     "removedComponents": []
@@ -5213,6 +5219,49 @@
     ]
   },
   {
+    "__type__": "CCPropertyOverrideInfo",
+    "targetInfo": {
+      "__id__": 268
+    },
+    "propertyPath": [
+      "_lrot"
+    ],
+    "value": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "25UAd+kpxB77P3/fisa3O/"
+    ]
+  },
+  {
+    "__type__": "CCPropertyOverrideInfo",
+    "targetInfo": {
+      "__id__": 270
+    },
+    "propertyPath": [
+      "_euler"
+    ],
+    "value": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "25UAd+kpxB77P3/fisa3O/"
+    ]
+  },
+  {
     "__type__": "cc.UITransform",
     "_name": "",
     "_objFlags": 0,
@@ -5221,7 +5270,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 268
+      "__id__": 272
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -5248,7 +5297,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 270
+      "__id__": 274
     },
     "playOnLoad": false,
     "_clips": [
@@ -5276,7 +5325,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 272
+      "__id__": 276
     },
     "_id": ""
   },
