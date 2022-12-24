@@ -15,7 +15,9 @@ export const UnderRealmInfo: FC = () => {
 			<TouchableOpacity
 				activeOpacity={0.7}
 				style={styles.bannerContainer}
-				onPress={() => Linking.openURL('https://bench.stormgate.io/')}
+				onPress={() =>
+					Linking.openURL('https://bench.stormgate.io/thread/jDpHHUqU7lU56xAj')
+				}
 			>
 				<ImageBackground
 					source={resources.lobby.buildBannerBackground}
@@ -24,7 +26,7 @@ export const UnderRealmInfo: FC = () => {
 					<View>
 						<View style={styles.overlay} />
 						<View>
-							<Text style={styles.bannerText}>HOW TO BUILD</Text>
+							<Text style={styles.bannerText}>ALPHA FEEDBACKS & COMMENTS</Text>
 						</View>
 					</View>
 				</ImageBackground>

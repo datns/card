@@ -66,7 +66,7 @@ export const InternalNavigation: FC<Props> = ({
 				// Linking.openURL('https://underrealm.stormgate.io/game/duel/demo')
 			}
 		>
-			<Text style={styles.buttonText}>Demo</Text>
+			<Text style={styles.buttonText}>Play</Text>
 		</UnderRealmButton>
 	);
 

@@ -49,7 +49,9 @@ export const LeaderBoard: FC<Props> = ({ windowSize }) => {
 					<Text style={[styles.listHeaderText, styles.secondListHeaderText]}>
 						Adventure
 					</Text>
-					<Text style={styles.listHeaderText}>Experience</Text>
+					<Text style={styles.listHeaderText}>
+						{option === 'experience' ? 'Experience' : '%'}
+					</Text>
 				</View>
 				<FlatList
 					style={{ height: windowSize.height * 0.3 }}
