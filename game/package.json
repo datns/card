@@ -6,6 +6,6 @@
     "version": "3.6.2"
   },
   "dependencies": {
-    "@metacraft/murg-engine": "^0.0.21"
+    "@metacraft/murg-engine": "^0.0.22"
   }
 }

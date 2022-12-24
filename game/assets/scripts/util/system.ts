@@ -1,4 +1,4 @@
-import { DuelCommand, DuelState } from '@metacraft/murg-engine';
+import { DuelCommandBundle, DuelState } from '@metacraft/murg-engine';
 import { Node, Vec2, Vec3 } from 'cc';
 
 import { PlayerIds, ServerState } from '../util/types';
@@ -9,7 +9,7 @@ export interface System {
 	playerIds: PlayerIds;
 	serverState?: ServerState;
 	duel?: DuelState;
-	history: Array<DuelCommand[]>;
+	history: DuelCommandBundle[];
 	board?: Node;
 	cardTemplate?: Node;
 	cardPreview?: Node;

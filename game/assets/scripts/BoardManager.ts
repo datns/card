@@ -51,7 +51,6 @@ export class BoardManager extends Component {
 		if (system.serverState) this.onStateReady();
 
 		this.animation.play('ground-reveal');
-
 		this.distributeCard();
 	}
 

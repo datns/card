@@ -71,7 +71,7 @@ export type CardCommandTarget = {
 export type CardDuel = {
 	__typename?: 'CardDuel';
 	config?: Maybe<CardDuelConfig>;
-	history?: Maybe<Array<Maybe<Array<Maybe<CardDuelCommand>>>>>;
+	history?: Maybe<Array<Maybe<CardDuelCommandBundle>>>;
 	id?: Maybe<Scalars['String']>;
 };
 
@@ -84,7 +84,7 @@ export type CardDuelAttributes = {
 	health?: Maybe<Scalars['Int']>;
 	perTurnHero?: Maybe<Scalars['Int']>;
 	perTurnTroop?: Maybe<Scalars['Int']>;
-	round?: Maybe<Scalars['Int']>;
+	turn?: Maybe<Scalars['Int']>;
 };
 
 export type CardDuelCommand = {
@@ -93,6 +93,14 @@ export type CardDuelCommand = {
 	payload?: Maybe<CardDuelAttributes>;
 	target?: Maybe<CardCommandTarget>;
 	type: Scalars['String'];
+};
+
+export type CardDuelCommandBundle = {
+	__typename?: 'CardDuelCommandBundle';
+	commands?: Maybe<Array<Maybe<CardDuelCommand>>>;
+	phase?: Maybe<Scalars['String']>;
+	phaseOf?: Maybe<Scalars['String']>;
+	turn?: Maybe<Scalars['Int']>;
 };
 
 export type CardDuelConfig = {
@@ -107,8 +115,8 @@ export type CardDuelConfig = {
 export type CardDuelHistory = {
 	__typename?: 'CardDuelHistory';
 	duel: CardDuel;
+	enemy?: Maybe<Profile>;
 	id?: Maybe<Scalars['String']>;
-	opponent?: Maybe<Profile>;
 	timestamp: Scalars['String'];
 	victory?: Maybe<Scalars['Boolean']>;
 };
@@ -190,9 +198,9 @@ export type EmailConfirmedOrderInput = {
 
 export type GameInvitation = {
 	__typename?: 'GameInvitation';
+	enemy: Profile;
 	game: Scalars['String'];
 	id: Scalars['String'];
-	opponent: Profile;
 	owner: Profile;
 	timestamp: Scalars['String'];
 };
@@ -579,6 +587,7 @@ export type ResolversTypes = {
 	CardDuel: ResolverTypeWrapper<CardDuel>;
 	CardDuelAttributes: ResolverTypeWrapper<CardDuelAttributes>;
 	CardDuelCommand: ResolverTypeWrapper<CardDuelCommand>;
+	CardDuelCommandBundle: ResolverTypeWrapper<CardDuelCommandBundle>;
 	CardDuelConfig: ResolverTypeWrapper<CardDuelConfig>;
 	CardDuelHistory: ResolverTypeWrapper<CardDuelHistory>;
 	CardDuelSetting: ResolverTypeWrapper<CardDuelSetting>;
@@ -625,6 +634,7 @@ export type ResolversParentTypes = {
 	CardDuel: CardDuel;
 	CardDuelAttributes: CardDuelAttributes;
 	CardDuelCommand: CardDuelCommand;
+	CardDuelCommandBundle: CardDuelCommandBundle;
 	CardDuelConfig: CardDuelConfig;
 	CardDuelHistory: CardDuelHistory;
 	CardDuelSetting: CardDuelSetting;
@@ -712,7 +722,7 @@ export type CardCommandTargetResolvers<ContextType = any, ParentType extends Res
 
 export type CardDuelResolvers<ContextType = any, ParentType extends ResolversParentTypes['CardDuel'] = ResolversParentTypes['CardDuel']> = {
 	config?: Resolver<Maybe<ResolversTypes['CardDuelConfig']>, ParentType, ContextType>;
-	history?: Resolver<Maybe<Array<Maybe<Array<Maybe<ResolversTypes['CardDuelCommand']>>>>>, ParentType, ContextType>;
+	history?: Resolver<Maybe<Array<Maybe<ResolversTypes['CardDuelCommandBundle']>>>, ParentType, ContextType>;
 	id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -725,7 +735,7 @@ export type CardDuelAttributesResolvers<ContextType = any, ParentType extends Re
 	health?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
 	perTurnHero?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
 	perTurnTroop?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-	round?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+	turn?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -734,6 +744,14 @@ export type CardDuelCommandResolvers<ContextType = any, ParentType extends Resol
 	payload?: Resolver<Maybe<ResolversTypes['CardDuelAttributes']>, ParentType, ContextType>;
 	target?: Resolver<Maybe<ResolversTypes['CardCommandTarget']>, ParentType, ContextType>;
 	type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CardDuelCommandBundleResolvers<ContextType = any, ParentType extends ResolversParentTypes['CardDuelCommandBundle'] = ResolversParentTypes['CardDuelCommandBundle']> = {
+	commands?: Resolver<Maybe<Array<Maybe<ResolversTypes['CardDuelCommand']>>>, ParentType, ContextType>;
+	phase?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+	phaseOf?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+	turn?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -748,8 +766,8 @@ export type CardDuelConfigResolvers<ContextType = any, ParentType extends Resolv
 
 export type CardDuelHistoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['CardDuelHistory'] = ResolversParentTypes['CardDuelHistory']> = {
 	duel?: Resolver<ResolversTypes['CardDuel'], ParentType, ContextType>;
+	enemy?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
 	id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-	opponent?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
 	timestamp?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 	victory?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -792,9 +810,9 @@ export type CommentHistoryResolvers<ContextType = any, ParentType extends Resolv
 };
 
 export type GameInvitationResolvers<ContextType = any, ParentType extends ResolversParentTypes['GameInvitation'] = ResolversParentTypes['GameInvitation']> = {
+	enemy?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
 	game?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 	id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-	opponent?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
 	owner?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
 	timestamp?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -929,6 +947,7 @@ export type Resolvers<ContextType = any> = {
 	CardDuel?: CardDuelResolvers<ContextType>;
 	CardDuelAttributes?: CardDuelAttributesResolvers<ContextType>;
 	CardDuelCommand?: CardDuelCommandResolvers<ContextType>;
+	CardDuelCommandBundle?: CardDuelCommandBundleResolvers<ContextType>;
 	CardDuelConfig?: CardDuelConfigResolvers<ContextType>;
 	CardDuelHistory?: CardDuelHistoryResolvers<ContextType>;
 	CardDuelSetting?: CardDuelSettingResolvers<ContextType>;

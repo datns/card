@@ -1,4 +1,4 @@
-import Engine, { DuelConfig } from '@metacraft/murg-engine';
+import Engine, { DuelCommandBundle, DuelConfig } from '@metacraft/murg-engine';
 
 import { extractPlayerIds } from '../util/helper';
 import { system } from '../util/system';
@@ -24,6 +24,7 @@ ws.onmessage = (item) => {
 
 		system.serverState = payload as ServerState;
 		system.duel = getInitialState(duel.config as DuelConfig);
+		system.history = duel.history as DuelCommandBundle[];
 		system.board?.emit('stateReady');
 		system.playerIds = extractPlayerIds(
 			context.userId,
