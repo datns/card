@@ -1,18 +1,30 @@
 import { Node, Quat, Tween, tween, Vec3 } from 'cc';
 
+export interface PlayerCardRevealOption {
+	node: Node;
+	delay?: number;
+	from?: Vec3;
+	dest?: Vec3;
+	expoDest?: Vec3;
+	speed?: number;
+}
+
 const defaultExpoDest = new Vec3(440, -15, 0);
-export const expoCard = (
-	node: Node,
+const defaultFrom = new Vec3(425, -232, 0);
+
+export const expoCard = ({
+	node,
+	from = defaultFrom,
+	dest = defaultExpoDest,
 	delay = 0,
-	dest: Vec3 = defaultExpoDest,
 	speed = 1,
-): Tween<Node> => {
+}: PlayerCardRevealOption): Tween<Node> => {
 	let flipped = false;
 	const r1 = Quat.fromEuler(new Quat(), 90, 90, 91);
 	const r2 = Quat.fromEuler(new Quat(), 12, 0, 0);
 	const r3 = Quat.fromEuler(new Quat(), 0, 0, 0);
 	const translate = tween(node)
-		.set({ position: new Vec3(425, -232, 0) })
+		.set({ position: from })
 		.to(0.5 / speed, { position: dest }, { easing: 'cubicIn' })
 		.by(1 / speed, { position: new Vec3(0, 15, 0) }, { easing: 'quadOut' });
 
@@ -46,14 +58,15 @@ export const expoCard = (
 
 const defaultRevealDest = new Vec3(0, -360, 0);
 
-export const revealPlayerCard = (
-	node: Node,
+export const revealPlayerCard = ({
+	node,
+	from = defaultFrom,
+	expoDest = defaultExpoDest,
+	dest = defaultRevealDest,
 	delay = 0,
-	expoDest: Vec3 = defaultExpoDest,
-	dest: Vec3 = defaultRevealDest,
 	speed = 1,
-): void => {
-	expoCard(node, delay, expoDest, speed)
+}: PlayerCardRevealOption): void => {
+	expoCard({ node, from, dest: expoDest, delay, speed })
 		.to(
 			1,
 			{ position: dest, scale: new Vec3(0.4, 0.4, 1) },

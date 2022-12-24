@@ -15,6 +15,7 @@ export const runDraw = ({
 
 	if (initialDistribute) {
 		if (isMyPhase) {
+			const fromPosition = system.globalNodes.playerDeck.parent.getPosition();
 			const expoPositions = getExpoPositions(commands.length);
 			const handPositions = getExpoPositions(
 				commands.length,
@@ -28,7 +29,13 @@ export const runDraw = ({
 				const card = instantiate(system.globalNodes.cardTemplate);
 
 				card.parent = system.globalNodes.board;
-				revealPlayerCard(card, i * 0.3, expoPosition, handPosition);
+				revealPlayerCard({
+					node: card,
+					from: fromPosition,
+					dest: handPosition,
+					expoDest: expoPosition,
+					delay: i * 0.3,
+				});
 			}
 		}
 	}
