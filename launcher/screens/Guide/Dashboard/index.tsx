@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, NativeScrollEvent, StyleSheet, View } from 'react-native';
 import Animated, {
-	useAnimatedScrollHandler,
 	useAnimatedStyle,
 	useSharedValue,
 } from 'react-native-reanimated';
 import { DimensionState, dimensionState } from '@metacraft/ui';
+import ScrollLayout from 'components/layouts/Scroll';
 import Elemental from 'screens/Guide/Dashboard/Elemental';
 import PlayingUnderRealm from 'screens/Guide/Dashboard/PlayingUnderRealm';
 import { useSnapshot } from 'utils/hook';
@@ -21,7 +21,8 @@ const GuideDashboard: React.FC = () => {
 	const { windowSize, responsiveLevel } =
 		useSnapshot<DimensionState>(dimensionState);
 	const width = Math.min(windowSize.width, iStyles.wideContainer.maxWidth);
-	const [mainBgTop, setMainBgTop] = React.useState<number>(0);
+	const mainBgTop = useSharedValue<number>(0);
+	const maxOffset = useSharedValue<number>(0);
 
 	const scrollOffset = useSharedValue(0);
 	const battlefieldRef = useRef<number | null>(null);
@@ -29,29 +30,29 @@ const GuideDashboard: React.FC = () => {
 	const cardRef = useRef<number | null>(null);
 	const scrollRef = useRef<Animated.ScrollView>(null);
 
-	const scrollHandler = useAnimatedScrollHandler({
-		onScroll: ({ contentOffset }) => {
-			scrollOffset.value = contentOffset.y;
-		},
-	});
+	const onScroll = (e: NativeScrollEvent) => {
+		if (e.contentOffset.y <= maxOffset.value) {
+			scrollOffset.value = e.contentOffset.y;
+		}
+	};
 
 	const animatedImage = useAnimatedStyle(() => ({
 		width,
-		height: (width * 576) / 864,
+		height: windowSize.height,
 		alignItems: 'center',
 		position: 'absolute',
-		top: mainBgTop,
 		backgroundColor: 'black',
 		transform: [
 			{
 				translateY:
-					scrollOffset.value <= mainBgTop ? -scrollOffset.value : -mainBgTop,
+					scrollOffset.value <= mainBgTop.value
+						? mainBgTop.value
+						: scrollOffset.value,
 			},
 		],
 	}));
 
 	const onPress = (index: number) => {
-		console.log(index);
 		if (index === 0)
 			scrollRef?.current?.scrollTo(battlefieldRef?.current || 0, 0, true);
 		if (index === 1)
@@ -63,21 +64,28 @@ const GuideDashboard: React.FC = () => {
 	const viewWidth = responsiveLevel > 1 ? '100%' : '60%';
 
 	return (
-		<View style={[styles.container, iStyles.wideContainer]}>
-			<Animated.Image
-				source={resources.guide.mainBackground}
-				style={animatedImage}
-			/>
-			<Animated.ScrollView
-				onScroll={scrollHandler}
-				scrollEventThrottle={16}
-				contentContainerStyle={{ width: viewWidth, alignSelf: 'center' }}
-				ref={scrollRef}
+		<ScrollLayout
+			scrollRef={scrollRef}
+			onScroll={onScroll}
+			style={[styles.container, iStyles.wideContainer]}
+		>
+			<Animated.View style={animatedImage}>
+				<Image
+					source={resources.guide.mainBackground}
+					resizeMode="contain"
+					style={{ width: '100%', height: '100%' }}
+				/>
+			</Animated.View>
+			<View
+				style={{ width: viewWidth, alignSelf: 'center' }}
+				onLayout={({ nativeEvent }) =>
+					(maxOffset.value = nativeEvent.layout.height - windowSize.height)
+				}
 			>
 				<Header onPress={onPress} />
 				<View
 					onLayout={(e) => {
-						setMainBgTop(e.nativeEvent.layout.y);
+						mainBgTop.value = e.nativeEvent.layout.y;
 						battlefieldRef.current = e.nativeEvent.layout.y;
 					}}
 				>
@@ -91,15 +99,15 @@ const GuideDashboard: React.FC = () => {
 				</View>
 				<Elemental />
 				<Footer />
-			</Animated.ScrollView>
-		</View>
+			</View>
+		</ScrollLayout>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#000'
+		backgroundColor: '#000',
 	},
 });
 
