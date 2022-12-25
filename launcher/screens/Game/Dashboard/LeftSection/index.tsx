@@ -26,7 +26,7 @@ export const LeftSection: FC = () => {
 						Are you ready to face the unknown enemy? Do your best and winning
 						might be on your side, Adventurer!
 					</Text>
-					<UnderRealmButton style={styles.button}>
+					<UnderRealmButton style={styles.button} isSubButton disabled>
 						<Text
 							style={styles.buttonText}
 							onPress={() =>
@@ -35,7 +35,7 @@ export const LeftSection: FC = () => {
 								)
 							}
 						>
-							Play
+							Find match
 						</Text>
 					</UnderRealmButton>
 				</View>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 		maxWidth: 600,
 	},
 	button: {
-		width: 180,
+		width: 220,
 	},
 	buttonText: {
 		textAlign: 'center',

@@ -49,7 +49,9 @@ export const LeaderBoard: FC<Props> = ({ windowSize }) => {
 					<Text style={[styles.listHeaderText, styles.secondListHeaderText]}>
 						Adventure
 					</Text>
-					<Text style={styles.listHeaderText}>Experience</Text>
+					<Text style={styles.listHeaderText}>
+						{option === 'experience' ? 'Experience' : '%'}
+					</Text>
 				</View>
 				<FlatList
 					style={{ height: windowSize.height * 0.3 }}
@@ -122,65 +124,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-const mockData: RenderItem[] = [
-	{
-		rank: 1,
-		name: 'Nikkoberry',
-		experience: 90,
-	},
-	{
-		rank: 10,
-		name: 'Nikkoberry',
-		experience: 80,
-	},
-	{
-		rank: 100,
-		name: 'Calvin Harris Calvin Harris Calvin Harris Calvin Harris',
-		experience: 90,
-	},
-	{
-		rank: 1000,
-		name: 'Nikkoberry',
-		experience: 90,
-	},
-	{
-		rank: 1001,
-		name: 'Nikkoberry',
-		experience: 90,
-	},
-	{
-		rank: 1002,
-		name: 'Nikkoberry',
-		experience: 90,
-	},
-	{
-		rank: 1003,
-		name: 'Nikkoberry',
-		experience: 90,
-	},
-	{
-		rank: 1004,
-		name: 'Nikkoberry',
-		experience: 90,
-	},
-	{
-		rank: 1005,
-		name: 'Nikkoberry',
-		experience: 90,
-	},
-	{
-		rank: 1006,
-		name: 'Nikkoberry',
-		experience: 90,
-	},
-	{
-		rank: 1007,
-		name: 'Nikkoberry',
-		experience: 90,
-	},
-	{
-		rank: 9999,
-		name: 'Tedf',
-		experience: 90,
-	},
-];
+const mockData: RenderItem[] = [];
