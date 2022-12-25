@@ -65,13 +65,20 @@ export class DuelManager extends Component {
 	}
 
 	onCardHover(node: Node, state: CardState): void {
-		system.globalNodes.cardPreview.setPosition(node.position.x, -168);
+		const card = system.duel.map[state.id.substring(0, 9)];
+
+		system.globalNodes.cardPreview
+			.getChildByPath('Card')
+			.emit('data', { card });
+		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
 		raiseCardAnimate(node, 100);
 		raisePreviewAnimate(system.globalNodes.cardPreview);
+		node.getComponent(UIOpacity).opacity = 20;
 	}
 
 	onCardLeave(node: Node): void {
 		raiseCardAnimate(node, 0);
 		system.globalNodes.cardPreview.setPosition(190, 740);
+		node.getComponent(UIOpacity).opacity = 255;
 	}
 }
