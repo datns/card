@@ -15,7 +15,7 @@ export const stormGateNav = {
 export const stormNavigations: NavigationConfig[] = [
 	{
 		title: 'Bench',
-		url: 'https://www.notion.so/stormgate/fe8ab9170c15417fbe25a725c14600e1?v=a5b8bd54102d46a28e82d01d633bd782',
+		url: 'https://bench.stormgate.io',
 	},
 	{
 		title: 'Tokenomic',
@@ -40,6 +40,16 @@ export const homeNav: NavigationConfig = {
 	route: 'Home',
 };
 
+const howToPlayNav: NavigationConfig = {
+	title: 'How to play',
+	route: 'Guide',
+};
+
+const storyNav: NavigationConfig = {
+	title: 'Story',
+	route: 'Story',
+};
+
 export const mintNav: NavigationConfig = {
 	title: 'Mint',
 	route: 'Mint',
@@ -48,22 +58,9 @@ export const mintNav: NavigationConfig = {
 
 export const localNavigations: NavigationConfig[] = [
 	homeNav,
+	howToPlayNav,
+	storyNav,
 	mintNav,
-	// {
-	// 	title: 'Game',
-	// 	route: 'Game',
-	// },
-	// {
-	// 	title: 'Marketplace',
-	// 	route: 'Marketplace',
-	// },
-	// {
-	// 	title: 'Cards',
-	// 	route: 'Cards',
-	// },
-	// {
-	// 	title: 'Support',
-	// },
 ];
 
 export const navigationHeight = {
