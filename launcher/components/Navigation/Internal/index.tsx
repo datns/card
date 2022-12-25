@@ -53,9 +53,11 @@ export const InternalNavigation: FC<Props> = ({
 		: {};
 
 	const rightContent = isMobile ? (
-		<TouchableOpacity>
-			<UserSolidIcon size={28} />
-		</TouchableOpacity>
+		// Temporally hiding
+		// <TouchableOpacity>
+		// 	<UserSolidIcon size={28} />
+		// </TouchableOpacity>
+		<View />
 	) : isHidingPlayButton ? (
 		<View />
 	) : (
@@ -87,7 +89,6 @@ export const InternalNavigation: FC<Props> = ({
 					<TouchableOpacity
 						style={styles.buttonContainer}
 						onPress={() => {
-							console.log('hmm', drawerHelper);
 							drawerHelper.navigation?.openDrawer();
 						}}
 					>

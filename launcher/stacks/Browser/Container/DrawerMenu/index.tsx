@@ -42,24 +42,27 @@ export const DrawerMenu: FC<DrawerContentComponentProps> = (props) => {
 					<UnderRealmLogo style={styles.logo} size={200} />
 				</TouchableOpacity>
 				<View style={styles.buttonGroup}>
-					<TouchableOpacity activeOpacity={activeOpacity}>
+					{/* <TouchableOpacity activeOpacity={activeOpacity}>
 						<ImageBackground
 							source={resources.navigation.userIconBackground}
 							style={styles.userIconContainer}
 						>
 							<UserSolidIcon />
 						</ImageBackground>
-					</TouchableOpacity>
+					</TouchableOpacity> */}
 					<UnderRealmButton
 						style={styles.button}
+						isSubButton
+						disabled
 						onPress={() =>
 							Linking.openURL('https://underrealm.stormgate.io/game/duel/demo')
 						}
 					>
-						<Text style={[sharedStyle.buttonText, { fontSize: 13 }]}>
-							Play Demo
-						</Text>
+						<Text style={[sharedStyle.buttonText, { fontSize: 13 }]}>Play</Text>
 					</UnderRealmButton>
+					<Text style={styles.notiText}>
+						*Available only on desktop web brwoser
+					</Text>
 				</View>
 				<Image
 					source={resources.navigation.separator}
@@ -102,6 +105,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 	},
 	buttonGroup: {
+		flexWrap: 'wrap',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
@@ -116,6 +120,12 @@ const styles = StyleSheet.create({
 	button: {
 		width: 150,
 		height: 35,
+	},
+	notiText: {
+		fontSize: 10,
+		color: '#cdc8b5',
+		width: '100%',
+		marginTop: 5,
 	},
 	separator: {
 		width: 200,
