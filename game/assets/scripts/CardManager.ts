@@ -1,49 +1,53 @@
 import { _decorator, Animation, Component, Node, UIOpacity } from 'cc';
 
 import { playAnimation } from './util/animation';
-import { PreviewManager } from './PreviewManager';
+import { setCursor, system } from './util/system';
 
 const { ccclass } = _decorator;
-
-interface Props {
-	animation?: Animation;
-	uiOpacity?: UIOpacity;
-	cardPreview?: Node;
-}
+const NodeEvents = Node.EventType;
 
 @ccclass('CardManager')
 export class CardManager extends Component {
-	props: Props = {};
-	start(): void {
-		this.props = {
-			animation: this.node.getComponent('cc.Animation') as Animation,
-			uiOpacity: this.node.getComponent('cc.UIOpacity') as UIOpacity,
-			cardPreview: this.node.parent.parent.getChildByPath('Card Preview'),
-		};
+	ready = false;
+	animation: Animation;
+	uiOpacity: UIOpacity;
+	cardFront: Node;
 
-		this.bindMouseEvents();
+	start(): void {
+		this.cardFront = this.node.getChildByPath('front');
+		this.animation = this.node.getComponent(Animation);
+		this.uiOpacity = this.node.getComponent(UIOpacity);
+
+		this.node.on('ready', this.onReady.bind(this));
+		this.cardFront.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
+		this.cardFront.on(NodeEvents.MOUSE_LEAVE, this.onMouseLeave.bind(this));
 	}
 
-	bindMouseEvents(): void {
-		this.node.on('mouse-enter', this.onMouseEnter.bind(this));
+	showPreview(): void {
+		playAnimation(system.cardPreview, 'fade-in');
+		system.cardPreview.setPosition(0, -168);
+	}
+
+	hidePreview(): void {
+		system.cardPreview.setPosition(190, 740);
 	}
 
 	onMouseEnter(): void {
-		const { cardPreview, uiOpacity } = this.props;
-		const previewManager = cardPreview.getComponent(
-			'PreviewManager',
-		) as PreviewManager;
+		setCursor('grab');
+		if (!this.ready || system.dragging) return;
 
-		previewManager.cardManager = this;
-		uiOpacity.opacity = 30;
-		playAnimation(cardPreview, 'fade-in');
-		cardPreview.setPosition(0, -180);
+		this.uiOpacity.opacity = 50;
+		system.previewing = true;
+		system.activeCard = this.node;
+		system.cardPreview.setPosition(this.node.position.x, -168);
+		playAnimation(system.cardPreview, 'fade-in');
 	}
 
 	onMouseLeave(): void {
-		const { cardPreview, uiOpacity } = this.props;
+		setCursor('auto');
+	}
 
-		uiOpacity.opacity = 255;
-		cardPreview.setPosition(190, 740);
+	onReady(): void {
+		this.ready = true;
 	}
 }
