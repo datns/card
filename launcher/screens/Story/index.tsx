@@ -1,25 +1,32 @@
 import React from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
+import FooterSection from 'components/layouts/Footer';
+import ScrollLayout from 'components/layouts/Scroll';
 import Banner from 'screens/Story/Banner';
 import Header from 'screens/Story/Header';
 import { sharedStyle } from 'screens/Story/shared';
-import Timeline from 'screens/Story/Timeline';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
+const backgroundRatio = 1728 / 3516;
 const Story: React.FC = () => {
-	const { responsiveLevel } = useSnapshot<DimensionState>(dimensionState);
+	const { responsiveLevel, windowSize } =
+		useSnapshot<DimensionState>(dimensionState);
 
-	const viewWidth = responsiveLevel > 1 ? '100%' : '60%';
+	const width = Math.max(1728, windowSize.width);
+
+	const backgroundWidth = responsiveLevel > 1 ? 1500 : width;
+	const viewWidth = responsiveLevel > 0 ? '100%' : '60%';
 
 	return (
-		<View style={[iStyles.wideContainer, styles.container]}>
-			<ScrollView>
+		<View style={[styles.container, iStyles.wideContainer]}>
+			<ScrollLayout>
 				<Image
 					source={resources.story.mainBackground}
-					style={styles.imageBackground}
+					style={[styles.imageBackground, { width: backgroundWidth }]}
+					resizeMode="contain"
 				/>
 				<Header />
 				<View style={[styles.contentContainer, { width: viewWidth }]}>
@@ -44,7 +51,8 @@ const Story: React.FC = () => {
 					</Text>
 					<Banner />
 				</View>
-			</ScrollView>
+				<FooterSection />
+			</ScrollLayout>
 		</View>
 	);
 };
@@ -57,18 +65,17 @@ const styles = StyleSheet.create({
 		backgroundColor: '#000',
 	},
 	contentContainer: {
-		width: '60%',
 		alignSelf: 'center',
+		marginBottom: 80,
 	},
 	imageBackground: {
-		width: '100%',
 		position: 'absolute',
 		top: 0,
-		aspectRatio: 1728 / 3516,
+		aspectRatio: backgroundRatio,
 	},
 	worldMap: {
 		aspectRatio: 897 / 673,
-		width: '80%',
+		width: '100%',
 		alignSelf: 'center',
 		marginBottom: 60,
 		marginTop: 20,

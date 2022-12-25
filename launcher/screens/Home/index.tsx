@@ -4,12 +4,13 @@ import { DimensionState, dimensionState } from '@metacraft/ui';
 import ScrollLayout from 'components/layouts/Scroll';
 import { useSnapshot } from 'utils/hook';
 
+import FooterSection from '../../components/layouts/Footer';
+
 import BattlefieldSetupSection from './sections/BattlefieldSetup';
 import CardExplainSection from './sections/CardExplain';
 import CardTypeSection from './sections/CardTypes';
 import ClassessSection from './sections/Classes';
 import ElementalInteractionSection from './sections/ElementalInteraction';
-import FooterSection from './sections/Footer';
 import GameIntroSection from './sections/GameIntro';
 import HeadingSection from './sections/Heading';
 import SocialNetworkSection from './sections/SocialNetwork';

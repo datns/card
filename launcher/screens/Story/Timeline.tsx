@@ -1,6 +1,15 @@
 import React from 'react';
-import { Image, ImageBackground, StyleSheet, View } from 'react-native';
-import { Text } from '@metacraft/ui';
+import {
+	Image,
+	ImageBackground,
+	ScrollView,
+	StyleProp,
+	StyleSheet,
+	View,
+	ViewStyle,
+} from 'react-native';
+import { DimensionState, dimensionState, Text } from '@metacraft/ui';
+import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 
 interface TimelineItemProps {
@@ -9,7 +18,13 @@ interface TimelineItemProps {
 	name?: string;
 	icon?: number;
 	iconActive?: number;
+	isNarrow?: boolean;
 }
+interface TimelineProps {
+	containerStyle?: StyleProp<ViewStyle>;
+	isNarrow?: boolean;
+}
+
 const TimelineItem: React.FC<TimelineItemProps> = ({
 	icon,
 	iconActive,
@@ -41,9 +56,48 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
 	);
 };
 
-const Timeline: React.FC = () => {
+const Timeline: React.FC<TimelineProps> = ({
+	containerStyle,
+	isNarrow = false,
+}) => {
+	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
+
+	const scrollRef = React.useRef<ScrollView>(null);
+
+	React.useLayoutEffect(() => {
+		if (isNarrow)
+			scrollRef?.current?.scrollTo({
+				x: windowSize.width + 60,
+				y: 0,
+				animated: true,
+			});
+	}, [isNarrow]);
+	const renderNarrowView = () => {
+		return (
+			<ScrollView
+				horizontal
+				style={{ marginTop: 40 }}
+				showsHorizontalScrollIndicator={false}
+				ref={scrollRef}
+			>
+				<TimelineItem isActive={false} isPassive />
+				<TimelineItem isActive={false} isPassive />
+				<TimelineItem
+					isActive
+					isPassive={false}
+					iconActive={resources.story.externalWarActive}
+					name="The External War"
+				/>
+				<TimelineItem isActive={false} isPassive />
+				<TimelineItem isActive={false} isPassive />
+			</ScrollView>
+		);
+	};
+
+	if (isNarrow) return renderNarrowView();
+
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, containerStyle]} pointerEvents="none">
 			<ImageBackground source={resources.story.ellipse} style={styles.ellipse}>
 				<View style={styles.chevronContainer}>
 					<Image source={resources.story.chevron} style={styles.chevron} />
@@ -103,11 +157,12 @@ const styles = StyleSheet.create({
 	container: {
 		alignSelf: 'center',
 		position: 'absolute',
-		top: 0,
+		bottom: -120,
 	},
 	ellipse: {
 		width: 1183,
-		height: 320,
+		// height: 320,
+		aspectRatio: 1183 / 320,
 		alignItems: 'center',
 	},
 	chevronContainer: {

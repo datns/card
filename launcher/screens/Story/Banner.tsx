@@ -1,61 +1,110 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import {
+	Image,
+	ScrollView,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
+import Animated, {
+	useAnimatedStyle,
+	withTiming,
+} from 'react-native-reanimated';
 import { Hoverable, Text } from '@metacraft/ui';
 import { banner } from 'screens/Story/content';
 
 import { sharedStyle, useHoveredStyle } from './shared';
+
+interface ButtonBannerProps {
+	isActive: boolean;
+	onPress: () => void;
+	label: string;
+	activeIcon: number;
+	icon: number;
+}
+const ButtonBanner: React.FC<ButtonBannerProps> = ({
+	isActive,
+	onPress,
+	label,
+	activeIcon,
+	icon,
+}) => {
+	const outlineStyle = useAnimatedStyle(() => ({
+		borderColor: withTiming(isActive ? '#786442' : 'transparent'),
+	}));
+
+	const indicatorStyle = useAnimatedStyle(() => ({
+		backgroundColor: withTiming(isActive ? '#edede8' : '#423c36'),
+	}));
+
+	return (
+		<View>
+			<TouchableOpacity
+				style={styles.button}
+				onPress={onPress}
+				disabled={isActive}
+			>
+				<Hoverable animatedStyle={useHoveredStyle}>
+					<Animated.View>
+						<Image
+							source={isActive ? activeIcon : icon}
+							style={styles.buttonIcon}
+							resizeMode="contain"
+						/>
+						<Text
+							style={[
+								{
+									opacity: isActive ? 1 : 0.5,
+								},
+								styles.buttonText,
+								sharedStyle.textShadow,
+							]}
+						>
+							{label}
+						</Text>
+					</Animated.View>
+				</Hoverable>
+			</TouchableOpacity>
+			<Animated.View style={[styles.indicatorOutline, outlineStyle]}>
+				<Animated.View style={[styles.indicator, indicatorStyle]} />
+			</Animated.View>
+		</View>
+	);
+};
 
 const Banner: React.FC = () => {
 	const [selectedBanner, setSelectedBanner] = React.useState<number>(0);
 
 	const renderButtonList = () => {
 		return (
-			<View style={styles.buttonContainer}>
-				{banner.map((item, index) => {
-					const onPress = () => {
-						setSelectedBanner(index);
-					};
+			<>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+					{banner.map((item, index) => {
+						const onPress = () => {
+							setSelectedBanner(index);
+						};
 
-					const isActive = index === selectedBanner;
-					return (
-						<View key={item.label}>
-							<TouchableOpacity
-								style={styles.button}
+						const isActive = index === selectedBanner;
+
+						return (
+							<ButtonBanner
+								key={item.label}
+								isActive={isActive}
 								onPress={onPress}
-								disabled={isActive}
-							>
-								<Hoverable animatedStyle={useHoveredStyle}>
-									<Animated.View>
-										<Image
-											source={isActive ? item.activeIcon : item.icon}
-											style={styles.buttonIcon}
-											resizeMode="contain"
-										/>
-										<Text
-											style={[
-												{
-													opacity: isActive ? 1 : 0.5,
-												},
-												styles.buttonText,
-												sharedStyle.textShadow,
-											]}
-										>
-											{item.label}
-										</Text>
-									</Animated.View>
-								</Hoverable>
-							</TouchableOpacity>
-							<View style={styles.indicator} />
-						</View>
-					);
-				})}
-			</View>
+								label={item.label}
+								activeIcon={item.activeIcon}
+								icon={item.icon}
+							/>
+						);
+					})}
+				</ScrollView>
+			</>
 		);
 	};
 
 	return (
-		<View>
+		<View style={{ marginHorizontal: 15 }}>
+			<View style={styles.indicatorLine} />
 			{renderButtonList()}
 			<View style={styles.contentContainer}>
 				<Image
@@ -81,19 +130,18 @@ export default Banner;
 
 const styles = StyleSheet.create({
 	contentContainer: {
-		width: '100%',
 		borderWidth: 1,
 		borderColor: '#423c36',
-		marginTop: -3,
+		borderTopWidth: 0,
+		marginTop: -8.5,
 		alignItems: 'center',
-		padding: 80,
-	},
-	buttonContainer: {
-		flexDirection: 'row',
+		alignSelf: 'center',
+		padding: '8%',
 	},
 	button: {
 		marginHorizontal: 40,
 		alignItems: 'center',
+		overflow: 'visible',
 	},
 	buttonIcon: {
 		width: 52,
@@ -104,20 +152,44 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		color: '#FFFBDF',
 	},
-	indicator: {
-		width: 6,
-		height: 6,
+	indicatorLine: {
+		width: '100%',
+		backgroundColor: '#423c36',
+		height: 1,
+		position: 'absolute',
+		top: 96.5,
+	},
+	indicatorOutline: {
+		width: 12,
+		height: 12,
+		backgroundColor: 'transparent',
+		borderWidth: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		alignSelf: 'center',
+		marginTop: 18,
+		marginVertical: 2,
 		transform: [
 			{
 				rotate: '45deg',
 			},
 		],
+		zIndex: 100,
+	},
+	indicator: {
+		width: 6,
+		height: 6,
+		transform: [
+			{
+				rotate: '90deg',
+			},
+		],
 		backgroundColor: '#423c36',
 		alignSelf: 'center',
-		marginTop: 20,
+		zIndex: 100,
 	},
 	bannerImage: {
-		width: '60%',
+		width: '70%',
 		aspectRatio: 503 / 712,
 		marginBottom: 60,
 	},

@@ -8,9 +8,11 @@ import resources from 'utils/resources';
 
 const backgroundRatio = 1007 / 1728;
 const Header: React.FC = () => {
-	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
+	const { windowSize, responsiveLevel } =
+		useSnapshot<DimensionState>(dimensionState);
 
 	const width = Math.max(1728, windowSize.width);
+	const contentWidth = Math.min(windowSize.width, 700);
 
 	const headingBackgroundStyle = {
 		width,
@@ -30,21 +32,24 @@ const Header: React.FC = () => {
 					style={styles.imageFlag}
 					resizeMode="contain"
 				/>
-				<View style={{ alignItems: 'center' }}>
+				<View style={[styles.contentContainer, { width: contentWidth }]}>
 					<Text
-						style={[sharedStyle.heading, { color: 'black' }]}
+						style={[sharedStyle.heading, styles.heading]}
 						responsiveSizes={[35]}
 					>
 						Under Realm Rise of Magic
 					</Text>
-					<Text style={styles.description} responsiveSizes={[20]}>
+					<Text
+						style={[styles.description, { width: contentWidth }]}
+						responsiveSizes={[20]}
+					>
 						Under Realm: Rise of Magic takes place in a chaotic, fragmented
 						world of ATEM where human and other races are constantly fighting
 						each other, to wrench the endless thrist for power, wealth, and
 						gradually take control over ATEM.
 					</Text>
-					<Timeline />
 				</View>
+				{<Timeline isNarrow={responsiveLevel > 1} />}
 			</View>
 		</View>
 	);
@@ -54,8 +59,13 @@ export default Header;
 
 const styles = StyleSheet.create({
 	container: {
-		alignItems: 'center',
+		// alignItems: 'center',
 		paddingTop: '10%',
+	},
+	contentContainer: {
+		alignItems: 'center',
+		paddingHorizontal: 15,
+		alignSelf: 'center',
 	},
 	imageBackground: {
 		position: 'absolute',
@@ -66,11 +76,17 @@ const styles = StyleSheet.create({
 		width: 300,
 		aspectRatio: 224 / 161,
 		marginBottom: 40,
+		alignSelf: 'center',
+	},
+	heading: {
+		color: 'black',
+		maxWidth: '70%',
+		textAlign: 'center',
 	},
 	description: {
 		color: 'black',
 		textAlign: 'center',
-		maxWidth: '45%',
 		marginTop: 15,
+		paddingHorizontal: 15,
 	},
 });
