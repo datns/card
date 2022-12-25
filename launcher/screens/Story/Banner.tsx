@@ -8,9 +8,10 @@ import { sharedStyle, useHoveredStyle } from './shared';
 
 const Banner: React.FC = () => {
 	const [selectedBanner, setSelectedBanner] = React.useState<number>(0);
-	const renderButton = () => {
+
+	const renderButtonList = () => {
 		return (
-			<View style={{ flexDirection: 'row' }}>
+			<View style={styles.buttonContainer}>
 				{banner.map((item, index) => {
 					const onPress = () => {
 						setSelectedBanner(index);
@@ -25,21 +26,18 @@ const Banner: React.FC = () => {
 								disabled={isActive}
 							>
 								<Hoverable animatedStyle={useHoveredStyle}>
-									<Animated.View
-										style={{ backgroundColor: 'red', alignItems: 'center' }}
-									>
+									<Animated.View>
 										<Image
 											source={isActive ? item.activeIcon : item.icon}
-											style={{ width: 52, aspectRatio: 1, alignSelf: 'center' }}
+											style={styles.buttonIcon}
 											resizeMode="contain"
 										/>
 										<Text
 											style={[
 												{
-													textAlign: 'center',
-													color: '#FFFBDF',
 													opacity: isActive ? 1 : 0.5,
 												},
+												styles.buttonText,
 												sharedStyle.textShadow,
 											]}
 										>
@@ -58,20 +56,16 @@ const Banner: React.FC = () => {
 
 	return (
 		<View>
-			{renderButton()}
+			{renderButtonList()}
 			<View style={styles.contentContainer}>
 				<Image
 					source={banner[selectedBanner].image}
-					style={{
-						width: '60%',
-						aspectRatio: 503 / 712,
-						marginBottom: 60,
-					}}
+					style={styles.bannerImage}
 					resizeMode="contain"
 				/>
 				<Text
 					responsiveSizes={[35]}
-					style={[sharedStyle.heading, { marginBottom: 20 }]}
+					style={[sharedStyle.heading, styles.bannerTitle]}
 				>
 					{banner[selectedBanner].title}
 				</Text>
@@ -94,9 +88,21 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: 80,
 	},
+	buttonContainer: {
+		flexDirection: 'row',
+	},
 	button: {
 		marginHorizontal: 40,
 		alignItems: 'center',
+	},
+	buttonIcon: {
+		width: 52,
+		aspectRatio: 1,
+		alignSelf: 'center',
+	},
+	buttonText: {
+		textAlign: 'center',
+		color: '#FFFBDF',
 	},
 	indicator: {
 		width: 6,
@@ -109,5 +115,13 @@ const styles = StyleSheet.create({
 		backgroundColor: '#423c36',
 		alignSelf: 'center',
 		marginTop: 20,
+	},
+	bannerImage: {
+		width: '60%',
+		aspectRatio: 503 / 712,
+		marginBottom: 60,
+	},
+	bannerTitle: {
+		marginBottom: 20,
 	},
 });

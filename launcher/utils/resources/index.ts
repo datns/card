@@ -182,5 +182,11 @@ export default {
 		summonerImage: require('../../../assets/story/summoner-image.png'),
 		wizardImage: require('../../../assets/story/wizard-image.png'),
 		assasinImage: require('../../../assets/story/assassin-image.png'),
+		ellipse: require('../../../assets/story/ellipse.png'),
+		externalWarNormal: require('../../../assets/story/external-war-normal.png'),
+		externalWarActive: require('../../../assets/story/external-war-active.png'),
+		externalWarPassive: require('../../../assets/story/external-war-passive.png'),
+		labelShape: require('../../../assets/story/label-shape.png'),
+		chevron: require('../../../assets/story/chevron.png'),
 	},
 };

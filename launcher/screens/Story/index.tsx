@@ -4,6 +4,7 @@ import { DimensionState, dimensionState, Text } from '@metacraft/ui';
 import Banner from 'screens/Story/Banner';
 import Header from 'screens/Story/Header';
 import { sharedStyle } from 'screens/Story/shared';
+import Timeline from 'screens/Story/Timeline';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
@@ -14,8 +15,8 @@ const Story: React.FC = () => {
 	const viewWidth = responsiveLevel > 1 ? '100%' : '60%';
 
 	return (
-		<View style={[iStyles.wideContainer, { flex: 1 }]}>
-			<ScrollView contentContainerStyle={styles.container}>
+		<View style={[iStyles.wideContainer, styles.container]}>
+			<ScrollView>
 				<Image
 					source={resources.story.mainBackground}
 					style={styles.imageBackground}
@@ -27,12 +28,7 @@ const Story: React.FC = () => {
 						style={styles.worldMap}
 						resizeMode="contain"
 					/>
-					<Text
-						style={[
-							{ marginBottom: 60, paddingHorizontal: 15 },
-							sharedStyle.subContent,
-						]}
-					>
+					<Text style={[styles.mapDescription, sharedStyle.subContent]}>
 						There are many variations of passages of Lorem Ipsum available, but
 						the majority have suffered alteration in some form, by injected
 						humour, or randomised words which don't look even slightly
@@ -57,9 +53,8 @@ export default Story;
 
 const styles = StyleSheet.create({
 	container: {
-		// flex: 1,
+		flex: 1,
 		backgroundColor: '#000',
-		paddingBottom: 80,
 	},
 	contentContainer: {
 		width: '60%',
@@ -77,5 +72,9 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		marginBottom: 60,
 		marginTop: 20,
+	},
+	mapDescription: {
+		marginBottom: 60,
+		paddingHorizontal: 15,
 	},
 });

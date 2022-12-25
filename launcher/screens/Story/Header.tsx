@@ -1,20 +1,20 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
+import { sharedStyle } from 'screens/Story/shared';
+import Timeline from 'screens/Story/Timeline';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
-import { iStyles } from 'utils/styles';
-import {sharedStyle} from "screens/Story/shared";
 
-const headingBackgroundRatio = 1007 / 1728;
+const backgroundRatio = 1007 / 1728;
 const Header: React.FC = () => {
 	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
 
-	const width = Math.min(windowSize.width, iStyles.wideContainer.maxWidth);
+	const width = Math.max(1728, windowSize.width);
 
 	const headingBackgroundStyle = {
 		width,
-		height: width * headingBackgroundRatio,
+		height: width * backgroundRatio,
 	};
 
 	return (
@@ -27,32 +27,24 @@ const Header: React.FC = () => {
 			<View style={styles.container}>
 				<Image
 					source={resources.story.headerFlag}
-					style={{
-						width: '20%',
-						aspectRatio: 224 / 161,
-						marginBottom: 40,
-					}}
+					style={styles.imageFlag}
 					resizeMode="contain"
 				/>
-				<Text
-					style={[sharedStyle.heading, { color: 'black' }]}
-					responsiveSizes={[35]}
-				>
-					Under Realm Rise of Magic
-				</Text>
-				<Text
-					style={{
-						color: 'black',
-						textAlign: 'center',
-						maxWidth: '30%',
-						marginTop: 15,
-					}}
-				>
-					Under Realm: Rise of Magic takes place in a chaotic, fragmented world
-					of ATEM where human and other races are constantly fighting each
-					other, to wrench the endless thrist for power, wealth, and gradually
-					take control over ATEM.
-				</Text>
+				<View style={{ alignItems: 'center' }}>
+					<Text
+						style={[sharedStyle.heading, { color: 'black' }]}
+						responsiveSizes={[35]}
+					>
+						Under Realm Rise of Magic
+					</Text>
+					<Text style={styles.description} responsiveSizes={[20]}>
+						Under Realm: Rise of Magic takes place in a chaotic, fragmented
+						world of ATEM where human and other races are constantly fighting
+						each other, to wrench the endless thrist for power, wealth, and
+						gradually take control over ATEM.
+					</Text>
+					<Timeline />
+				</View>
 			</View>
 		</View>
 	);
@@ -63,11 +55,22 @@ export default Header;
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		paddingTop: 160,
+		paddingTop: '10%',
 	},
 	imageBackground: {
-		width: '100%',
 		position: 'absolute',
 		top: 0,
+		alignSelf: 'center',
+	},
+	imageFlag: {
+		width: 300,
+		aspectRatio: 224 / 161,
+		marginBottom: 40,
+	},
+	description: {
+		color: 'black',
+		textAlign: 'center',
+		maxWidth: '45%',
+		marginTop: 15,
 	},
 });

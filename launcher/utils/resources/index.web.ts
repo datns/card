@@ -214,5 +214,11 @@ export default {
 		summonerImage: { uri: '/story/summoner-image.png' },
 		wizardImage: { uri: '/story/wizard-image.png' },
 		assasinImage: { uri: '/story/assassin-image.png' },
+		ellipse: { uri: '/story/ellipse.png' },
+		externalWarNormal: { uri: '/story/external-war-normal.png' },
+		externalWarActive: { uri: '/story/external-war-active.png' },
+		externalWarPassive: { uri: '/story/external-war-passive.png' },
+		labelShape: { uri: '/story/label-shape.png' },
+		chevron: { uri: '/story/chevron.png' },
 	},
 };
