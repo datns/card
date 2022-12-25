@@ -26,16 +26,14 @@ export const LeftSection: FC = () => {
 						Are you ready to face the unknown enemy? Do your best and winning
 						might be on your side, Adventurer!
 					</Text>
-					<UnderRealmButton style={styles.button} isSubButton disabled>
+					<UnderRealmButton style={styles.button}>
 						<Text
 							style={styles.buttonText}
-							onPress={() =>
-								Linking.openURL(
-									'https://underrealm.stormgate.io/game/duel/demo',
-								)
-							}
+							onPress={() => {
+								Linking.openURL(`${location.origin}/game/duel/demo`);
+							}}
 						>
-							Find match
+							Demo
 						</Text>
 					</UnderRealmButton>
 				</View>
