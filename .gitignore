@@ -8,6 +8,7 @@
 metacraft/
 wings/
 assets/cg
+assets/murg
 
 # Terraform automations
 /*.tf
