@@ -5,12 +5,20 @@ import {
 	Component,
 	Label,
 	Node,
+	resources,
 	RichText,
 	Sprite,
+	SpriteFrame,
 	UIOpacity,
 } from 'cc';
 
 import { playAnimation } from './util/animation';
+import {
+	getClassUri,
+	getFoilUri,
+	getSkillDesc,
+	getVisualUri,
+} from './util/helper';
 import { setCursor, system } from './util/system';
 
 const { ccclass } = _decorator;
@@ -33,6 +41,7 @@ export class CardManager extends Component {
 	cardDefense: Label;
 	cardAttack: Label;
 	cardSkill: RichText;
+	cardFoil: Sprite;
 	cardVisual: Sprite;
 	cardClass: Sprite;
 
@@ -53,8 +62,12 @@ export class CardManager extends Component {
 		this.cardSkill = this.node
 			.getChildByPath('front/skill')
 			.getComponent(RichText);
+		this.cardFoil = this.node.getChildByPath('front/foil').getComponent(Sprite);
 		this.cardVisual = this.node
 			.getChildByPath('front/visual')
+			.getComponent(Sprite);
+		this.cardClass = this.node
+			.getChildByPath('front/class')
 			.getComponent(Sprite);
 
 		this.node.on('ready', this.onReady.bind(this));
@@ -70,7 +83,25 @@ export class CardManager extends Component {
 		this.cardAttack.string = String(card.attribute.attack);
 		this.cardDefense.string = String(card.attribute.defense);
 		this.cardHealth.string = String(card.attribute.health);
-		console.log('hmm');
+		this.cardSkill.string = getSkillDesc(card.skill.template as never);
+
+		resources.load(getVisualUri(card.id), (err, spriteFrame: SpriteFrame) => {
+			if (!err) {
+				this.cardVisual.spriteFrame = spriteFrame;
+			}
+		});
+
+		resources.load(getFoilUri(card.id), (err, spriteFrame: SpriteFrame) => {
+			if (!err) {
+				this.cardFoil.spriteFrame = spriteFrame;
+			}
+		});
+
+		resources.load(getClassUri(card.class), (err, spriteFrame: SpriteFrame) => {
+			if (!err) {
+				this.cardClass.spriteFrame = spriteFrame;
+			}
+		});
 	}
 
 	showPreview(): void {
