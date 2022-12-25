@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text } from '@metacraft/ui';
 
 import resources from '../../../../utils/resources';
 
 import { ViewType } from '.';
+import {sharedStyle} from "screens/Guide/shared";
 
 interface Props {
 	type: ViewType;
@@ -39,19 +41,20 @@ const Icon: FC<Props> = ({ type, onPress, isActive = false }: Props) => {
 	return (
 		<TouchableOpacity onPress={onPress}>
 			<Image source={resource} style={styles.image} resizeMode="contain" />
-			<Text style={styles.label}>{label}</Text>
+			<Text style={[styles.label, sharedStyle.textShadow]}>{label}</Text>
 		</TouchableOpacity>
 	);
 };
 
 const styles = StyleSheet.create({
 	image: {
-		width: 60,
-		height: 60,
+		width: 100,
+		height: 100,
 	},
 	label: {
-		fontSize: 9,
 		color: '#fff',
+		fontFamily: 'Volkhov',
+		fontWeight: 'bold',
 		textAlign: 'center',
 		marginTop: 8,
 	},

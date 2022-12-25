@@ -1,5 +1,5 @@
-import React, { FC, ReactNode } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import React, { FC, ReactNode, RefObject } from 'react';
+import { NativeScrollEvent, StyleSheet, View, ViewStyle } from 'react-native';
 import Animated, {
 	useAnimatedScrollHandler,
 	useAnimatedStyle,
@@ -14,14 +14,18 @@ import { useSnapshot } from 'utils/hook';
 
 interface Props {
 	children?: ReactNode;
-	style?: ViewStyle;
+	style?: ViewStyle | ViewStyle[];
 	contentContainerStyle?: ViewStyle | ViewStyle[];
+	onScroll?: (event: NativeScrollEvent) => void;
+	scrollRef?: RefObject<Animated.ScrollView>;
 }
 
 export const ScrollLayout: FC<Props> = ({
 	children,
 	style,
 	contentContainerStyle,
+	onScroll,
+	scrollRef,
 }) => {
 	const { isMobile } = useSnapshot(dimensionState);
 	const scrollOffset = useSharedValue(0);
@@ -32,8 +36,9 @@ export const ScrollLayout: FC<Props> = ({
 			: scrollOffset.value;
 	});
 	const scrollHandler = useAnimatedScrollHandler({
-		onScroll: ({ contentOffset }) => {
-			scrollOffset.value = contentOffset.y;
+		onScroll: (event) => {
+			scrollOffset.value = event.contentOffset.y;
+			onScroll?.(event);
 		},
 	});
 
@@ -59,6 +64,7 @@ export const ScrollLayout: FC<Props> = ({
 				<InternalNavigation isMobile={isMobile} />
 			</Animated.View>
 			<Animated.ScrollView
+				ref={scrollRef}
 				style={[contentContainer, contentContainerStyle]}
 				onScroll={scrollHandler}
 				scrollEventThrottle={5}

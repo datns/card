@@ -29,13 +29,11 @@ export const LeftSection: FC = () => {
 					<UnderRealmButton style={styles.button}>
 						<Text
 							style={styles.buttonText}
-							onPress={() =>
-								Linking.openURL(
-									'https://underrealm.stormgate.io/game/duel/demo',
-								)
-							}
+							onPress={() => {
+								Linking.openURL(`${location.origin}/game/duel/demo`);
+							}}
 						>
-							Play
+							Demo
 						</Text>
 					</UnderRealmButton>
 				</View>
@@ -68,7 +66,7 @@ const styles = StyleSheet.create({
 		maxWidth: 600,
 	},
 	button: {
-		width: 180,
+		width: 220,
 	},
 	buttonText: {
 		textAlign: 'center',

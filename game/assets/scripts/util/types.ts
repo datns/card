@@ -1,4 +1,4 @@
-import { CardDuel } from './graphql';
+import { DuelCommandBundle, DuelConfig } from '@metacraft/murg-engine';
 
 export enum DuelCommands {
 	GetState = 'GetState',
@@ -13,18 +13,24 @@ export interface CommandPayload {
 	jwt: string;
 	client: string;
 	context: JwtPayload;
-	send: (payload: Record<string, any>) => Promise<void>;
+	send: (payload: Record<string, never>) => Promise<void>;
 	command: DuelCommands;
 	payload: never;
 }
 
 export interface CommandResponse {
 	command: DuelCommands;
-	payload: any;
+	payload: never;
 }
 
-export interface GameState {
+export interface ServerState {
 	jwt?: string;
 	context?: JwtPayload;
-	duel?: CardDuel;
+	config?: DuelConfig;
+	history?: DuelCommandBundle[];
+}
+
+export interface PlayerIds {
+	me: string;
+	enemy: string;
 }
