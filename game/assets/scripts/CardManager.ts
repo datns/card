@@ -1,5 +1,14 @@
 import { Card } from '@metacraft/murg-engine';
-import { _decorator, Animation, Component, Node, UIOpacity } from 'cc';
+import {
+	_decorator,
+	Animation,
+	Component,
+	Label,
+	Node,
+	RichText,
+	Sprite,
+	UIOpacity,
+} from 'cc';
 
 import { playAnimation } from './util/animation';
 import { setCursor, system } from './util/system';
@@ -19,17 +28,49 @@ export class CardManager extends Component {
 	animation: Animation;
 	uiOpacity: UIOpacity;
 	cardFront: Node;
+	cardName: Label;
+	cardHealth: Label;
+	cardDefense: Label;
+	cardAttack: Label;
+	cardSkill: RichText;
+	cardVisual: Sprite;
+	cardClass: Sprite;
 
 	start(): void {
 		this.cardFront = this.node.getChildByPath('front');
 		this.animation = this.node.getComponent(Animation);
 		this.uiOpacity = this.node.getComponent(UIOpacity);
+		this.cardName = this.node.getChildByPath('front/name').getComponent(Label);
+		this.cardAttack = this.node
+			.getChildByPath('front/attack')
+			.getComponent(Label);
+		this.cardDefense = this.node
+			.getChildByPath('front/defense')
+			.getComponent(Label);
+		this.cardHealth = this.node
+			.getChildByPath('front/health')
+			.getComponent(Label);
+		this.cardSkill = this.node
+			.getChildByPath('front/skill')
+			.getComponent(RichText);
+		this.cardVisual = this.node
+			.getChildByPath('front/visual')
+			.getComponent(Sprite);
 
 		this.node.on('ready', this.onReady.bind(this));
 		this.node.on('distance', this.onMouseDistance.bind(this));
 		this.node.on('data', (data) => {
 			this.data = data;
+			this.renderAll(this.data);
 		});
+	}
+
+	renderAll({ card }: CardData): void {
+		this.cardName.string = card.name;
+		this.cardAttack.string = String(card.attribute.attack);
+		this.cardDefense.string = String(card.attribute.defense);
+		this.cardHealth.string = String(card.attribute.health);
+		console.log('hmm');
 	}
 
 	showPreview(): void {
@@ -43,20 +84,36 @@ export class CardManager extends Component {
 
 	onMouseEnter(): void {
 		setCursor('grab');
-		if (!this.ready || system.dragging) return;
+		if (system.dragging) return;
 
 		this.uiOpacity.opacity = 50;
 		system.previewing = true;
 		system.activeCard = this.node;
 		system.globalNodes.cardPreview.setPosition(this.node.position.x, -168);
+
 		playAnimation(system.globalNodes.cardPreview, 'fade-in');
 	}
 
 	onMouseLeave(): void {
 		setCursor('auto');
+		this.uiOpacity.opacity = 255;
 	}
 
-	onReady(): void {
-		this.ready = true;
+	onReady(ready: boolean): void {
+		if (ready) {
+			this.cardFront.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
+			this.cardFront.on(NodeEvents.MOUSE_LEAVE, this.onMouseLeave.bind(this));
+		} else {
+			this.cardFront.off(NodeEvents.MOUSE_ENTER);
+			this.cardFront.off(NodeEvents.MOUSE_LEAVE);
+		}
+	}
+
+	onMouseDistance(distance: number): void {
+		if (this.isMouseInside && distance > 70) {
+			this.isMouseInside = false;
+		} else if (!this.isMouseInside && distance < 70) {
+			this.isMouseInside = true;
+		}
 	}
 }

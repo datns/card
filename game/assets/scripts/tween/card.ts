@@ -107,3 +107,30 @@ export const animateDrawEnemyCard = ({
 			.start();
 	});
 };
+
+export const raiseCardAnimate = async (
+	node: Node,
+	to = 100,
+	duration = 0.2,
+): Promise<void> => {
+	return new Promise((resolve) => {
+		tween(node.getChildByPath('front'))
+			.to(duration, { position: new Vec3(0, to, 0) }, { easing: 'cubicInOut' })
+			.call(() => resolve())
+			.start();
+	});
+};
+
+export const raisePreviewAnimate = async (
+	node: Node,
+	from = -12,
+	duration = 0.1,
+): Promise<void> => {
+	return new Promise((resolve) => {
+		tween(node.getChildByPath('Card'))
+			.set({ position: new Vec3(0, from, 0) })
+			.to(duration, { position: new Vec3(0, 0, 0) }, { easing: 'cubicInOut' })
+			.call(() => resolve())
+			.start();
+	});
+};
