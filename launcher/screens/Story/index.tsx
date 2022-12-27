@@ -17,41 +17,45 @@ const Story: React.FC = () => {
 
 	const width = Math.max(1728, windowSize.width);
 
-	const backgroundWidth = responsiveLevel > 1 ? 1500 : width;
-	const viewWidth = responsiveLevel > 0 ? '100%' : '60%';
+	const viewWidth = ['60%', '100%', '100%', '100%'][responsiveLevel];
 
 	return (
 		<View style={[styles.container, iStyles.wideContainer]}>
 			<ScrollLayout>
-				<Image
-					source={resources.story.mainBackground}
-					style={[styles.imageBackground, { width: backgroundWidth }]}
-					resizeMode="contain"
-				/>
-				<Header />
-				<View style={[styles.contentContainer, { width: viewWidth }]}>
+				<View style={styles.scrollContent}>
 					<Image
-						source={resources.story.atemWorldMap}
-						style={styles.worldMap}
+						source={resources.story.mainBackground}
+						style={[styles.imageBackground, { width }]}
 						resizeMode="contain"
 					/>
-					<Text style={[styles.mapDescription, sharedStyle.subContent]}>
-						There are many variations of passages of Lorem Ipsum available, but
-						the majority have suffered alteration in some form, by injected
-						humour, or randomised words which don't look even slightly
-						believable. If you are going to use a passage of Lorem Ipsum, you
-						need to be sure there isn't anything embarrassing hidden in the
-						middle of text. All the Lorem Ipsum generators on the Internet tend
-						to repeat predefined chunks as necessary, making this the first true
-						generator on the Internet. It uses a dictionary of over 200 Latin
-						words, combined with a handful of model sentence structures, to
-						generate Lorem Ipsum which looks reasonable. The generated Lorem
-						Ipsum is therefore always free from repetition, injected humour, or
-						non-characteristic words etc.
-					</Text>
-					<Banner />
+					<Header />
+					<View style={[styles.contentContainer, { width: viewWidth }]}>
+						<View style={styles.mapContainer}>
+							<Image
+								source={resources.story.atemWorldMap}
+								style={styles.worldMap}
+								resizeMode="contain"
+							/>
+						</View>
+
+						<Text style={[styles.mapDescription, sharedStyle.subContent]}>
+							There are many variations of passages of Lorem Ipsum available,
+							but the majority have suffered alteration in some form, by
+							injected humour, or randomised words which don't look even
+							slightly believable. If you are going to use a passage of Lorem
+							Ipsum, you need to be sure there isn't anything embarrassing
+							hidden in the middle of text. All the Lorem Ipsum generators on
+							the Internet tend to repeat predefined chunks as necessary, making
+							this the first true generator on the Internet. It uses a
+							dictionary of over 200 Latin words, combined with a handful of
+							model sentence structures, to generate Lorem Ipsum which looks
+							reasonable. The generated Lorem Ipsum is therefore always free
+							from repetition, injected humour, or non-characteristic words etc.
+						</Text>
+						<Banner />
+					</View>
+					<FooterSection />
 				</View>
-				<FooterSection />
 			</ScrollLayout>
 		</View>
 	);
@@ -64,6 +68,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#000',
 	},
+	scrollContent: {
+		overflow: 'hidden',
+	},
 	contentContainer: {
 		alignSelf: 'center',
 		marginBottom: 80,
@@ -73,12 +80,16 @@ const styles = StyleSheet.create({
 		top: 0,
 		aspectRatio: backgroundRatio,
 	},
+	mapContainer: {
+		paddingHorizontal: 15,
+	},
 	worldMap: {
 		aspectRatio: 897 / 673,
-		width: '100%',
 		alignSelf: 'center',
+		width: '100%',
 		marginBottom: 60,
 		marginTop: 20,
+		marginHorizontal: 15,
 	},
 	mapDescription: {
 		marginBottom: 60,

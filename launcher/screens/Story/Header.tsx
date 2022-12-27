@@ -2,9 +2,10 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
 import { sharedStyle } from 'screens/Story/shared';
-import Timeline from 'screens/Story/Timeline';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
+
+import Timeline from './Timeline';
 
 const backgroundRatio = 1007 / 1728;
 const Header: React.FC = () => {

@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
 import { DimensionState, dimensionState } from '@metacraft/ui';
+import FooterSection from 'components/layouts/Footer';
 import ScrollLayout from 'components/layouts/Scroll';
 import { useSnapshot } from 'utils/hook';
-
-import FooterSection from '../../components/layouts/Footer';
 
 import BattlefieldSetupSection from './sections/BattlefieldSetup';
 import CardExplainSection from './sections/CardExplain';
