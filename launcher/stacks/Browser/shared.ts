@@ -4,6 +4,7 @@ import {
 	createNavigationContainerRef,
 	LinkingOptions,
 	NavigatorScreenParams,
+	ParamListBase,
 } from '@react-navigation/native';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
@@ -56,6 +57,7 @@ export type RootParamList = {
 	Marketplace: NavigatorScreenParams<MarketplaceParamList>;
 	Mint: NavigatorScreenParams<MintParamList>;
 	Guide: NavigatorScreenParams<GuideParamList>;
+	Story: NavigatorScreenParams<ParamListBase>;
 	AuthResponse: undefined;
 };
 
@@ -101,6 +103,9 @@ export const linking: LinkingOptions<RootParamList> = {
 				screens: {
 					Dashboard: '/',
 				},
+			},
+			Story: {
+				path: '/story',
 			},
 			AuthResponse: '/authreponse',
 		},

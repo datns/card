@@ -3,6 +3,7 @@ import { themeState } from '@metacraft/ui';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from 'screens/Home';
+import StoryScreen from 'screens/Story';
 import { useSnapshot } from 'utils/hook';
 
 import CardsStack from './Cards';
@@ -31,6 +32,7 @@ export const BrowserStack: FC = () => {
 				<Stack.Screen name="Marketplace" component={MarketplaceStack} />
 				<Stack.Screen name="Mint" component={MintStack} />
 				<Stack.Screen name="Guide" component={GuideScreen} />
+				<Stack.Screen name="Story" component={StoryScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
