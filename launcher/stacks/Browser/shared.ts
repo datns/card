@@ -99,7 +99,7 @@ export const linking: LinkingOptions<RootParamList> = {
 				},
 			},
 			Guide: {
-				path: '/guide',
+				path: '/how-to-play',
 				screens: {
 					Dashboard: '/',
 				},
