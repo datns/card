@@ -14,6 +14,10 @@ export const stormGateNav = {
 
 export const stormNavigations: NavigationConfig[] = [
 	{
+		title: 'Under Realm',
+		url: 'https://underrealm.stormgate.io',
+	},
+	{
 		title: 'Bench',
 		url: 'https://bench.stormgate.io',
 	},
