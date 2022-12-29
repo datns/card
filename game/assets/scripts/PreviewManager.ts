@@ -1,6 +1,7 @@
 import { _decorator, Component, EventMouse, Node, UIOpacity, Vec2 } from 'cc';
 
 import { raiseCardAnimate } from './tween/card';
+import { cardIdFromNode } from './util/helper';
 import { setCursor, system } from './util/system';
 
 const { ccclass } = _decorator;
@@ -52,8 +53,11 @@ export class PreviewManager extends Component {
 
 		if (distance > 5) {
 			this.hidePreview();
-			console.log('dragging!');
 			system.dragging = true;
+			system.globalNodes.unitTemplate.emit(
+				'data',
+				cardIdFromNode(system.activeCard),
+			);
 		}
 	}
 
