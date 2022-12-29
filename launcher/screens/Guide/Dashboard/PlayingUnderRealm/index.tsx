@@ -21,13 +21,7 @@ const PlayingUnderRealm: React.FC = () => {
 			<Text style={[sharedStyle.subHeading, styles.subHeading]}>
 				{play.intro}
 			</Text>
-			<Concept
-				content={play}
-				containerStyle={{
-					justifyContent: 'flex-start',
-				}}
-				renderDescription={renderDescription}
-			/>
+			<Concept content={play} renderDescription={renderDescription} />
 			{/*<Image source={resources.guide.battlefieldImage} style={imageStyle} />*/}
 		</View>
 	);
@@ -41,10 +35,5 @@ const styles = StyleSheet.create({
 	},
 	subHeading: {
 		textAlign: 'center',
-	},
-	conceptContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		marginBottom: 40,
 	},
 });

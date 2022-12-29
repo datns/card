@@ -30,6 +30,7 @@ export const sharedStyle = StyleSheet.create({
 		alignItems: 'center',
 		...iStyles.wideContainer,
 		paddingHorizontal: 15,
+		paddingBottom: 100,
 	},
 	heading: {
 		fontFamily: 'Volkhov',

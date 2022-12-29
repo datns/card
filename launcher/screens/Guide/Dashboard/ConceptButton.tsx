@@ -2,10 +2,11 @@ import React, { FC } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
+	useSharedValue,
 	withTiming,
 } from 'react-native-reanimated';
 import { Hoverable, Text } from '@metacraft/ui';
-import { sharedStyle, useHoveredStyle } from 'screens/Guide/shared';
+import { sharedStyle } from 'screens/Guide/shared';
 import resources from 'utils/resources';
 
 interface Props {
@@ -33,8 +34,10 @@ const ConceptButton: FC<Props> = ({
 		marginRight: isLast ? 0 : 20,
 	};
 
+	const animatedOpacity = useSharedValue(0.5);
+
 	const animatedContainer = useAnimatedStyle(() => ({
-		opacity: withTiming(isSelected ? 1 : 0.5),
+		opacity: withTiming(isSelected ? 1 : animatedOpacity.value),
 	}));
 
 	const animatedImage = useAnimatedStyle(() => {
@@ -43,7 +46,9 @@ const ConceptButton: FC<Props> = ({
 			height: 88,
 			position: 'absolute',
 			marginLeft: 20,
-			opacity: withTiming(isSelected ? 1 : 0, { duration: 400 }),
+			opacity: withTiming(isSelected ? 1 : animatedOpacity.value, {
+				duration: 400,
+			}),
 		};
 	});
 
@@ -55,6 +60,9 @@ const ConceptButton: FC<Props> = ({
 		backgroundColor: withTiming(isSelected ? '#edede8' : '#423c36'),
 	}));
 
+	const onHoverIn = () => (animatedOpacity.value = 1);
+	const onHoverOut = () => (animatedOpacity.value = 0.5);
+
 	return (
 		<View>
 			<AnimatedTouchable
@@ -63,24 +71,27 @@ const ConceptButton: FC<Props> = ({
 				onPress={onPress}
 				disabled={isSelected}
 			>
-				{isSelected && (
-					<Animated.Image
-						source={resources.guide.effectOverlay}
-						style={animatedImage}
-					/>
-				)}
-				<Hoverable animatedStyle={useHoveredStyle} style={styles.content}>
+				<Animated.Image
+					source={resources.guide.effectOverlay}
+					style={animatedImage}
+				/>
+				<Hoverable
+					style={styles.content}
+					onHoverIn={onHoverIn}
+					onHoverOut={onHoverOut}
+				>
 					<Animated.View>
 						<Image source={icon} style={styles.icon} />
 						<Text style={[sharedStyle.textShadow, styles.label]}>{label}</Text>
 					</Animated.View>
 				</Hoverable>
 			</AnimatedTouchable>
-			<Animated.View
+			<AnimatedTouchable
 				style={[outlineStyle, styles.indicatorOutline, extraStyle]}
+				onPress={onPress}
 			>
 				<Animated.View style={[indicatorStyle, styles.indicator]} />
-			</Animated.View>
+			</AnimatedTouchable>
 		</View>
 	);
 };
@@ -91,6 +102,7 @@ const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
 		justifyContent: 'center',
+		width: 105,
 	},
 	content: {
 		alignItems: 'center',

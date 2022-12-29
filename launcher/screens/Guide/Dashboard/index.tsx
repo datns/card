@@ -98,8 +98,8 @@ const GuideDashboard: React.FC = () => {
 					<Cards />
 				</View>
 				<Elemental />
-				<Footer />
 			</View>
+			<Footer />
 		</ScrollLayout>
 	);
 };

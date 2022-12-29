@@ -42,13 +42,7 @@ const Cards: React.FC<Record<string, unknown>> = () => {
 			<Text style={styles.subHeading}>Getting to know your Card</Text>
 			<Text style={styles.content}>{card.intro}</Text>
 			<Image source={resources.guide.cardExplain} style={imageStyle} />
-			<Concept
-				content={card}
-				containerStyle={{
-					justifyContent: 'flex-start',
-				}}
-				renderDescription={renderDescription}
-			/>
+			<Concept content={card} renderDescription={renderDescription} />
 		</View>
 	);
 };
@@ -58,7 +52,6 @@ export default Cards;
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: 50,
-		paddingBottom: 80,
 	},
 	subHeading: {
 		fontSize: 30,
