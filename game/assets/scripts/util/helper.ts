@@ -4,19 +4,16 @@ import { PlayerIds } from './types';
 
 const { ElementalType, ClassType } = Engine;
 
-export const extractPlayerIds = (
-	myId: string,
-	{ firstPlayer, secondPlayer }: DuelConfig,
-): PlayerIds => {
-	if (myId === firstPlayer.id) {
+export const extractPlayerIds = (duel: DuelConfig, myId: string): PlayerIds => {
+	if (myId === duel.firstPlayer.id) {
 		return {
-			me: firstPlayer.id,
-			enemy: secondPlayer.id,
+			me: duel.firstPlayer.id,
+			enemy: duel.secondPlayer.id,
 		};
 	} else {
 		return {
-			me: secondPlayer.id,
-			enemy: firstPlayer.id,
+			me: duel.secondPlayer.id,
+			enemy: duel.firstPlayer.id,
 		};
 	}
 };

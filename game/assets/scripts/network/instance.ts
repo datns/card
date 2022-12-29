@@ -18,15 +18,17 @@ export const send = (payload: CommandPayload): void => {
 
 const { getInitialState } = Engine;
 
+interface ConnectMatchPayload {
+	jwt: string;
+	context: JwtPayload;
+	duel: CardDuel;
+}
+
 ws.onmessage = (item) => {
 	const { command, payload }: CommandResponse = JSON.parse(item.data);
 
-	if (command === DuelCommands.GetState) {
-		const { jwt, context, duel } = payload as {
-			jwt: string;
-			context: JwtPayload;
-			duel: CardDuel;
-		};
+	if (command === DuelCommands.ConnectMatch) {
+		const { jwt, context, duel } = payload as ConnectMatchPayload;
 
 		system.serverState = {
 			jwt,
@@ -36,11 +38,11 @@ ws.onmessage = (item) => {
 		};
 		system.duel = getInitialState(duel.config as DuelConfig);
 		system.playerIds = extractPlayerIds(
-			context.userId,
 			duel.config as DuelConfig,
+			context.userId,
 		);
 		system.globalNodes.board?.emit('stateReady');
-		setTimeout(() => replayDuel(), 0); /* <-- semi delay execution */
+		setTimeout(() => replayDuel(), 200); /* <-- delay, for rendering */
 	}
 };
 
@@ -60,7 +62,7 @@ export const sendDuelConnect = (): void => {
 		JSON.stringify({
 			jwt,
 			client: 'cardGame',
-			command: DuelCommands.GetState,
+			command: DuelCommands.ConnectMatch,
 		}),
 	);
 };

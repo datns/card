@@ -1,4 +1,4 @@
-import Engine, { CardState } from '@metacraft/murg-engine';
+import Engine, { getCard } from '@metacraft/murg-engine';
 import { _decorator, Component, EventMouse, Node, UIOpacity } from 'cc';
 
 import { raiseCardAnimate, raisePreviewAnimate } from './tween/card';
@@ -28,34 +28,34 @@ export class DuelManager extends Component {
 			const { x, y } = e.getUILocation();
 			system.activeCard.setWorldPosition(x, y, 0);
 		} else if (system.duel && system.playerIds) {
-			const handCards = selectHand(system.duel, system.playerIds.me);
+			const handCardIds = selectHand(system.duel, system.playerIds.me);
 			const handPosition = system.globalNodes.playerHand.getWorldPosition();
 			const mousePosition = e.getUILocation();
-			let chosen: { card: Node; distance: number; state: CardState };
+			let chosen: { node: Node; distance: number; cardId: string };
 
 			/* <- Mouse moving near player Hand area */
 			if (mousePosition.y < handPosition.y + 106) {
-				for (let i = 0; i < handCards.length; i += 1) {
-					const state = handCards[i];
-					const card = system.cardRefs[state.id];
+				for (let i = 0; i < handCardIds.length; i += 1) {
+					const cardId = handCardIds[i];
+					const card = system.cardRefs[cardId];
 					if (card) {
 						const cardPosition = card.getWorldPosition();
 						const distance = Math.abs(mousePosition.x - cardPosition.x);
 						if (distance < (chosen?.distance || 70)) {
-							chosen = { card, state, distance };
+							chosen = { node: card, cardId, distance };
 						}
 					}
 				}
 			}
 
 			if (chosen) {
-				if (chosen.card.uuid !== system.activeCard?.uuid) {
+				if (chosen.node.uuid !== system.activeCard?.uuid) {
 					if (system.activeCard) {
 						this.onCardLeave(system.activeCard);
 					}
 
-					this.onCardHover(chosen.card, chosen.state);
-					system.activeCard = chosen.card;
+					this.onCardHover(chosen.node, chosen.cardId);
+					system.activeCard = chosen.node;
 				}
 			} else if (system.activeCard) {
 				this.onCardLeave(system.activeCard);
@@ -64,8 +64,8 @@ export class DuelManager extends Component {
 		}
 	}
 
-	onCardHover(node: Node, state: CardState): void {
-		const card = system.duel.map[state.id.substring(0, 9)];
+	onCardHover(node: Node, cardId: string): void {
+		const card = getCard(system.duel.cardMap, cardId);
 
 		system.globalNodes.cardPreview
 			.getChildByPath('Card')
