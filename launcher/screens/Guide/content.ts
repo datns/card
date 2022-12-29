@@ -156,6 +156,39 @@ export const card: ContentType = {
 						'Assassin\n' +
 						'Mastering the abilities to ignore the opponent’s defense and critical damage hit, when the Assassin Guild sets its sights on someone, that person has no chance of evading death.',
 				},
+				{
+					title: 'HERO ABILITY',
+					text:
+						'Each hero card usually has a special ability. These abilities can be boosting attack, defense, healing… Abilities are activated depending on certain condition described in the card text.\n' +
+						'\n' +
+						'The card text can break down into 2 components: **Activating Condition:** Effect Description\n' +
+						'\n' +
+						'List of Ability Activating Conditions:\n' +
+						'\n' +
+						'- **Summon**: Activated when a Card is summoned from Hand to Summon Zone\n' +
+						'- **Death**: Activated when the Card HP is 0\n' +
+						'- **Passive:** Always being activated\n' +
+						'- **Pre-fight**: Activated before the Battle Phase\n' +
+						'- **Post-fight:** Activated after the Battle Phase\n' +
+						'- **Attack:** Activated When attacking other units\n' +
+						'- **Defense:** Activated when being attacked\n' +
+						'- **Charge** (X): Activated after every (X) turn\n' +
+						'- **Glory:** Activated when this unit attacked the opposing player\n' +
+						'- **Banner:** Activated when being on the battlefield\n' +
+						'- **Inspire** **X:** Activated depends on X amount of inspiring condition\n' +
+						'\n' +
+						'Inspiring condition:\n' +
+						'+ Inspire Skill: Number of Abilities being activated\n' +
+						'+ Inspire Death: Number of allied units destroyed\n' +
+						'+ Inspire Summon: Number of summoned units each round\n' +
+						'+ Inspire Metal: Number of Metal Spell/ Ability being activated\n' +
+						'+ Inspire Wood: Number of Wood Spell/ Ability being activated\n' +
+						'+ Inspire Water: Number of Water Spell/ Ability being activated\n' +
+						'+ Inspire Fire: Number of Fire Spell/ Ability being activated\n' +
+						'+ Inspire Earth: Number of Earth Spell/ Ability being activated\n' +
+						'+ Inspire Light: Number of Light Spell/ Ability being activated\n' +
+						'+ Inspire Dark: Number of Dark Spell/ Ability being activated',
+				},
 			],
 		},
 		{

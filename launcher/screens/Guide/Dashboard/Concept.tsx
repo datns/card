@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 		height: 1,
 		backgroundColor: '#423c36',
 		position: 'absolute',
-		top: 146.5,
+		top: 126.5,
 	},
 	descriptionContainer: {
 		paddingHorizontal: 40,

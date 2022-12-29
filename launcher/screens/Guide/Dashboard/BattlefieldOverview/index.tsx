@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { DimensionState, dimensionState, Text } from '@metacraft/ui';
+import { DimensionState, dimensionState, Markdown, Text } from '@metacraft/ui';
 import { battlefield } from 'screens/Guide/content';
 import Concept from 'screens/Guide/Dashboard/Concept';
 import { headingSize, sharedStyle } from 'screens/Guide/shared';
@@ -17,7 +17,9 @@ const BattlefieldOverview: React.FC = () => {
 
 	const renderDescription = (des: string) => {
 		return (
-			<Text style={[sharedStyle.subHeading, styles.conceptContent]}>{des}</Text>
+			<View style={[sharedStyle.subHeading, styles.conceptContent]}>
+				<Markdown content={des} />
+			</View>
 		);
 	};
 

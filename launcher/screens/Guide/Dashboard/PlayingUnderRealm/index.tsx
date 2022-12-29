@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text } from '@metacraft/ui';
+import { Markdown, Text } from '@metacraft/ui';
 import { play } from 'screens/Guide/content';
 import Concept from 'screens/Guide/Dashboard/Concept';
 import { headingSize, sharedStyle } from 'screens/Guide/shared';
 
 const PlayingUnderRealm: React.FC = () => {
 	const renderDescription = (des: string) => {
-		return <Text>{des}</Text>;
+		return <Markdown content={des} />;
 	};
 
 	return (
