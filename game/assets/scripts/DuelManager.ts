@@ -11,11 +11,20 @@ import {
 import { system } from './util/system';
 
 const { ccclass } = _decorator;
-const { selectHand, getCard } = Engine;
+const {
+	selectHand,
+	selectGround,
+	getCard,
+	getFirstEmptyLeft,
+	getFirstEmptyRight,
+} = Engine;
 const NodeEvents = Node.EventType;
 
 @ccclass('DuelManager')
 export class DuelManager extends Component {
+	previewingLeft = false;
+	previewingRight = false;
+
 	start(): void {
 		system.globalNodes.duel = this.node;
 		system.globalNodes.cardPreview = this.node.getChildByPath('Card Preview');
@@ -24,9 +33,47 @@ export class DuelManager extends Component {
 		this.node.on(NodeEvents.MOUSE_MOVE, this.onMouseMove.bind(this));
 	}
 
+	onUnitPreview(): void {
+		const previewNode = system.globalNodes.unitTemplate;
+		const expoPositions = getExpoPositions(
+			system.duel.setting.groundSize,
+			system.globalNodes.playerGround,
+			110,
+		);
+
+		if (this.previewingLeft) {
+			const myGround = selectGround(system.duel, system.playerIds.me);
+			const summonIndex = getFirstEmptyLeft(myGround);
+			previewNode.setPosition(expoPositions[summonIndex]);
+		} else if (this.previewingRight) {
+			const myGround = selectGround(system.duel, system.playerIds.me);
+			const summonIndex = getFirstEmptyRight(myGround);
+			previewNode.setPosition(expoPositions[summonIndex]);
+		} else {
+			previewNode.setPosition(120, 680);
+		}
+	}
+
 	onCardDrag(e: EventMouse): void {
 		const { x, y } = e.getUILocation();
+		const zonePosition = system.globalNodes.summonZone.getWorldPosition();
 		system.activeCard?.setWorldPosition(x, y, 0);
+
+		if (y > zonePosition.y) {
+			if (x > zonePosition.x && !this.previewingRight) {
+				this.previewingLeft = false;
+				this.previewingRight = true;
+				this.onUnitPreview();
+			} else if (x < zonePosition.x && !this.previewingLeft) {
+				this.previewingLeft = true;
+				this.previewingRight = false;
+				this.onUnitPreview();
+			}
+		} else {
+			this.previewingLeft = false;
+			this.previewingRight = false;
+			this.onUnitPreview();
+		}
 	}
 
 	onCardDrop(e: EventMouse): void {
@@ -44,8 +91,11 @@ export class DuelManager extends Component {
 		if (y < zonePosition.y) {
 			fromDragToHandAnimate(system.activeCard, expoPositions[indexInHand]);
 		} else {
+			fromDragToHandAnimate(system.activeCard, expoPositions[indexInHand]);
 			console.log('summon!');
 		}
+
+		system.globalNodes.unitTemplate.setPosition(120, 680);
 	}
 
 	onMouseUp(e: EventMouse): void {

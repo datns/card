@@ -61,7 +61,7 @@ export class PreviewManager extends Component {
 		this.node.setPosition(190, 740);
 
 		if (system.activeCard) {
-			raiseCardAnimate(system.activeCard, 0, 0.05);
+			raiseCardAnimate(system.activeCard, 0, 0.02);
 			const uiOpacity = system.activeCard.getComponent(
 				'cc.UIOpacity',
 			) as UIOpacity;

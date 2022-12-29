@@ -15,6 +15,7 @@ export interface System {
 		board?: Node;
 		cardTemplate?: Node;
 		cardPreview?: Node;
+		unitTemplate?: Node;
 		playerDeck?: Node;
 		enemyDeck?: Node;
 		expoCenter?: Node /* <- reference position for Exposing cards */;

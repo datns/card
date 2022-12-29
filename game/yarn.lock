@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@metacraft/murg-engine@^0.0.24":
-  version "0.0.24"
-  resolved "https://registry.yarnpkg.com/@metacraft/murg-engine/-/murg-engine-0.0.24.tgz#f25fe99fc966b999c45a177cf691038aa7bfa5b7"
-  integrity sha512-TU9NpqjfZQfrXRSOe30dR3s2HKA7rYylvddoMV4efxrGNVf0JL/0RqxWIc6VKpeehTxFLz/jmYnVMjOIJUAp6A==
+"@metacraft/murg-engine@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@metacraft/murg-engine/-/murg-engine-0.0.27.tgz#67bd0497f6b8b705c474b4aea017199dece0e5f1"
+  integrity sha512-NW6ikJxSThTfcMJEYiSq4MbmGOazuiMeouGWVb/32UaN6ZDO9Btz0foud+cYVeXAUvwZY/W8WXPDIBIvqhqzLw==
   dependencies:
     mustache "^4.2.0"
 

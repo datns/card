@@ -111,7 +111,7 @@ export const animateDrawEnemyCard = ({
 export const raiseCardAnimate = async (
 	node: Node,
 	to = 100,
-	duration = 0.2,
+	duration = 0.1,
 ): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node.getChildByPath('front'))
