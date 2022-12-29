@@ -1,5 +1,6 @@
 import { _decorator, Component, EventMouse, Node, UIOpacity, Vec2 } from 'cc';
 
+import { raiseCardAnimate } from './tween/card';
 import { setCursor, system } from './util/system';
 
 const { ccclass } = _decorator;
@@ -51,6 +52,7 @@ export class PreviewManager extends Component {
 
 		if (distance > 5) {
 			this.hidePreview();
+			console.log('dragging!');
 			system.dragging = true;
 		}
 	}
@@ -59,6 +61,7 @@ export class PreviewManager extends Component {
 		this.node.setPosition(190, 740);
 
 		if (system.activeCard) {
+			raiseCardAnimate(system.activeCard, 0, 0.05);
 			const uiOpacity = system.activeCard.getComponent(
 				'cc.UIOpacity',
 			) as UIOpacity;
