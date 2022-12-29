@@ -22,9 +22,9 @@ import {
 import { setCursor, system } from './util/system';
 
 const { ccclass } = _decorator;
-const NodeEvents = Node.EventType;
 
 export interface CardData {
+	cardId: string;
 	owner: string;
 	card: Card;
 }
@@ -33,6 +33,7 @@ export interface CardData {
 export class CardManager extends Component {
 	isMouseInside = false;
 	data: CardData;
+	cardId: string;
 	animation: Animation;
 	uiOpacity: UIOpacity;
 	cardFront: Node;
@@ -70,10 +71,9 @@ export class CardManager extends Component {
 			.getChildByPath('front/class')
 			.getComponent(Sprite);
 
-		this.node.on('ready', this.onReady.bind(this));
-		this.node.on('distance', this.onMouseDistance.bind(this));
-		this.node.on('data', (data) => {
+		this.node.on('data', (data: CardData) => {
 			this.data = data;
+			this.cardId = data.cardId;
 			this.renderAll(this.data);
 		});
 	}
@@ -128,23 +128,5 @@ export class CardManager extends Component {
 	onMouseLeave(): void {
 		setCursor('auto');
 		this.uiOpacity.opacity = 255;
-	}
-
-	onReady(ready: boolean): void {
-		if (ready) {
-			this.cardFront.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
-			this.cardFront.on(NodeEvents.MOUSE_LEAVE, this.onMouseLeave.bind(this));
-		} else {
-			this.cardFront.off(NodeEvents.MOUSE_ENTER);
-			this.cardFront.off(NodeEvents.MOUSE_LEAVE);
-		}
-	}
-
-	onMouseDistance(distance: number): void {
-		if (this.isMouseInside && distance > 70) {
-			this.isMouseInside = false;
-		} else if (!this.isMouseInside && distance < 70) {
-			this.isMouseInside = true;
-		}
 	}
 }

@@ -35,7 +35,7 @@ export const runInitialDraw = ({ commands }: DuelCommandBundle): void => {
 		);
 
 		const card = getCard(system.duel.cardMap, cardId); // system.duel.map[cardId.substring(0, 9)];
-		setTimeout(() => cardNode.emit('data', { owner, card }), 0);
+		setTimeout(() => cardNode.emit('data', { cardId, owner, card }), 0);
 
 		if (isMyPhase) {
 			animateDrawPlayerCard({

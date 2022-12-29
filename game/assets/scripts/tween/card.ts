@@ -134,3 +134,15 @@ export const raisePreviewAnimate = async (
 			.start();
 	});
 };
+
+export const fromDragToHandAnimate = async (
+	node: Node,
+	to: Vec3,
+): Promise<void> => {
+	return new Promise((resolve) => {
+		tween(node)
+			.to(0.2, { position: to }, { easing: 'cubicInOut' })
+			.call(() => resolve())
+			.start();
+	});
+};

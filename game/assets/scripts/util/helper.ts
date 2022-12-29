@@ -1,4 +1,7 @@
 import Engine, { DuelConfig, TemplateFragment } from '@metacraft/murg-engine';
+import { Node } from 'cc';
+
+import { CardManager } from '../CardManager';
 
 import { PlayerIds } from './types';
 
@@ -16,6 +19,10 @@ export const extractPlayerIds = (duel: DuelConfig, myId: string): PlayerIds => {
 			enemy: duel.firstPlayer.id,
 		};
 	}
+};
+
+export const cardIdFromNode = (node: Node): string => {
+	return node.getComponent(CardManager)?.cardId;
 };
 
 export const delay = (seconds = 0): Promise<void> => {

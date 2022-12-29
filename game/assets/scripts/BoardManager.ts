@@ -29,7 +29,10 @@ export class BoardManager extends Component {
 		const enemyDeck = this.node.getChildByPath('Hud/Enemy Deck/foil') as Node;
 		const expoCenter = this.node.getChildByPath('Guide/expoCenter') as Node;
 		const playerHand = this.node.getChildByPath('Guide/playerHand') as Node;
+		const playerGround = this.node.getChildByPath('Guide/playerGround') as Node;
+		const summonZone = this.node.getChildByPath('Guide/summonZone') as Node;
 		const enemyHand = this.node.getChildByPath('Guide/enemyHand') as Node;
+		const enemyGround = this.node.getChildByPath('Guide/enemyGround') as Node;
 
 		this.animation = this.node.getComponent('cc.Animation') as Animation;
 		this.playerDeckCount = this.node
@@ -51,7 +54,10 @@ export class BoardManager extends Component {
 		system.globalNodes.enemyDeck = enemyDeck;
 		system.globalNodes.expoCenter = expoCenter;
 		system.globalNodes.playerHand = playerHand;
+		system.globalNodes.playerGround = playerGround;
+		system.globalNodes.summonZone = summonZone;
 		system.globalNodes.enemyHand = enemyHand;
+		system.globalNodes.enemyGround = enemyGround;
 
 		system.globalNodes.board.on('stateReady', this.onStateReady.bind(this));
 		if (system.serverState) this.onStateReady();

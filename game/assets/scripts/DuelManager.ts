@@ -1,11 +1,17 @@
-import Engine, { getCard } from '@metacraft/murg-engine';
+import Engine from '@metacraft/murg-engine';
 import { _decorator, Component, EventMouse, Node, UIOpacity } from 'cc';
+import { cardIdFromNode } from 'db://assets/scripts/util/helper';
+import { getExpoPositions } from 'db://assets/scripts/util/layout';
 
-import { raiseCardAnimate, raisePreviewAnimate } from './tween/card';
+import {
+	fromDragToHandAnimate,
+	raiseCardAnimate,
+	raisePreviewAnimate,
+} from './tween/card';
 import { system } from './util/system';
 
 const { ccclass } = _decorator;
-const { selectHand } = Engine;
+const { selectHand, getCard } = Engine;
 const NodeEvents = Node.EventType;
 
 @ccclass('DuelManager')
@@ -18,15 +24,42 @@ export class DuelManager extends Component {
 		this.node.on(NodeEvents.MOUSE_MOVE, this.onMouseMove.bind(this));
 	}
 
-	onMouseUp(): void {
+	onCardDrag(e: EventMouse): void {
+		const { x, y } = e.getUILocation();
+		system.activeCard?.setWorldPosition(x, y, 0);
+	}
+
+	onCardDrop(e: EventMouse): void {
+		const { y } = e.getUILocation();
+		const zonePosition = system.globalNodes.summonZone.getWorldPosition();
+		const cardId = cardIdFromNode(system.activeCard);
+		const hand = selectHand(system.duel, system.playerIds.me);
+		const indexInHand = hand.indexOf(cardId);
+		const expoPositions = getExpoPositions(
+			hand.length,
+			system.globalNodes.playerHand,
+			80,
+		);
+
+		if (y < zonePosition.y) {
+			fromDragToHandAnimate(system.activeCard, expoPositions[indexInHand]);
+		} else {
+			console.log('summon!');
+		}
+	}
+
+	onMouseUp(e: EventMouse): void {
+		if (system.dragging) {
+			this.onCardDrop(e);
+		}
+
 		system.dragging = false;
 		system.activeCard = null;
 	}
 
 	onMouseMove(e: EventMouse): void {
 		if (system.dragging && system.activeCard) {
-			const { x, y } = e.getUILocation();
-			system.activeCard.setWorldPosition(x, y, 0);
+			this.onCardDrag(e);
 		} else if (system.duel && system.playerIds) {
 			const handCardIds = selectHand(system.duel, system.playerIds.me);
 			const handPosition = system.globalNodes.playerHand.getWorldPosition();
@@ -40,10 +73,12 @@ export class DuelManager extends Component {
 					const card = system.cardRefs[cardId];
 					if (card) {
 						const cardPosition = card.getWorldPosition();
+						// if (cardPosition.y < handPosition.y + 10) {
 						const distance = Math.abs(mousePosition.x - cardPosition.x);
 						if (distance < (chosen?.distance || 70)) {
 							chosen = { node: card, cardId, distance };
 						}
+						// }
 					}
 				}
 			}

@@ -9,7 +9,6 @@ export const getExpoPositions = (
 ): Vec3[] => {
 	const positions: Vec3[] = [];
 	const center = centerNode.getPosition();
-	console.log(center);
 	const totalSpace = spacing * size;
 	const totalRadius = totalSpace / 2;
 	const itemRadius = spacing / 2;

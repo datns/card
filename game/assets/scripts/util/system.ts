@@ -19,7 +19,10 @@ export interface System {
 		enemyDeck?: Node;
 		expoCenter?: Node /* <- reference position for Exposing cards */;
 		playerHand?: Node;
+		playerGround?: Node;
+		summonZone?: Node;
 		enemyHand?: Node;
+		enemyGround?: Node;
 	};
 	cardRefs: Record<string, Node>;
 	previewing: boolean;
