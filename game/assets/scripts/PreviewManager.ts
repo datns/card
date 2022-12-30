@@ -1,8 +1,8 @@
 import { _decorator, Component, EventMouse, Node, UIOpacity, Vec2 } from 'cc';
 
 import { raiseCardAnimate } from './tween/card';
-import { cardIdFromNode } from './util/helper';
-import { setCursor, system } from './util/system';
+import { cardIdFromNode, setCursor } from './util/helper';
+import { system } from './util/system';
 
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;

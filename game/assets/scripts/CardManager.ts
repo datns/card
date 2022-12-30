@@ -18,8 +18,9 @@ import {
 	getFoilUri,
 	getSkillDesc,
 	getVisualUri,
+	setCursor,
 } from './util/helper';
-import { setCursor, system } from './util/system';
+import { system } from './util/system';
 
 const { ccclass } = _decorator;
 
