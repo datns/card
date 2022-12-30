@@ -35,6 +35,7 @@ const ConceptButton: FC<Props> = ({
 	};
 
 	const animatedOpacity = useSharedValue(0.5);
+	const effectOpacity = useSharedValue(0);
 
 	const animatedContainer = useAnimatedStyle(() => ({
 		opacity: withTiming(isSelected ? 1 : animatedOpacity.value),
@@ -46,7 +47,7 @@ const ConceptButton: FC<Props> = ({
 			height: 88,
 			position: 'absolute',
 			marginLeft: 20,
-			opacity: withTiming(isSelected ? 1 : animatedOpacity.value, {
+			opacity: withTiming(isSelected ? 1 : effectOpacity.value, {
 				duration: 400,
 			}),
 		};
@@ -60,8 +61,14 @@ const ConceptButton: FC<Props> = ({
 		backgroundColor: withTiming(isSelected ? '#edede8' : '#423c36'),
 	}));
 
-	const onHoverIn = () => (animatedOpacity.value = 1);
-	const onHoverOut = () => (animatedOpacity.value = 0.5);
+	const onHoverIn = () => {
+		animatedOpacity.value = 1;
+		effectOpacity.value = 1;
+	};
+	const onHoverOut = () => {
+		animatedOpacity.value = 0.5;
+		effectOpacity.value = 0;
+	};
 
 	return (
 		<View>

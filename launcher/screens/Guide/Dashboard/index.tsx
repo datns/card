@@ -2,10 +2,12 @@ import React, { useRef } from 'react';
 import { Image, NativeScrollEvent, StyleSheet, View } from 'react-native';
 import Animated, {
 	useAnimatedStyle,
+	useDerivedValue,
 	useSharedValue,
 } from 'react-native-reanimated';
 import { DimensionState, dimensionState } from '@metacraft/ui';
 import ScrollLayout from 'components/layouts/Scroll';
+import { navigationHeight } from 'components/Navigation/shared';
 import Elemental from 'screens/Guide/Dashboard/Elemental';
 import PlayingUnderRealm from 'screens/Guide/Dashboard/PlayingUnderRealm';
 import { useSnapshot } from 'utils/hook';
@@ -22,7 +24,6 @@ const GuideDashboard: React.FC = () => {
 		useSnapshot<DimensionState>(dimensionState);
 	const width = Math.min(windowSize.width, iStyles.wideContainer.maxWidth);
 	const mainBgTop = useSharedValue<number>(0);
-	const maxOffset = useSharedValue<number>(0);
 
 	const scrollOffset = useSharedValue(0);
 	const battlefieldRef = useRef<number | null>(null);
@@ -30,24 +31,26 @@ const GuideDashboard: React.FC = () => {
 	const cardRef = useRef<number | null>(null);
 	const scrollRef = useRef<Animated.ScrollView>(null);
 
+	const translate = useDerivedValue(() => {
+		return scrollOffset.value >= mainBgTop.value
+			? -mainBgTop.value
+			: -scrollOffset.value;
+	});
+
 	const onScroll = (e: NativeScrollEvent) => {
-		if (e.contentOffset.y <= maxOffset.value) {
-			scrollOffset.value = e.contentOffset.y;
-		}
+		scrollOffset.value = e.contentOffset.y;
 	};
 
 	const animatedImage = useAnimatedStyle(() => ({
 		width,
-		height: windowSize.height,
+		height: (width * 576) / 864,
 		alignItems: 'center',
 		position: 'absolute',
 		backgroundColor: 'black',
+		top: mainBgTop.value,
 		transform: [
 			{
-				translateY:
-					scrollOffset.value <= mainBgTop.value
-						? mainBgTop.value
-						: scrollOffset.value,
+				translateY: translate.value,
 			},
 		],
 	}));
@@ -64,11 +67,7 @@ const GuideDashboard: React.FC = () => {
 	const viewWidth = responsiveLevel > 1 ? '100%' : '60%';
 
 	return (
-		<ScrollLayout
-			scrollRef={scrollRef}
-			onScroll={onScroll}
-			style={[styles.container, iStyles.wideContainer]}
-		>
+		<View style={[styles.container, iStyles.wideContainer]}>
 			<Animated.View style={animatedImage}>
 				<Image
 					source={resources.guide.mainBackground}
@@ -76,31 +75,31 @@ const GuideDashboard: React.FC = () => {
 					style={{ width: '100%', height: '100%' }}
 				/>
 			</Animated.View>
-			<View
-				style={{ width: viewWidth, alignSelf: 'center' }}
-				onLayout={({ nativeEvent }) =>
-					(maxOffset.value = nativeEvent.layout.height - windowSize.height)
-				}
-			>
-				<Header onPress={onPress} />
-				<View
-					onLayout={(e) => {
-						mainBgTop.value = e.nativeEvent.layout.y;
-						battlefieldRef.current = e.nativeEvent.layout.y;
-					}}
-				>
-					<BattlefieldOverview />
+			<ScrollLayout scrollRef={scrollRef} onScroll={onScroll}>
+				<View style={{ width: viewWidth, alignSelf: 'center' }}>
+					<Header onPress={onPress} />
+					<View
+						onLayout={(e) => {
+							mainBgTop.value =
+								e.nativeEvent.layout.y +
+								navigationHeight.local +
+								navigationHeight.storm;
+							battlefieldRef.current = e.nativeEvent.layout.y;
+						}}
+					>
+						<BattlefieldOverview />
+					</View>
+					<View onLayout={(e) => (playRef.current = e.nativeEvent.layout.y)}>
+						<PlayingUnderRealm />
+					</View>
+					<View onLayout={(e) => (cardRef.current = e.nativeEvent.layout.y)}>
+						<Cards />
+					</View>
+					<Elemental />
+					<Footer />
 				</View>
-				<View onLayout={(e) => (playRef.current = e.nativeEvent.layout.y)}>
-					<PlayingUnderRealm />
-				</View>
-				<View onLayout={(e) => (cardRef.current = e.nativeEvent.layout.y)}>
-					<Cards />
-				</View>
-				<Elemental />
-			</View>
-			<Footer />
-		</ScrollLayout>
+			</ScrollLayout>
+		</View>
 	);
 };
 
