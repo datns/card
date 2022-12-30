@@ -80,7 +80,8 @@ export class CardManager extends Component {
 	}
 
 	renderAll({ card }: CardData): void {
-		this.cardName.string = card.name;
+		const title = card.title ? ` - ${card.title}` : '';
+		this.cardName.string = `${card.name}${title}`;
 		this.cardAttack.string = String(card.attribute.attack);
 		this.cardDefense.string = String(card.attribute.defense);
 		this.cardHealth.string = String(card.attribute.health);
