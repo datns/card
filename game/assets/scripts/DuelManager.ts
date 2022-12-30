@@ -1,13 +1,14 @@
 import Engine from '@metacraft/murg-engine';
 import { _decorator, Component, EventMouse, Node, UIOpacity } from 'cc';
-import { cardIdFromNode } from 'db://assets/scripts/util/helper';
-import { getExpoPositions } from 'db://assets/scripts/util/layout';
 
+import { sendCardSummon } from './network/instance';
 import {
 	fromDragToHandAnimate,
 	raiseCardAnimate,
 	raisePreviewAnimate,
 } from './tween/card';
+import { cardIdFromNode, getMyGround } from './util/helper';
+import { getGroundExpos, getHandExpos } from './util/layout';
 import { system } from './util/system';
 
 const { ccclass } = _decorator;
@@ -35,20 +36,16 @@ export class DuelManager extends Component {
 
 	onUnitPreview(): void {
 		const previewNode = system.globalNodes.unitTemplate;
-		const expoPositions = getExpoPositions(
-			system.duel.setting.groundSize,
-			system.globalNodes.playerGround,
-			110,
-		);
+		const expoPositions = getGroundExpos(system.globalNodes.playerGround);
 
 		if (this.previewingLeft) {
 			const myGround = selectGround(system.duel, system.playerIds.me);
 			const summonIndex = getFirstEmptyLeft(myGround);
-			previewNode.setPosition(expoPositions[summonIndex]);
+			previewNode.setPosition(expoPositions[0]);
 		} else if (this.previewingRight) {
 			const myGround = selectGround(system.duel, system.playerIds.me);
 			const summonIndex = getFirstEmptyRight(myGround);
-			previewNode.setPosition(expoPositions[summonIndex]);
+			previewNode.setPosition(expoPositions[10]);
 		} else {
 			previewNode.setPosition(120, 680);
 		}
@@ -77,22 +74,24 @@ export class DuelManager extends Component {
 	}
 
 	onCardDrop(e: EventMouse): void {
-		const { y } = e.getUILocation();
+		const { x, y } = e.getUILocation();
 		const zonePosition = system.globalNodes.summonZone.getWorldPosition();
 		const cardId = cardIdFromNode(system.activeCard);
 		const hand = selectHand(system.duel, system.playerIds.me);
 		const indexInHand = hand.indexOf(cardId);
-		const expoPositions = getExpoPositions(
-			hand.length,
+		const expoPositions = getHandExpos(
 			system.globalNodes.playerHand,
-			80,
+			hand.length,
 		);
 
 		if (y < zonePosition.y) {
 			fromDragToHandAnimate(system.activeCard, expoPositions[indexInHand]);
 		} else {
-			fromDragToHandAnimate(system.activeCard, expoPositions[indexInHand]);
-			console.log('summon!');
+			if (x > zonePosition.x) {
+				sendCardSummon(cardId, getFirstEmptyRight(getMyGround()));
+			} else {
+				sendCardSummon(cardId, getFirstEmptyLeft(getMyGround()));
+			}
 		}
 
 		system.globalNodes.unitTemplate.setPosition(120, 680);

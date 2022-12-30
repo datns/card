@@ -1,6 +1,6 @@
 import Engine, { DuelCommandBundle, DuelConfig } from '@metacraft/murg-engine';
 
-import { replayDuel } from '../replayer';
+import { synchronizeDuel } from '../replayer';
 import { CardDuel } from '../util/graphql';
 import { extractPlayerIds } from '../util/helper';
 import { system } from '../util/system';
@@ -10,7 +10,12 @@ import {
 	DuelCommands,
 	JwtPayload,
 } from '../util/types';
-export const ws = new WebSocket('ws://localhost:3006');
+
+const { move, getCardState, DuelPlace } = Engine;
+
+export const ws = new WebSocket(
+	'wss://94zbw8sdk9.execute-api.ap-northeast-1.amazonaws.com/prod/',
+);
 
 export const send = (payload: CommandPayload): void => {
 	ws.send(JSON.stringify(payload));
@@ -42,7 +47,7 @@ ws.onmessage = (item) => {
 			context.userId,
 		);
 		system.globalNodes.board?.emit('stateReady');
-		setTimeout(() => replayDuel(), 200); /* <-- delay, for rendering */
+		setTimeout(() => synchronizeDuel(), 200); /* <-- delay, for rendering */
 	}
 };
 
@@ -65,4 +70,30 @@ export const sendDuelConnect = (): void => {
 			command: DuelCommands.ConnectMatch,
 		}),
 	);
+};
+
+export const sendBundles = (bundles: DuelCommandBundle[]): void => {
+	bundles.forEach((bundle) => {
+		system.history.push(bundle);
+	});
+
+	synchronizeDuel();
+};
+
+export const sendCardSummon = (cardId: string, index: number): void => {
+	const state = getCardState(system.duel.stateMap, cardId);
+	const { commandBundles } = move.summonCard(system.duel, {
+		from: {
+			owner: state.owner,
+			id: state.id,
+			place: DuelPlace.Hand,
+		},
+		to: {
+			owner: state.owner,
+			index,
+			place: DuelPlace.Ground,
+		},
+	});
+
+	sendBundles(commandBundles);
 };

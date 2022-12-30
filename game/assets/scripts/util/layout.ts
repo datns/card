@@ -1,10 +1,11 @@
 import { Node, Vec3 } from 'cc';
 
+import { getGroundSize } from './helper';
 import { system } from './system';
 
-export const getExpoPositions = (
-	size: number,
+export const getPositionExpos = (
 	centerNode: Node = system.globalNodes.expoCenter,
+	size: number,
 	spacing = 220,
 ): Vec3[] => {
 	const positions: Vec3[] = [];
@@ -19,4 +20,16 @@ export const getExpoPositions = (
 	}
 
 	return positions;
+};
+
+export const getDistributeExpos = (size: number): Vec3[] => {
+	return getPositionExpos(system.globalNodes.expoCenter, size, 220);
+};
+
+export const getHandExpos = (at: Node, size: number): Vec3[] => {
+	return getPositionExpos(at, size, 80);
+};
+
+export const getGroundExpos = (at: Node): Vec3[] => {
+	return getPositionExpos(at, getGroundSize(), 100);
 };

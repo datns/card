@@ -3,9 +3,10 @@ import { Node, Vec2, Vec3 } from 'cc';
 
 import { CardManager } from '../CardManager';
 
+import { system } from './system';
 import { PlayerIds } from './types';
 
-const { ElementalType, ClassType } = Engine;
+const { ElementalType, ClassType, selectHand, selectGround } = Engine;
 
 export const extractPlayerIds = (duel: DuelConfig, myId: string): PlayerIds => {
 	if (myId === duel.firstPlayer.id) {
@@ -100,4 +101,38 @@ export const designScreenSize = new Vec2(1280, 720);
 
 export const extractMouseLocation = ({ x, y }: Vec2): Vec3 => {
 	return new Vec3(x - designScreenSize.x / 2, y - designScreenSize.y / 2, 0);
+};
+
+export const getGroundSize = (): number => {
+	return system.duel.setting?.groundSize;
+};
+
+export const selectDeckNode = (owner: string): Node => {
+	return system.playerIds.me === owner
+		? system.globalNodes.playerDeck
+		: system.globalNodes.enemyDeck;
+};
+
+export const selectGroundNode = (owner: string): Node => {
+	return system.playerIds.me === owner
+		? system.globalNodes.playerGround
+		: system.globalNodes.enemyGround;
+};
+
+export const selectHandNode = (owner: string): Node => {
+	return system.playerIds.me === owner
+		? system.globalNodes.playerHand
+		: system.globalNodes.enemyHand;
+};
+
+export const getHandSize = (owner: string): number => {
+	return selectHand(system.duel, owner)?.length;
+};
+
+export const getMyHandSize = (): number => {
+	return getHandSize(system.playerIds.me);
+};
+
+export const getMyGround = (): string[] => {
+	return selectGround(system.duel, system.playerIds.me);
 };

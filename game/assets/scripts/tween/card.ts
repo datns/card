@@ -146,3 +146,19 @@ export const fromDragToHandAnimate = async (
 			.start();
 	});
 };
+
+export const fromDragToGroundAnimate = (
+	node: Node,
+	to: Vec3,
+): Promise<void> => {
+	return new Promise((resolve) => {
+		tween(node)
+			.to(
+				0.2,
+				{ position: to, scale: new Vec3(0.23, 0.23, 1) },
+				{ easing: 'cubicInOut' },
+			)
+			.call(() => resolve())
+			.start();
+	});
+};
