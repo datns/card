@@ -135,13 +135,14 @@ export const raisePreviewAnimate = async (
 	});
 };
 
-export const fromDragToHandAnimate = async (
+export const simpleMove = async (
 	node: Node,
 	to: Vec3,
+	duration = 0.2,
 ): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node)
-			.to(0.2, { position: to }, { easing: 'cubicInOut' })
+			.to(duration, { position: to }, { easing: 'expoInOut' })
 			.call(() => resolve())
 			.start();
 	});
@@ -153,11 +154,22 @@ export const fromDragToGroundAnimate = (
 ): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node)
+			.to(0.05, { scale: new Vec3(0.52, 0.52, 1) }, { easing: 'expoOut' })
 			.to(
-				0.2,
+				0.1,
 				{ position: to, scale: new Vec3(0.23, 0.23, 1) },
-				{ easing: 'cubicInOut' },
+				{ easing: 'expoInOut' },
 			)
+			.call(() => resolve())
+			.start();
+	});
+};
+
+export const groundAppearAnimate = (node: Node): Promise<void> => {
+	return new Promise((resolve) => {
+		tween(node)
+			.set({ scale: new Vec3(0.2, 0.2, 1) })
+			.to(0.5, { scale: new Vec3(0.24, 0.24, 1) }, { easing: 'expoOut' })
 			.call(() => resolve())
 			.start();
 	});

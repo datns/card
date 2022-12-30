@@ -3,9 +3,9 @@ import { _decorator, Component, EventMouse, Node, UIOpacity } from 'cc';
 
 import { sendCardSummon } from './network/instance';
 import {
-	fromDragToHandAnimate,
 	raiseCardAnimate,
 	raisePreviewAnimate,
+	simpleMove,
 } from './tween/card';
 import { cardIdFromNode, getMyGround } from './util/helper';
 import { getGroundExpos, getHandExpos } from './util/layout';
@@ -41,11 +41,11 @@ export class DuelManager extends Component {
 		if (this.previewingLeft) {
 			const myGround = selectGround(system.duel, system.playerIds.me);
 			const summonIndex = getFirstEmptyLeft(myGround);
-			previewNode.setPosition(expoPositions[0]);
+			previewNode.setPosition(expoPositions[summonIndex]);
 		} else if (this.previewingRight) {
 			const myGround = selectGround(system.duel, system.playerIds.me);
 			const summonIndex = getFirstEmptyRight(myGround);
-			previewNode.setPosition(expoPositions[10]);
+			previewNode.setPosition(expoPositions[summonIndex]);
 		} else {
 			previewNode.setPosition(120, 680);
 		}
@@ -85,7 +85,7 @@ export class DuelManager extends Component {
 		);
 
 		if (y < zonePosition.y) {
-			fromDragToHandAnimate(system.activeCard, expoPositions[indexInHand]);
+			simpleMove(system.activeCard, expoPositions[indexInHand]);
 		} else {
 			if (x > zonePosition.x) {
 				sendCardSummon(cardId, getFirstEmptyRight(getMyGround()));

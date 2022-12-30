@@ -1,3 +1,4 @@
+import Engine from '@metacraft/murg-engine';
 import { _decorator, Component, EventMouse, Node, UIOpacity, Vec2 } from 'cc';
 
 import { raiseCardAnimate } from './tween/card';
@@ -6,6 +7,7 @@ import { system } from './util/system';
 
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
+const { selectPlayer, getCard, CardType } = Engine;
 
 interface Props {
 	card?: Node;
@@ -52,6 +54,12 @@ export class PreviewManager extends Component {
 		const distance = Vec2.distance(location, this.props.dragOffset);
 
 		if (distance > 5) {
+			const cardId = cardIdFromNode(system.activeCard);
+			const card = getCard(system.duel.cardMap, cardId);
+			const player = selectPlayer(system.duel, system.playerIds.me);
+
+			if (card.kind === CardType.Hero && player.perTurnHero <= 0) return;
+
 			this.hidePreview();
 			system.dragging = true;
 			system.globalNodes.unitTemplate.emit(
