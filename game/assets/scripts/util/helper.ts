@@ -1,5 +1,5 @@
 import Engine, { DuelConfig, TemplateFragment } from '@metacraft/murg-engine';
-import { Node } from 'cc';
+import { Node, Vec2, Vec3 } from 'cc';
 
 import { CardManager } from '../CardManager';
 
@@ -88,4 +88,16 @@ export const getSkillDesc = (fragments: TemplateFragment[]): string => {
 		.join('');
 
 	return `<color=#222222>${inner}</color>`;
+};
+
+export const setCursor = (cursor: string): void => {
+	const canvas = document?.getElementById?.('GameCanvas');
+	if (!canvas) return;
+	canvas.style.cursor = cursor;
+};
+
+export const designScreenSize = new Vec2(1280, 720);
+
+export const extractMouseLocation = ({ x, y }: Vec2): Vec3 => {
+	return new Vec3(x - designScreenSize.x / 2, y - designScreenSize.y / 2, 0);
 };
