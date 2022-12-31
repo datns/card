@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from 'screens/Home';
 import StoryScreen from 'screens/Story';
+import CardLibraryStack from 'stacks/Browser/CardLibrary';
 import { useSnapshot } from 'utils/hook';
 
 import CardsStack from './Cards';
@@ -33,6 +34,7 @@ export const BrowserStack: FC = () => {
 				<Stack.Screen name="Mint" component={MintStack} />
 				<Stack.Screen name="Guide" component={GuideScreen} />
 				<Stack.Screen name="Story" component={StoryScreen} />
+				<Stack.Screen name="CardLibrary" component={CardLibraryStack} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

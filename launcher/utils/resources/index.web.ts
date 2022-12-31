@@ -221,4 +221,9 @@ export default {
 		labelShape: { uri: '/story/label-shape.png' },
 		chevron: { uri: '/story/chevron.png' },
 	},
+	cardLibrary: {
+		mainBackground: { uri: 'cardLibrary/main-background.png' },
+		cardsImage: { uri: 'cardLibrary/cards-image.png' },
+		searchBarBackground: { uri: '/cardLibrary/search-bar-background.png' },
+	},
 };

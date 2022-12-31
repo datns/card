@@ -189,4 +189,9 @@ export default {
 		labelShape: require('../../../assets/story/label-shape.png'),
 		chevron: require('../../../assets/story/chevron.png'),
 	},
+	cardLibrary: {
+		mainBackground: require('../../../assets/cardLibrary/main-background.png'),
+		cardsImage: require('../../../assets/cardLibrary/cards-image.png'),
+		searchBarBackground: require('../../../assets/cardLibrary/search-bar-background.png'),
+	},
 };
