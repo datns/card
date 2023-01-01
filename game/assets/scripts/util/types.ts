@@ -16,7 +16,7 @@ export interface CommandPayload {
 	command: DuelCommands;
 	context?: JwtPayload;
 	send?: (payload: Record<string, never>) => Promise<void>;
-	payload?: never;
+	payload?: any;
 }
 
 export interface CommandResponse {
