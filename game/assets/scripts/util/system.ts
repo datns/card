@@ -4,6 +4,7 @@ import { Node } from 'cc';
 import { PlayerIds, ServerState } from '../util/types';
 
 export interface System {
+	jwt?: string;
 	playerIds: PlayerIds;
 	serverState?: ServerState;
 	duel?: DuelState;

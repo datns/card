@@ -17,8 +17,15 @@ export const ws = new WebSocket(
 	'wss://94zbw8sdk9.execute-api.ap-northeast-1.amazonaws.com/prod/',
 );
 
-export const send = (payload: CommandPayload): void => {
-	ws.send(JSON.stringify(payload));
+export const sendCommand = (command: DuelCommands, payload?: never): void => {
+	const data: CommandPayload = {
+		jwt: system.jwt,
+		client: 'cardGame',
+		command,
+	};
+
+	if (data) data.payload = payload;
+	ws.send(JSON.stringify(data));
 };
 
 const { getInitialState } = Engine;
@@ -61,7 +68,8 @@ ws.onopen = () => {
 
 export const sendDuelConnect = (): void => {
 	const searchParams = new URLSearchParams(location.search);
-	const jwt = searchParams.get('jwt');
+	system.jwt = searchParams.get('jwt') as string;
+	sendCommand(DuelCommands.ConnectMatch);
 
 	ws.send(
 		JSON.stringify({
