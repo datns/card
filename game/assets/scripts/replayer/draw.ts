@@ -47,3 +47,8 @@ export const animateInitialDraw = ({ commands }: DuelCommandBundle): void => {
 		}
 	}
 };
+
+export const animateTurnDraw = ({ commands }: DuelCommandBundle): void => {
+	const fromPosition = selectDeckNode(system.duel.phaseOf).parent.getPosition();
+	console.log(commands);
+};
