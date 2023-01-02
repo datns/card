@@ -20,6 +20,7 @@ export interface CommandPayload {
 }
 
 export interface CommandResponse {
+	isMyCommand?: boolean;
 	command: DuelCommands;
 	payload: never;
 }

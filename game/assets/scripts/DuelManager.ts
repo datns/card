@@ -1,7 +1,6 @@
 import Engine from '@metacraft/murg-engine';
 import { _decorator, Component, EventMouse, Node, UIOpacity } from 'cc';
 
-import { sendCardSummon } from './network/instance';
 import {
 	raiseCardAnimate,
 	raisePreviewAnimate,
@@ -10,6 +9,7 @@ import {
 import { cardIdFromNode, getMyGround } from './util/helper';
 import { getGroundExpos, getHandExpos } from './util/layout';
 import { system } from './util/system';
+import { sendCardSummon } from './network';
 
 const { ccclass } = _decorator;
 const {

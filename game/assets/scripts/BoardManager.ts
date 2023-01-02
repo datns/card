@@ -1,8 +1,8 @@
 import Engine from '@metacraft/murg-engine';
 import { _decorator, Animation, Component, Label, Node } from 'cc';
 
-import { sendDuelConnect } from './network/instance';
 import { system } from './util/system';
+import { sendConnect } from './network';
 
 const { ccclass } = _decorator;
 const { selectDeck, selectPlayer } = Engine;
@@ -65,7 +65,7 @@ export class BoardManager extends Component {
 		if (system.serverState) this.onStateReady();
 
 		this.animation.play('ground-reveal');
-		sendDuelConnect();
+		sendConnect();
 	}
 
 	onStateReady(): void {
