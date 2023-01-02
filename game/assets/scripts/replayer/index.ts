@@ -16,6 +16,8 @@ export const synchronizeDuel = async (): Promise<void> => {
 	for (let i = 0; i < diff.fragment.length; i++) {
 		const bundle = diff.fragment[i] as DuelCommandBundle;
 
+		runCommandBundle(bundle);
+
 		if (bundle?.group === BundleGroup.InitialDraw) {
 			animateInitialDraw(bundle);
 		} else if (bundle?.group === BundleGroup.Summon) {
@@ -25,8 +27,6 @@ export const synchronizeDuel = async (): Promise<void> => {
 		if (diff.writeToHistory) {
 			system.history.push(bundle);
 		}
-
-		runCommandBundle(bundle);
 	}
 };
 
