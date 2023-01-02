@@ -9,12 +9,11 @@ import { JwtPayload } from '../util/types';
 const { getInitialState } = Engine;
 interface ConnectMatchPayload {
 	jwt: string;
-	isMine?: boolean;
 	context: JwtPayload;
 	duel: CardDuel;
 }
 
-export const connectMatch = (
+export const handleConnect = (
 	{ jwt, context, duel }: ConnectMatchPayload,
 	isMine?: boolean,
 ): void => {
@@ -34,4 +33,12 @@ export const connectMatch = (
 	system.globalNodes.board?.emit('stateReady');
 
 	setTimeout(() => synchronizeDuel(), 200);
+};
+
+export const handleBundles = (bundles: DuelCommandBundle[]): void => {
+	bundles.forEach((bundle) => {
+		system.history.push(bundle);
+	});
+
+	synchronizeDuel();
 };

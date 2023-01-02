@@ -3,6 +3,7 @@ import { instantiate, UIOpacity } from 'cc';
 
 import {
 	fromDragToGroundAnimate,
+	fromEnemyHandToGroundAnimate,
 	groundAppearAnimate,
 	simpleMove,
 } from '../tween/card';
@@ -18,22 +19,25 @@ export const animateSummon = ({ commands }: DuelCommandBundle): void => {
 
 		if (command.type === DuelCommandType.CardMove) {
 			const { owner, target } = command;
+			const isMySummon = owner === system.playerIds.me;
 			const cardNode = system.cardRefs[target.from.id];
-			const expoPositions = getGroundExpos(selectGroundNode(owner));
+			const groundPositions = getGroundExpos(selectGroundNode(owner));
+			const animator = isMySummon
+				? fromDragToGroundAnimate
+				: fromEnemyHandToGroundAnimate;
+			const unitNode = instantiate(system.globalNodes.unitTemplate);
 
-			fromDragToGroundAnimate(cardNode, expoPositions[target.to.index]).then(
-				() => {
-					const unitNode = instantiate(system.globalNodes.unitTemplate);
+			unitNode.parent = system.globalNodes.board;
+			unitNode.getComponent(UIOpacity).opacity = 255;
 
-					unitNode.parent = system.globalNodes.board;
-					unitNode.getComponent(UIOpacity).opacity = 255;
-					unitNode.setPosition(cardNode.getPosition());
+			animator(cardNode, groundPositions[target.to.index]).then(() => {
+				unitNode.emit('data', target.from.id);
+				unitNode.setPosition(cardNode.getPosition());
 
-					groundAppearAnimate(unitNode);
-					system.cardRefs[target.from.id] = unitNode;
-					cardNode.destroy();
-				},
-			);
+				groundAppearAnimate(unitNode);
+				system.cardRefs[target.from.id] = unitNode;
+				cardNode.destroy();
+			});
 
 			if (target.from.place === DuelPlace.Hand) {
 				reArrangeHand(owner);
