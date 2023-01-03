@@ -150,39 +150,22 @@ export const simpleMove = async (
 
 export const fromEnemyHandToGroundAnimate = (
 	node: Node,
+	from: Vec3,
 	to: Vec3,
 ): Promise<void> => {
 	return new Promise((resolve) => {
-		let flipped = false;
-		const r1 = Quat.fromEuler(new Quat(), 0, 180, 180);
+		const r1 = Quat.fromEuler(new Quat(), 0, 0, 180);
 		const r2 = Quat.fromEuler(new Quat(), 0, 0, 0);
-		const translate = tween(node).to(
-			2,
-			{ position: to },
-			{ easing: 'expoInOut' },
-		);
+		const translate = tween(node)
+			.set({ position: from })
+			.by(0.5, { position: new Vec3(0, 100, 0) })
+			.to(1.5, { position: to }, { easing: 'expoInOut' });
 		const scale = tween(node)
 			.to(1.5, { scale: new Vec3(0.3, 0.3, 1) }, { easing: 'expoInOut' })
-			.to(0.5, { scale: new Vec3(0.23, 0.23, 1) }, { easing: 'expoOut' });
+			.to(0.5, { scale: new Vec3(0.23, 0.23, 1) }, { easing: 'expoInOut' });
 		const rotate = tween(node)
 			.set({ rotation: r1 })
-			.to(
-				2,
-				{ rotation: r2 },
-				{
-					easing: 'expoInOut',
-					onUpdate: (node: Node) => {
-						if (flipped) return;
-						const angle = new Vec3(0, 0, 0);
-						node.rotation.getEulerAngles(angle);
-
-						if (angle.x < 90) {
-							node.getChildByPath('back').active = false;
-							flipped = true;
-						}
-					},
-				},
-			);
+			.to(1, { rotation: r2 }, { easing: 'expoInOut' });
 
 		tween(node)
 			.parallel(translate, scale, rotate)

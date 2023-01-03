@@ -19,25 +19,31 @@ export const animateSummon = ({ commands }: DuelCommandBundle): void => {
 
 		if (command.type === DuelCommandType.CardMove) {
 			const { owner, target } = command;
+			const toIndex = target.to.index;
 			const isMySummon = owner === system.playerIds.me;
 			const cardNode = system.cardRefs[target.from.id];
 			const groundPositions = getGroundExpos(selectGroundNode(owner));
-			const animator = isMySummon
-				? fromDragToGroundAnimate
-				: fromEnemyHandToGroundAnimate;
 			const unitNode = instantiate(system.globalNodes.unitTemplate);
 
 			unitNode.parent = system.globalNodes.board;
 			unitNode.getComponent(UIOpacity).opacity = 255;
+			system.cardRefs[target.from.id] = unitNode;
 
-			animator(cardNode, groundPositions[target.to.index]).then(() => {
-				unitNode.emit('data', target.from.id);
-				unitNode.setPosition(cardNode.getPosition());
-
-				groundAppearAnimate(unitNode);
-				system.cardRefs[target.from.id] = unitNode;
+			if (isMySummon) {
+				fromDragToGroundAnimate(cardNode, groundPositions[toIndex]).then(() => {
+					cardNode.destroy();
+					groundAppearAnimate(unitNode);
+				});
+			} else {
+				unitNode.getChildByPath('front').active = false;
 				cardNode.destroy();
-			});
+
+				fromEnemyHandToGroundAnimate(
+					unitNode,
+					cardNode.getPosition(),
+					groundPositions[toIndex],
+				);
+			}
 
 			if (target.from.place === DuelPlace.Hand) {
 				reArrangeHand(owner);

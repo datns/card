@@ -62,6 +62,7 @@ export class PreviewManager extends Component {
 
 			this.hidePreview();
 			system.dragging = true;
+			system.globalNodes.unitTemplate.getChildByPath('back').active = false;
 			system.globalNodes.unitTemplate.emit(
 				'data',
 				cardIdFromNode(system.activeCard),

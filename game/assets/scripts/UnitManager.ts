@@ -27,11 +27,19 @@ export class UnitManager extends Component {
 
 	start(): void {
 		this.uiOpacity = this.node.getComponent(UIOpacity);
-		this.cardFoil = this.node.getChildByPath('foil').getComponent(Sprite);
-		this.cardVisual = this.node.getChildByPath('visual').getComponent(Sprite);
-		this.cardAttack = this.node.getChildByPath('attack').getComponent(Label);
-		this.cardDefense = this.node.getChildByPath('defense').getComponent(Label);
-		this.cardHealth = this.node.getChildByPath('health').getComponent(Label);
+		this.cardFoil = this.node.getChildByPath('front/foil').getComponent(Sprite);
+		this.cardVisual = this.node
+			.getChildByPath('front/visual')
+			.getComponent(Sprite);
+		this.cardAttack = this.node
+			.getChildByPath('front/attack')
+			.getComponent(Label);
+		this.cardDefense = this.node
+			.getChildByPath('front/defense')
+			.getComponent(Label);
+		this.cardHealth = this.node
+			.getChildByPath('front/health')
+			.getComponent(Label);
 
 		this.node.on('data', (cardId: string) => {
 			this.cardId = cardId;
