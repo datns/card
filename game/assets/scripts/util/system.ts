@@ -17,7 +17,9 @@ export interface System {
 		unitTemplate?: Node;
 		playerDeck?: Node;
 		enemyDeck?: Node;
-		expoCenter?: Node /* <- reference position for Exposing cards */;
+		centerExpo?: Node /* <- reference position for Exposing cards */;
+		leftExpo?: Node;
+		rightExpo?: Node;
 		playerHand?: Node;
 		playerGround?: Node;
 		summonZone?: Node;
