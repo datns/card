@@ -20,11 +20,11 @@ export const synchronizeDuel = async (): Promise<void> => {
 		runCommandBundle(bundle);
 
 		if (bundleGroup === BundleGroup.InitialDraw) {
-			animateInitialDraw(bundle);
+			await animateInitialDraw(bundle);
 		} else if (bundleGroup === BundleGroup.TurnDraw) {
-			animateTurnDraw(bundle);
+			await animateTurnDraw(bundle);
 		} else if (bundleGroup === BundleGroup.Summon) {
-			animateSummon(bundle);
+			await animateSummon(bundle);
 		}
 
 		if (diff.writeToHistory) {

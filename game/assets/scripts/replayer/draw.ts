@@ -6,46 +6,60 @@ import { selectDeckNode, selectHandNode } from '../util/helper';
 import { getDistributeExpos, getHandExpos } from '../util/layout';
 import { system } from '../util/system';
 
-const { getCard } = Engine;
+const { getCard, selectHand } = Engine;
 
-export const animateInitialDraw = ({ commands }: DuelCommandBundle): void => {
-	const fromPosition = selectDeckNode(system.duel.phaseOf).parent.getPosition();
-	const expoPositions = getDistributeExpos(commands.length);
-	const handPositions = getHandExpos(
-		selectHandNode(system.duel.phaseOf),
-		commands.length,
-	);
+export const animateInitialDraw = async ({
+	commands,
+}: DuelCommandBundle): Promise<void> => {
+	return new Promise((resolve) => {
+		let completeCount = 0;
+		const fromPosition = selectDeckNode(
+			system.duel.phaseOf,
+		).parent.getPosition();
+		const expoPositions = getDistributeExpos(commands.length);
+		const handPositions = getHandExpos(
+			selectHandNode(system.duel.phaseOf),
+			commands.length,
+		);
 
-	for (let i = 0; i < commands.length; i += 1) {
-		const command = commands[i];
-		const { owner, id: cardId } = command.target.from;
-		const expoPosition = expoPositions[i];
-		const handPosition = handPositions[i];
-		const cardNode = instantiate(system.globalNodes.cardTemplate);
+		const onAnimateComplete = () => {
+			completeCount += 1;
+			if (completeCount >= commands.length) {
+				resolve();
+			}
+		};
 
-		cardNode.parent = system.globalNodes.board;
-		system.cardRefs[cardId] = cardNode;
+		for (let i = 0; i < commands.length; i += 1) {
+			const command = commands[i];
+			const { owner, id: cardId } = command.target.from;
+			const expoPosition = expoPositions[i];
+			const handPosition = handPositions[i];
+			const cardNode = instantiate(system.globalNodes.cardTemplate);
 
-		const card = getCard(system.duel.cardMap, cardId); // system.duel.map[cardId.substring(0, 9)];
-		setTimeout(() => cardNode.emit('data', { cardId, owner, card }), 0);
+			cardNode.parent = system.globalNodes.board;
+			system.cardRefs[cardId] = cardNode;
 
-		if (system.duel.phaseOf === system.playerIds.me) {
-			animateDrawPlayerCard({
-				node: cardNode,
-				from: fromPosition,
-				dest: handPosition,
-				expoDest: expoPosition,
-				delay: i * 0.3,
-			});
-		} else {
-			animateDrawEnemyCard({
-				node: cardNode,
-				from: fromPosition,
-				dest: handPosition,
-				delay: i * 0.2,
-			});
+			const card = getCard(system.duel.cardMap, cardId); // system.duel.map[cardId.substring(0, 9)];
+			setTimeout(() => cardNode.emit('data', { cardId, owner, card }), 0);
+
+			if (system.duel.phaseOf === system.playerIds.me) {
+				animateDrawPlayerCard({
+					node: cardNode,
+					from: fromPosition,
+					dest: handPosition,
+					expoDest: expoPosition,
+					delay: i * 0.3,
+				}).then(onAnimateComplete);
+			} else {
+				animateDrawEnemyCard({
+					node: cardNode,
+					from: fromPosition,
+					dest: handPosition,
+					delay: i * 0.2,
+				}).then(onAnimateComplete);
+			}
 		}
-	}
+	});
 };
 
 export const animateTurnDraw = ({ commands }: DuelCommandBundle): void => {

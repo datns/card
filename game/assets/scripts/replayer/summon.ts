@@ -5,13 +5,14 @@ import {
 	fromDragToGroundAnimate,
 	fromEnemyHandToGroundAnimate,
 	groundAppearAnimate,
-	simpleMove,
 } from '../tween/card';
-import { selectGroundNode, selectHandNode } from '../util/helper';
-import { getGroundExpos, getHandExpos } from '../util/layout';
+import { selectGroundNode } from '../util/helper';
+import { getGroundExpos } from '../util/layout';
 import { system } from '../util/system';
 
-const { DuelCommandType, selectHand, DuelPlace } = Engine;
+import { reArrangeHand } from './util';
+
+const { DuelCommandType, DuelPlace } = Engine;
 
 export const animateSummon = ({ commands }: DuelCommandBundle): void => {
 	for (let i = 0; i < commands.length; i += 1) {
@@ -49,15 +50,5 @@ export const animateSummon = ({ commands }: DuelCommandBundle): void => {
 				reArrangeHand(owner);
 			}
 		}
-	}
-};
-
-export const reArrangeHand = (owner: string): void => {
-	const handIds = selectHand(system.duel, owner);
-	const handPositions = getHandExpos(selectHandNode(owner), handIds.length);
-
-	for (let i = 0; i < handIds.length; i += 1) {
-		const cardNode = system.cardRefs[handIds[i]];
-		simpleMove(cardNode, handPositions[i]);
 	}
 };
