@@ -11,14 +11,12 @@ interface ConnectMatchPayload {
 	jwt: string;
 	context: JwtPayload;
 	duel: CardDuel;
-	bundles: DuelCommandBundle[];
 }
 
 export const handleConnect = (
-	{ jwt, context, duel, bundles }: ConnectMatchPayload,
+	{ jwt, context, duel }: ConnectMatchPayload,
 	isMyCommand?: boolean,
 ): void => {
-	console.log(bundles, '<--');
 	if (!isMyCommand) return;
 
 	system.serverState = {
