@@ -193,5 +193,9 @@ export default {
 		mainBackground: require('../../../assets/cardLibrary/main-background.png'),
 		cardsImage: require('../../../assets/cardLibrary/cards-image.png'),
 		searchBarBackground: require('../../../assets/cardLibrary/search-bar-background.png'),
+		arrow: require('../../../assets/cardLibrary/arrow.png'),
+		dropdownSide: require('../../../assets/cardLibrary/dropdown-side.png'),
+		dropdownButtonNormalRightEdge: require('../../../assets/cardLibrary/dropdown-button-normal-right-edge.png'),
+		dropdownButtonHoverRightEdge: require('../../../assets/cardLibrary/dropdown-button-hover-right-edge.png'),
 	},
 };

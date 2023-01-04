@@ -4,10 +4,13 @@ import { Text } from '@metacraft/ui';
 import ScrollLayout from 'components/layouts/Scroll';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { navigationHeight } from 'components/Navigation/shared';
+import Dropdown from 'screens/CardLibrary/Library/Dropdown';
+import { classesMock } from 'screens/CardLibrary/Library/mocks';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
 const Library: React.FC = () => {
+	const [selectedClass, setSelectedClass] = React.useState<number>(-1);
 	return (
 		<View style={[iStyles.wideContainer, styles.container]}>
 			<Image
@@ -34,6 +37,12 @@ const Library: React.FC = () => {
 					style={styles.searchBarBackground}
 				>
 					<Text>Search bar</Text>
+					<Dropdown
+						data={classesMock}
+						onSelect={setSelectedClass}
+						selectedIndex={selectedClass}
+						placeholder="All Classes"
+					/>
 				</ImageBackground>
 			</ScrollLayout>
 		</View>
@@ -72,5 +81,6 @@ const styles = StyleSheet.create({
 	searchBarBackground: {
 		width: '100%',
 		height: 130,
+		alignItems: 'center',
 	},
 });
