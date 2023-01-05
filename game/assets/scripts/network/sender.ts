@@ -1,4 +1,5 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
+import deepClone from 'lodash.clonedeep';
 
 import { synchronizeDuel } from '../replayer';
 import { system } from '../util/system';
@@ -38,7 +39,7 @@ export const sendBundles = (bundles: DuelCommandBundle[]): void => {
 
 export const sendCardSummon = (cardId: string, index: number): void => {
 	const state = getCardState(system.duel.stateMap, cardId);
-	const { commandBundles } = move.summonCard(system.duel, {
+	const { commandBundles } = move.summonCard(deepClone(system.duel), {
 		from: {
 			owner: state.owner,
 			id: state.id,
