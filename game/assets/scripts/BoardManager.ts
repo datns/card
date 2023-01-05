@@ -1,6 +1,9 @@
 import Engine, { PlayerState } from '@metacraft/murg-engine';
 import { _decorator, Animation, Component, Label, Node } from 'cc';
 
+import { simpleMove } from './tween/card';
+import { selectHandNode } from './util/helper';
+import { getHandExpos } from './util/layout';
 import { system } from './util/system';
 import { sendConnect } from './network';
 
@@ -109,6 +112,20 @@ export class BoardManager extends Component {
 				true,
 			),
 		);
+
+		this.unSubscribers.push(
+			system.duel.subscribe(
+				selectStateKey(system.duel, system.playerIds.me, DuelPlace.Hand),
+				this.onPlayerHandUpdate.bind(this),
+			),
+		);
+
+		this.unSubscribers.push(
+			system.duel.subscribe(
+				selectStateKey(system.duel, system.playerIds.enemy, DuelPlace.Hand),
+				this.onEnemyHandUpdate.bind(this),
+			),
+		);
 	}
 
 	onPlayerUpdate(player: PlayerState): void {
@@ -125,5 +142,25 @@ export class BoardManager extends Component {
 
 	onEnemyDeckUpdate(deck: string[]): void {
 		this.enemyDeckCount.string = String(deck.length);
+	}
+
+	onPlayerHandUpdate(hand: []): void {
+		this.reArrangeHand(system.playerIds.me, hand);
+	}
+
+	onEnemyHandUpdate(hand: []): void {
+		this.reArrangeHand(system.playerIds.enemy, hand);
+	}
+
+	reArrangeHand(owner: string, hand: []): void {
+		const handPositions = getHandExpos(selectHandNode(owner), hand.length);
+
+		for (let i = 0; i < hand.length; i += 1) {
+			const cardNode = system.cardRefs[hand[i]];
+
+			if (cardNode) {
+				simpleMove(cardNode, handPositions[i]);
+			}
+		}
 	}
 }

@@ -2,7 +2,6 @@ import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 import { instantiate } from 'cc';
 
 import { CardManager } from '../CardManager';
-import { reArrangeHand } from '../replayer/util';
 import { animateDrawEnemyCard, animateDrawPlayerCard } from '../tween/card';
 import { selectDeckNode, selectHandNode } from '../util/helper';
 import { getCenterExpos, getHandExpos, getRightExpos } from '../util/layout';
@@ -32,8 +31,6 @@ export const animateCardDraw = async ({
 				resolve();
 			}
 		};
-
-		reArrangeHand(phaseOf);
 
 		for (let i = 0; i < commands.length; i += 1) {
 			const handIndex = currentHand.length - commands.length + i;
