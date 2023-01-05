@@ -9,6 +9,7 @@ import {
 import { cardIdFromNode, getMyGround } from './util/helper';
 import { getGroundExpos, getHandExpos } from './util/layout';
 import { system } from './util/system';
+import { CardManager } from './CardManager';
 import { sendCardSummon } from './network';
 
 const { ccclass } = _decorator;
@@ -23,6 +24,7 @@ export class DuelManager extends Component {
 
 	start(): void {
 		system.globalNodes.duel = this.node;
+		system.globalNodes.unitPreview = this.node.getChildByPath('Unit Preview');
 		system.globalNodes.cardPreview = this.node.getChildByPath('Card Preview');
 
 		this.node.on(NodeEvents.MOUSE_UP, this.onMouseUp.bind(this));
@@ -159,7 +161,10 @@ export class DuelManager extends Component {
 	}
 
 	onCardHover(node: Node, cardId: string): void {
-		system.globalNodes.cardPreview.getChildByPath('Card').emit('data', cardId);
+		system.globalNodes.cardPreview
+			.getChildByPath('Card')
+			.getComponent(CardManager)
+			.setCardId(cardId);
 		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
 		raiseCardAnimate(node, 100);
 		raisePreviewAnimate(system.globalNodes.cardPreview);

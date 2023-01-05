@@ -100,6 +100,7 @@ export interface System {
 		board?: Node;
 		cardTemplate?: Node;
 		cardPreview?: Node;
+		unitPreview?: Node;
 		unitTemplate?: Node;
 		playerDeck?: Node;
 		enemyDeck?: Node;
@@ -160,3 +161,5 @@ export const system: System = {
 	previewing: false,
 	dragging: false,
 };
+
+globalThis.system = system;
