@@ -11,6 +11,7 @@ import { getGroundExpos, getHandExpos } from './util/layout';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
 import { sendCardSummon } from './network';
+import { UnitManager } from './UnitManager';
 
 const { ccclass } = _decorator;
 const { selectHand, selectGround, getFirstEmptyLeft, getFirstEmptyRight } =
@@ -24,7 +25,6 @@ export class DuelManager extends Component {
 
 	start(): void {
 		system.globalNodes.duel = this.node;
-		system.globalNodes.unitPreview = this.node.getChildByPath('Unit Preview');
 		system.globalNodes.cardPreview = this.node.getChildByPath('Card Preview');
 
 		this.node.on(NodeEvents.MOUSE_UP, this.onMouseUp.bind(this));
@@ -38,8 +38,12 @@ export class DuelManager extends Component {
 	}
 
 	onUnitPreview(): void {
-		const previewNode = system.globalNodes.unitTemplate;
+		const previewNode = system.globalNodes.unitPreview;
 		const expoPositions = getGroundExpos(system.globalNodes.playerGround);
+
+		previewNode
+			.getComponent(UnitManager)
+			.setCardId(cardIdFromNode(system.activeCard));
 
 		if (this.previewingLeft) {
 			const myGround = selectGround(system.duel, system.playerIds.me);
@@ -97,7 +101,7 @@ export class DuelManager extends Component {
 			}
 		}
 
-		system.globalNodes.unitTemplate.setPosition(120, 680);
+		system.globalNodes.unitPreview.setPosition(120, 680);
 	}
 
 	onMouseUp(e: EventMouse): void {

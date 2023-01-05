@@ -30,6 +30,7 @@ export class BoardManager extends Component {
 	start(): void {
 		const cardTemplate = this.node.getChildByPath('Card Template') as Node;
 		const unitTemplate = this.node.getChildByPath('Unit Template') as Node;
+		const unitPreview = this.node.getChildByPath('Unit Preview') as Node;
 		const playerDeck = this.node.getChildByPath('Hud/Player Deck/foil') as Node;
 		const enemyDeck = this.node.getChildByPath('Hud/Enemy Deck/foil') as Node;
 		const centerExpo = this.node.getChildByPath('Guide/centerExpo') as Node;
@@ -58,6 +59,7 @@ export class BoardManager extends Component {
 		system.globalNodes.board = this.node;
 		system.globalNodes.cardTemplate = cardTemplate;
 		system.globalNodes.unitTemplate = unitTemplate;
+		system.globalNodes.unitPreview = unitPreview;
 		system.globalNodes.playerDeck = playerDeck;
 		system.globalNodes.enemyDeck = enemyDeck;
 		system.globalNodes.centerExpo = centerExpo;

@@ -191,10 +191,10 @@ export const fromDragToGroundAnimate = (
 	});
 };
 
-export const groundAppearAnimate = (node: Node): Promise<void> => {
+export const groundAppearAnimate = (node: Node, from: Vec3): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node)
-			.set({ scale: new Vec3(0.2, 0.2, 1) })
+			.set({ scale: new Vec3(0.2, 0.2, 1), position: from })
 			.to(0.5, { scale: new Vec3(0.24, 0.24, 1) }, { easing: 'expoOut' })
 			.call(() => resolve())
 			.start();
