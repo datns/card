@@ -67,21 +67,28 @@ export class CardManager extends Component {
 			.getChildByPath('front/class')
 			.getComponent(Sprite);
 
-		this.node.on('data', (cardId: string) => {
-			if (this.cardId === cardId) return;
-
-			this.cardId = cardId;
-			this.unsubscribe?.();
-			this.unsubscribe = system.duel.subscribe(
-				`state#${cardId}`,
-				this.onStateChange.bind(this),
-				true,
-			);
-		});
+		if (this.cardId) {
+			this.subscribeCardChange();
+		}
 	}
 
 	onDestroy(): void {
 		this.unsubscribe?.();
+	}
+
+	setCardId(id: string): void {
+		if (id === this.cardId) return;
+		this.cardId = id;
+		if (this.cardFront) this.subscribeCardChange();
+	}
+
+	subscribeCardChange(): void {
+		this.unsubscribe?.();
+		this.unsubscribe = system.duel.subscribe(
+			`state#${this.cardId}`,
+			this.onStateChange.bind(this),
+			true,
+		);
 	}
 
 	onStateChange(state: CardState, lastState: CardState): void {
@@ -109,7 +116,6 @@ export class CardManager extends Component {
 		}
 
 		if (!lastState || cardChanged) {
-			console.log('render visual');
 			resources.load(getVisualUri(card.id), (err, spriteFrame: SpriteFrame) => {
 				if (!err) {
 					this.cardVisual.spriteFrame = spriteFrame;

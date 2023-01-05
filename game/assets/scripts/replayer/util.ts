@@ -54,6 +54,9 @@ export const reArrangeHand = (owner: string): void => {
 
 	for (let i = 0; i < handIds.length; i += 1) {
 		const cardNode = system.cardRefs[handIds[i]];
-		simpleMove(cardNode, handPositions[i]);
+
+		if (cardNode) {
+			simpleMove(cardNode, handPositions[i]);
+		}
 	}
 };

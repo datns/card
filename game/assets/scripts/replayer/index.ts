@@ -2,11 +2,13 @@ import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 
 import { system } from '../util/system';
 
-import { animateInitialDraw, animateTurnDraw } from './draw';
+import { animateCardDraw } from './draw';
 import { animateSummon } from './summon';
 import { extractHistoryDiff } from './util';
 
 const { BundleGroup, runCommand, mergeFragmentToState } = Engine;
+
+const cardDrawGroups = [BundleGroup.InitialDraw, BundleGroup.TurnDraw];
 
 export const synchronizeDuel = async (): Promise<void> => {
 	const localHistory = system.history || [];
@@ -16,13 +18,12 @@ export const synchronizeDuel = async (): Promise<void> => {
 	for (let i = 0; i < diff.fragment.length; i++) {
 		const bundle = diff.fragment[i] as DuelCommandBundle;
 		const bundleGroup = bundle?.group;
+		const isCardDrawBundle = cardDrawGroups.indexOf(bundleGroup) >= 0;
 
 		runCommandBundle(bundle);
 
-		if (bundleGroup === BundleGroup.InitialDraw) {
-			await animateInitialDraw(bundle);
-		} else if (bundleGroup === BundleGroup.TurnDraw) {
-			await animateTurnDraw(bundle);
+		if (isCardDrawBundle) {
+			await animateCardDraw(bundle);
 		} else if (bundleGroup === BundleGroup.Summon) {
 			await animateSummon(bundle);
 		}
