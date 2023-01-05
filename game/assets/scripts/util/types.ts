@@ -2,6 +2,7 @@ import { DuelCommandBundle, DuelConfig } from '@metacraft/murg-engine';
 
 export enum DuelCommands {
 	ConnectMatch = 'ConnectMatch',
+	SendBundle = 'SendBundle',
 }
 
 export interface JwtPayload {
@@ -12,13 +13,14 @@ export interface JwtPayload {
 export interface CommandPayload {
 	jwt: string;
 	client: string;
-	context: JwtPayload;
-	send: (payload: Record<string, never>) => Promise<void>;
 	command: DuelCommands;
-	payload: never;
+	context?: JwtPayload;
+	send?: (payload: Record<string, never>) => Promise<void>;
+	payload?: any;
 }
 
 export interface CommandResponse {
+	isMyCommand?: boolean;
 	command: DuelCommands;
 	payload: never;
 }

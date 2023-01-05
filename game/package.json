@@ -6,7 +6,7 @@
     "version": "3.6.2"
   },
   "dependencies": {
-    "@metacraft/murg-engine": "^0.0.27",
+    "@metacraft/murg-engine": "^0.0.30",
     "lodash": "^4.17.21"
   }
 }

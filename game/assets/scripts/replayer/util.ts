@@ -1,9 +1,12 @@
 import Engine, { DuelCommand, DuelCommandBundle } from '@metacraft/murg-engine';
 import isEqual from 'lodash.isequal';
 
+import { simpleMove } from '../tween/card';
+import { selectHandNode } from '../util/helper';
+import { getHandExpos } from '../util/layout';
 import { system } from '../util/system';
 
-const { runCommand, mergeFragmentToState } = Engine;
+const { selectHand, runCommand, mergeFragmentToState } = Engine;
 
 export interface HistoryDiff {
 	isConsist: boolean;
@@ -43,4 +46,14 @@ export const extractHistoryDiff = (
 
 export const runAndMergeCommand = (command: DuelCommand): void => {
 	mergeFragmentToState(system.duel, runCommand({ duel: system.duel, command }));
+};
+
+export const reArrangeHand = (owner: string): void => {
+	const handIds = selectHand(system.duel, owner);
+	const handPositions = getHandExpos(selectHandNode(owner), handIds.length);
+
+	for (let i = 0; i < handIds.length; i += 1) {
+		const cardNode = system.cardRefs[handIds[i]];
+		simpleMove(cardNode, handPositions[i]);
+	}
 };

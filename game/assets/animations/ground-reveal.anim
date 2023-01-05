@@ -62,7 +62,7 @@
   },
   {
     "__type__": "cc.animation.HierarchyPath",
-    "path": "fog"
+    "path": "Air/light-beam"
   },
   {
     "__type__": "cc.animation.ComponentPath",
@@ -200,24 +200,24 @@
     "_values": [
       {
         "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 2,
-        "tangentWeightMode": 2,
-        "value": 255,
+        "interpolationMode": 0,
+        "tangentWeightMode": 0,
+        "value": 0,
         "rightTangent": 0,
-        "rightTangentWeight": 0.27666667103767395,
+        "rightTangentWeight": 1,
         "leftTangent": 0,
         "leftTangentWeight": 1,
         "easingMethod": 0
       },
       {
         "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 2,
-        "tangentWeightMode": 1,
-        "value": 82,
+        "interpolationMode": 0,
+        "tangentWeightMode": 0,
+        "value": 46,
         "rightTangent": 0,
         "rightTangentWeight": 1,
         "leftTangent": 0,
-        "leftTangentWeight": 0.27666667103767395,
+        "leftTangentWeight": 1,
         "easingMethod": 0
       }
     ],
@@ -261,7 +261,7 @@
   },
   {
     "__type__": "cc.animation.HierarchyPath",
-    "path": "light-beam"
+    "path": "Air/fog"
   },
   {
     "__type__": "cc.animation.ComponentPath",
@@ -399,24 +399,24 @@
     "_values": [
       {
         "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 0,
-        "tangentWeightMode": 0,
-        "value": 0,
+        "interpolationMode": 2,
+        "tangentWeightMode": 2,
+        "value": 255,
         "rightTangent": 0,
-        "rightTangentWeight": 1,
+        "rightTangentWeight": 0.27666667103767395,
         "leftTangent": 0,
         "leftTangentWeight": 1,
         "easingMethod": 0
       },
       {
         "__type__": "cc.RealKeyframeValue",
-        "interpolationMode": 0,
-        "tangentWeightMode": 0,
-        "value": 46,
+        "interpolationMode": 2,
+        "tangentWeightMode": 1,
+        "value": 82,
         "rightTangent": 0,
         "rightTangentWeight": 1,
         "leftTangent": 0,
-        "leftTangentWeight": 1,
+        "leftTangentWeight": 0.27666667103767395,
         "easingMethod": 0
       }
     ],

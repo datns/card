@@ -1,8 +1,8 @@
 import Engine from '@metacraft/murg-engine';
 import { _decorator, Animation, Component, Label, Node } from 'cc';
 
-import { sendDuelConnect } from './network/instance';
 import { system } from './util/system';
+import { sendConnect } from './network';
 
 const { ccclass } = _decorator;
 const { selectDeck, selectPlayer } = Engine;
@@ -28,7 +28,9 @@ export class BoardManager extends Component {
 		const unitTemplate = this.node.getChildByPath('Unit Template') as Node;
 		const playerDeck = this.node.getChildByPath('Hud/Player Deck/foil') as Node;
 		const enemyDeck = this.node.getChildByPath('Hud/Enemy Deck/foil') as Node;
-		const expoCenter = this.node.getChildByPath('Guide/expoCenter') as Node;
+		const centerExpo = this.node.getChildByPath('Guide/centerExpo') as Node;
+		const leftExpo = this.node.getChildByPath('Guide/leftExpo') as Node;
+		const rightExpo = this.node.getChildByPath('Guide/rightExpo') as Node;
 		const playerHand = this.node.getChildByPath('Guide/playerHand') as Node;
 		const playerGround = this.node.getChildByPath('Guide/playerGround') as Node;
 		const summonZone = this.node.getChildByPath('Guide/summonZone') as Node;
@@ -54,7 +56,9 @@ export class BoardManager extends Component {
 		system.globalNodes.unitTemplate = unitTemplate;
 		system.globalNodes.playerDeck = playerDeck;
 		system.globalNodes.enemyDeck = enemyDeck;
-		system.globalNodes.expoCenter = expoCenter;
+		system.globalNodes.centerExpo = centerExpo;
+		system.globalNodes.leftExpo = leftExpo;
+		system.globalNodes.rightExpo = rightExpo;
 		system.globalNodes.playerHand = playerHand;
 		system.globalNodes.playerGround = playerGround;
 		system.globalNodes.summonZone = summonZone;
@@ -65,7 +69,7 @@ export class BoardManager extends Component {
 		if (system.serverState) this.onStateReady();
 
 		this.animation.play('ground-reveal');
-		sendDuelConnect();
+		sendConnect();
 	}
 
 	onStateReady(): void {

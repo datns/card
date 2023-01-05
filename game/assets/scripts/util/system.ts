@@ -4,6 +4,7 @@ import { Node } from 'cc';
 import { PlayerIds, ServerState } from '../util/types';
 
 export interface System {
+	jwt?: string;
 	playerIds: PlayerIds;
 	serverState?: ServerState;
 	duel?: DuelState;
@@ -16,7 +17,9 @@ export interface System {
 		unitTemplate?: Node;
 		playerDeck?: Node;
 		enemyDeck?: Node;
-		expoCenter?: Node /* <- reference position for Exposing cards */;
+		centerExpo?: Node /* <- reference position for Exposing cards */;
+		leftExpo?: Node;
+		rightExpo?: Node;
 		playerHand?: Node;
 		playerGround?: Node;
 		summonZone?: Node;
