@@ -1,13 +1,82 @@
-import { DuelCommandBundle, DuelState } from '@metacraft/murg-engine';
+import Engine, {
+	DuelCommandBundle,
+	DuelState,
+	PlayerState,
+} from '@metacraft/murg-engine';
 import { Node } from 'cc';
+import isEqual from 'lodash.isequal';
 
 import { PlayerIds, ServerState } from '../util/types';
+
+const { defaultSetting, DuelPhases, nanoId } = Engine;
+
+type ProxyListener = (value: any, lastValue?: any) => void;
+
+type DuelProxy = DuelState & {
+	subscribe?: (key: string, listener: ProxyListener) => () => void;
+	getSubscriptionCount?: () => number;
+};
+
+export const makeDuelProxy = (duel: DuelProxy): DuelProxy => {
+	const listenerMap: Record<string, Record<string, ProxyListener>> = {};
+
+	duel.getSubscriptionCount = () => {
+		return Object.keys(listenerMap).reduce((acc, key) => {
+			return acc + Object.keys(listenerMap[key]).length;
+		}, 0);
+	};
+
+	duel.subscribe = (key, listener) => {
+		const subscriptionId = nanoId();
+
+		if (listenerMap[key]) {
+			listenerMap[key][subscriptionId] = listener;
+		} else {
+			listenerMap[key] = {
+				[subscriptionId]: listener,
+			};
+		}
+
+		return () => {
+			delete listenerMap[key][subscriptionId];
+		};
+	};
+
+	duel.stateMap = new Proxy(duel.stateMap, {
+		set: (target, key, value) => {
+			if (isEqual(target[key as string], value)) return true;
+			const registeredGroup = listenerMap[`state#${key as string}`];
+
+			if (registeredGroup) {
+				Object.keys(registeredGroup).forEach((subscriptionId) => {
+					registeredGroup[subscriptionId]?.(value, target[key as string]);
+				});
+			}
+
+			target[key as string] = value;
+
+			return true;
+		},
+	});
+
+	return new Proxy(duel, {
+		set: (target, key, value) => {
+			if (isEqual(target[key as string], value)) return true;
+
+			const listeners = listenerMap[key as string] || [];
+			listeners.forEach((listener) => listener(value, target[key as string]));
+			target[key as string] = value;
+
+			return true;
+		},
+	});
+};
 
 export interface System {
 	jwt?: string;
 	playerIds: PlayerIds;
 	serverState?: ServerState;
-	duel?: DuelState;
+	duel?: DuelProxy;
 	history: DuelCommandBundle[];
 	globalNodes: {
 		duel?: Node;
@@ -32,11 +101,42 @@ export interface System {
 	activeCard?: Node;
 }
 
+const defaultPlayer: PlayerState = {
+	id: 'default',
+	health: defaultSetting.initialPlayerHealth,
+	attack: 0,
+	defense: 0,
+	perTurnHero: defaultSetting.perTurnHero,
+	perTurnTroop: defaultSetting.perTurnTroop,
+	perTurnDraw: defaultSetting.perTurnDraw,
+	perTurnSpell: defaultSetting.perTurnSpell,
+};
+
 export const system: System = {
 	playerIds: {
 		me: '',
 		enemy: '',
 	},
+	duel: makeDuelProxy({
+		cardMap: {},
+		stateMap: {},
+		turn: 0,
+		phase: DuelPhases.Draw,
+		phaseOf: '',
+		uniqueCardCount: 0,
+		setting: defaultSetting,
+		firstMover: '',
+		firstPlayer: defaultPlayer,
+		secondPlayer: defaultPlayer,
+		firstDeck: [],
+		secondDeck: [],
+		firstHand: [],
+		secondHand: [],
+		firstGround: [],
+		secondGround: [],
+		firstGrave: [],
+		secondGrave: [],
+	}),
 	cardRefs: {},
 	globalNodes: {},
 	history: [],

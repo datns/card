@@ -6,7 +6,7 @@ import { extractPlayerIds } from '../util/helper';
 import { system } from '../util/system';
 import { JwtPayload } from '../util/types';
 
-const { getInitialState } = Engine;
+const { getInitialState, mergeFragmentToState } = Engine;
 interface ConnectMatchPayload {
 	jwt: string;
 	context: JwtPayload;
@@ -18,6 +18,7 @@ export const handleConnect = (
 	isMyCommand?: boolean,
 ): void => {
 	if (!isMyCommand) return;
+	const state = getInitialState(duel.config as DuelConfig);
 
 	system.serverState = {
 		jwt,
@@ -29,7 +30,7 @@ export const handleConnect = (
 		duel.config as DuelConfig,
 		context.userId,
 	);
-	system.duel = getInitialState(duel.config as DuelConfig);
+	mergeFragmentToState(system.duel, state);
 	system.globalNodes.board?.emit('stateReady');
 
 	setTimeout(() => synchronizeDuel(), 200);

@@ -1,4 +1,4 @@
-import { Card } from '@metacraft/murg-engine';
+import Engine, { CardState } from '@metacraft/murg-engine';
 import {
 	_decorator,
 	Animation,
@@ -23,17 +23,12 @@ import {
 import { system } from './util/system';
 
 const { ccclass } = _decorator;
-
-export interface CardData {
-	cardId: string;
-	owner: string;
-	card: Card;
-}
+const { getCard } = Engine;
 
 @ccclass('CardManager')
 export class CardManager extends Component {
+	unsubscribe: () => void;
 	isMouseInside = false;
-	data: CardData;
 	cardId: string;
 	animation: Animation;
 	uiOpacity: UIOpacity;
@@ -72,14 +67,30 @@ export class CardManager extends Component {
 			.getChildByPath('front/class')
 			.getComponent(Sprite);
 
-		this.node.on('data', (data: CardData) => {
-			this.data = data;
-			this.cardId = data.cardId;
-			this.renderAll(this.data);
+		this.node.on('data', (cardId: string) => {
+			if (this.cardId === cardId) return;
+
+			this.unsubscribe?.();
+			this.unsubscribe = system.duel.subscribe(
+				`state#${cardId}`,
+				this.onStateChange.bind(this),
+			);
+
+			this.cardId = cardId;
+			this.renderAll();
 		});
 	}
 
-	renderAll({ card }: CardData): void {
+	onDestroy(): void {
+		this.unsubscribe?.();
+	}
+
+	onStateChange(current: CardState): void {
+		console.log(this.node.uuid, current, '<--');
+	}
+
+	renderAll(): void {
+		const card = getCard(system.duel.cardMap, this.cardId);
 		const title = card.title ? ` - ${card.title}` : '';
 		this.cardName.string = `${card.name}${title}`;
 		this.cardAttack.string = String(card.attribute.attack);
