@@ -1,4 +1,4 @@
-import Engine from '@metacraft/murg-engine';
+import { CardState } from '@metacraft/murg-engine';
 import {
 	_decorator,
 	Component,
@@ -13,10 +13,10 @@ import { getVisualUri } from './util/helper';
 import { system } from './util/system';
 
 const { ccclass } = _decorator;
-const { getCard, getCardState } = Engine;
 
 @ccclass('UnitManager')
 export class UnitManager extends Component {
+	unsubscribe: () => void;
 	cardId: string;
 	uiOpacity: UIOpacity;
 	cardFoil: Sprite;
@@ -41,24 +41,46 @@ export class UnitManager extends Component {
 			.getChildByPath('front/health')
 			.getComponent(Label);
 
-		this.node.on('data', (cardId: string) => {
-			this.cardId = cardId;
-			this.renderAll();
-		});
+		if (this.cardId) {
+			this.subscribeCardChange();
+		}
 	}
 
-	renderAll(): void {
-		const card = getCard(system.duel.cardMap, this.cardId);
-		const state = getCardState(system.duel.stateMap, this.cardId);
+	setCardId(id: string): void {
+		if (id === this.cardId) return;
+		this.cardId = id;
+		if (this.cardFoil) this.subscribeCardChange();
+	}
 
-		this.cardAttack.string = String(state.attack);
-		this.cardDefense.string = String(state.defense);
-		this.cardHealth.string = String(state.health);
+	subscribeCardChange(): void {
+		this.unsubscribe?.();
+		this.unsubscribe = system.duel.subscribe(
+			`state#${this.cardId}`,
+			this.onStateChange.bind(this),
+			true,
+		);
+	}
 
-		resources.load(getVisualUri(card.id), (err, spriteFrame: SpriteFrame) => {
-			if (!err) {
-				this.cardVisual.spriteFrame = spriteFrame;
-			}
-		});
+	onStateChange(state: CardState, lastState: CardState): void {
+		if (state.health !== lastState?.health) {
+			this.cardHealth.string = String(state.health);
+		}
+
+		if (state.attack !== lastState?.attack) {
+			this.cardAttack.string = String(state.attack);
+		}
+
+		if (state.defense !== lastState?.defense) {
+			this.cardDefense.string = String(state.defense);
+		}
+
+		if (!lastState) {
+			const visualUri = getVisualUri(state.id.substring(0, 9));
+			resources.load(visualUri, (err, spriteFrame: SpriteFrame) => {
+				if (!err) {
+					this.cardVisual.spriteFrame = spriteFrame;
+				}
+			});
+		}
 	}
 }
