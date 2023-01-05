@@ -1,11 +1,11 @@
-import Engine from '@metacraft/murg-engine';
+import Engine, { PlayerState } from '@metacraft/murg-engine';
 import { _decorator, Animation, Component, Label, Node } from 'cc';
 
 import { system } from './util/system';
 import { sendConnect } from './network';
 
 const { ccclass } = _decorator;
-const { selectDeck, selectPlayer } = Engine;
+const { DuelPlace, selectStateKey } = Engine;
 
 interface Props {
 	animation?: Animation;
@@ -15,6 +15,7 @@ interface Props {
 
 @ccclass('BoardManager')
 export class BoardManager extends Component {
+	unSubscribers: (() => void)[] = [];
 	animation: Animation;
 	playerDeckCount: Label;
 	playerHealth: Label;
@@ -72,15 +73,57 @@ export class BoardManager extends Component {
 		sendConnect();
 	}
 
-	onStateReady(): void {
-		const player = selectPlayer(system.duel, system.playerIds.me);
-		const enemy = selectPlayer(system.duel, system.playerIds.enemy);
-		const playerDeck = selectDeck(system.duel, system.playerIds.me);
-		const enemyDeck = selectDeck(system.duel, system.playerIds.enemy);
+	onDestroy(): void {
+		this.unSubscribers.forEach((unSub) => unSub());
+	}
 
-		this.playerDeckCount.string = playerDeck?.length?.toString?.() || '';
-		this.playerHealth.string = player.health.toString();
-		this.enemyDeckCount.string = enemyDeck?.length?.toString?.() || '';
-		this.enemyHealth.string = enemy.health.toString();
+	onStateReady(): void {
+		this.unSubscribers.push(
+			system.duel.subscribe(
+				selectStateKey(system.duel, system.playerIds.me, DuelPlace.Player),
+				this.onPlayerUpdate.bind(this),
+				true,
+			),
+		);
+
+		this.unSubscribers.push(
+			system.duel.subscribe(
+				selectStateKey(system.duel, system.playerIds.enemy, DuelPlace.Player),
+				this.onEnemyUpdate.bind(this),
+				true,
+			),
+		);
+
+		this.unSubscribers.push(
+			system.duel.subscribe(
+				selectStateKey(system.duel, system.playerIds.me, DuelPlace.Deck),
+				this.onPlayerDeckUpdate.bind(this),
+				true,
+			),
+		);
+
+		this.unSubscribers.push(
+			system.duel.subscribe(
+				selectStateKey(system.duel, system.playerIds.enemy, DuelPlace.Deck),
+				this.onEnemyDeckUpdate.bind(this),
+				true,
+			),
+		);
+	}
+
+	onPlayerUpdate(player: PlayerState): void {
+		this.playerHealth.string = String(player.health);
+	}
+
+	onPlayerDeckUpdate(deck: string[]): void {
+		this.playerDeckCount.string = String(deck.length);
+	}
+
+	onEnemyUpdate(enemy: PlayerState): void {
+		this.enemyHealth.string = String(enemy.health);
+	}
+
+	onEnemyDeckUpdate(deck: string[]): void {
+		this.enemyDeckCount.string = String(deck.length);
 	}
 }
