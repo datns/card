@@ -12,13 +12,8 @@ import { system } from './util/system';
 import { sendCardSummon } from './network';
 
 const { ccclass } = _decorator;
-const {
-	selectHand,
-	selectGround,
-	getCard,
-	getFirstEmptyLeft,
-	getFirstEmptyRight,
-} = Engine;
+const { selectHand, selectGround, getFirstEmptyLeft, getFirstEmptyRight } =
+	Engine;
 const NodeEvents = Node.EventType;
 
 @ccclass('DuelManager')
@@ -32,6 +27,12 @@ export class DuelManager extends Component {
 
 		this.node.on(NodeEvents.MOUSE_UP, this.onMouseUp.bind(this));
 		this.node.on(NodeEvents.MOUSE_MOVE, this.onMouseMove.bind(this));
+
+		if (document?.getElementById) {
+			document
+				.getElementById('GameCanvas')
+				.addEventListener('mouseout', this.onMouseOut.bind(this));
+		}
 	}
 
 	onUnitPreview(): void {
@@ -122,12 +123,12 @@ export class DuelManager extends Component {
 					const card = system.cardRefs[cardId];
 					if (card) {
 						const cardPosition = card.getWorldPosition();
-						// if (cardPosition.y < handPosition.y + 10) {
-						const distance = Math.abs(mousePosition.x - cardPosition.x);
-						if (distance < (chosen?.distance || 70)) {
-							chosen = { node: card, cardId, distance };
+						if (cardPosition.y < handPosition.y + 10) {
+							const distance = Math.abs(mousePosition.x - cardPosition.x);
+							if (distance < (chosen?.distance || 70)) {
+								chosen = { node: card, cardId, distance };
+							}
 						}
-						// }
 					}
 				}
 			}
@@ -148,12 +149,17 @@ export class DuelManager extends Component {
 		}
 	}
 
-	onCardHover(node: Node, cardId: string): void {
-		const card = getCard(system.duel.cardMap, cardId);
+	onMouseOut(): void {
+		if (system.dragging) {
+			system.activeCard?.setPosition(9999, 9999, 0);
+		} else if (system.activeCard) {
+			this.onCardLeave(system.activeCard);
+			system.activeCard = null;
+		}
+	}
 
-		system.globalNodes.cardPreview
-			.getChildByPath('Card')
-			.emit('data', { card });
+	onCardHover(node: Node, cardId: string): void {
+		system.globalNodes.cardPreview.getChildByPath('Card').emit('data', cardId);
 		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
 		raiseCardAnimate(node, 100);
 		raisePreviewAnimate(system.globalNodes.cardPreview);
