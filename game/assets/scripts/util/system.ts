@@ -13,7 +13,11 @@ const { defaultSetting, DuelPhases, nanoId } = Engine;
 type ProxyListener = (value: any, lastValue?: any) => void;
 
 type DuelProxy = DuelState & {
-	subscribe?: (key: string, listener: ProxyListener) => () => void;
+	subscribe?: (
+		key: string,
+		listener: ProxyListener,
+		initialEmmit?: boolean,
+	) => () => void;
 	getSubscriptionCount?: () => number;
 };
 
@@ -26,7 +30,7 @@ export const makeDuelProxy = (duel: DuelProxy): DuelProxy => {
 		}, 0);
 	};
 
-	duel.subscribe = (key, listener) => {
+	duel.subscribe = (key, listener, initialEmmit) => {
 		const subscriptionId = nanoId();
 
 		if (listenerMap[key]) {
@@ -35,6 +39,14 @@ export const makeDuelProxy = (duel: DuelProxy): DuelProxy => {
 			listenerMap[key] = {
 				[subscriptionId]: listener,
 			};
+		}
+
+		if (initialEmmit) {
+			if (key.startsWith('state#')) {
+				listener(duel.stateMap[key.substring(6)]);
+			} else {
+				listener(duel[key]);
+			}
 		}
 
 		return () => {
@@ -62,9 +74,14 @@ export const makeDuelProxy = (duel: DuelProxy): DuelProxy => {
 	return new Proxy(duel, {
 		set: (target, key, value) => {
 			if (isEqual(target[key as string], value)) return true;
+			const registeredGroup = listenerMap[key as string];
 
-			const listeners = listenerMap[key as string] || [];
-			listeners.forEach((listener) => listener(value, target[key as string]));
+			if (registeredGroup) {
+				Object.keys(registeredGroup).forEach((subscriptionId) => {
+					registeredGroup[subscriptionId]?.(value, target[key as string]);
+				});
+			}
+
 			target[key as string] = value;
 
 			return true;
