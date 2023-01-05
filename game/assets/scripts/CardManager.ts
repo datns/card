@@ -70,14 +70,13 @@ export class CardManager extends Component {
 		this.node.on('data', (cardId: string) => {
 			if (this.cardId === cardId) return;
 
+			this.cardId = cardId;
 			this.unsubscribe?.();
 			this.unsubscribe = system.duel.subscribe(
 				`state#${cardId}`,
 				this.onStateChange.bind(this),
+				true,
 			);
-
-			this.cardId = cardId;
-			this.renderAll();
 		});
 	}
 
@@ -85,36 +84,53 @@ export class CardManager extends Component {
 		this.unsubscribe?.();
 	}
 
-	onStateChange(current: CardState): void {
-		console.log(this.node.uuid, current, '<--');
-	}
+	onStateChange(state: CardState, lastState: CardState): void {
+		const card = getCard(system.duel.cardMap, state.id);
+		const cardChanged =
+			state.id.substring(0, 9) !== this.cardId.substring(0, 9);
 
-	renderAll(): void {
-		const card = getCard(system.duel.cardMap, this.cardId);
-		const title = card.title ? ` - ${card.title}` : '';
-		this.cardName.string = `${card.name}${title}`;
-		this.cardAttack.string = String(card.attribute.attack);
-		this.cardDefense.string = String(card.attribute.defense);
-		this.cardHealth.string = String(card.attribute.health);
-		this.cardSkill.string = getSkillDesc(card.skill.template as never);
+		if (!lastState) {
+			const title = card.title ? ` - ${card.title}` : '';
 
-		resources.load(getVisualUri(card.id), (err, spriteFrame: SpriteFrame) => {
-			if (!err) {
-				this.cardVisual.spriteFrame = spriteFrame;
-			}
-		});
+			this.cardName.string = `${card.name}${title}`;
+			this.cardSkill.string = getSkillDesc(card.skill.template as never);
+		}
 
-		resources.load(getFoilUri(card.id), (err, spriteFrame: SpriteFrame) => {
-			if (!err) {
-				this.cardFoil.spriteFrame = spriteFrame;
-			}
-		});
+		if (state.health !== lastState?.health) {
+			this.cardHealth.string = String(state.health);
+		}
 
-		resources.load(getClassUri(card.class), (err, spriteFrame: SpriteFrame) => {
-			if (!err) {
-				this.cardClass.spriteFrame = spriteFrame;
-			}
-		});
+		if (state.defense !== lastState?.defense) {
+			this.cardDefense.string = String(state.defense);
+		}
+
+		if (state.attack !== lastState?.attack) {
+			this.cardAttack.string = String(state.attack);
+		}
+
+		if (!lastState || cardChanged) {
+			console.log('render visual');
+			resources.load(getVisualUri(card.id), (err, spriteFrame: SpriteFrame) => {
+				if (!err) {
+					this.cardVisual.spriteFrame = spriteFrame;
+				}
+			});
+
+			resources.load(getFoilUri(card.id), (err, spriteFrame: SpriteFrame) => {
+				if (!err) {
+					this.cardFoil.spriteFrame = spriteFrame;
+				}
+			});
+
+			resources.load(
+				getClassUri(card.class),
+				(err, spriteFrame: SpriteFrame) => {
+					if (!err) {
+						this.cardClass.spriteFrame = spriteFrame;
+					}
+				},
+			);
+		}
 	}
 
 	showPreview(): void {
