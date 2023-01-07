@@ -233,5 +233,7 @@ export default {
 		dropdownButtonHoverRightEdge: {
 			uri: '/cardLibrary/dropdown-button-hover-right-edge.png',
 		},
+		searchBackground: { uri: '/cardLibrary/search-background.png' },
+		searchIcon: { uri: '/cardLibrary/search-icon.png' },
 	},
 };

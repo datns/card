@@ -2,16 +2,13 @@ import React from 'react';
 import {
 	Image,
 	ImageStyle,
+	StyleProp,
 	StyleSheet,
-	TouchableOpacity,
 	View,
+	ViewStyle,
 } from 'react-native';
-import Animated, {
-	useAnimatedStyle,
-	useSharedValue,
-	withTiming,
-} from 'react-native-reanimated';
-import { Hoverable, Text } from '@metacraft/ui';
+import { Text } from '@metacraft/ui';
+import CustomizedButton from 'screens/CardLibrary/Library/CustomizedButton';
 import { idleLayout } from 'utils/helper';
 import resources from 'utils/resources';
 
@@ -22,6 +19,7 @@ interface Props {
 	onSelect: (index: number) => void;
 	selectedIndex: number;
 	placeholder: string;
+	containerStyle?: StyleProp<ViewStyle>;
 }
 
 const Dropdown: React.FC<Props> = ({
@@ -29,40 +27,14 @@ const Dropdown: React.FC<Props> = ({
 	onSelect,
 	selectedIndex,
 	placeholder,
+	containerStyle,
 }) => {
 	const [layout, setLayout] = React.useState(idleLayout);
 	const [dropdownButtonHeight, setDropdownButtonHeight] =
 		React.useState<number>(0);
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const [dropdownHeight, setDropdownHeight] = React.useState<number>(0);
-	const ref = React.useRef<TouchableOpacity>(null);
-	const animatedOpacity = useSharedValue(0);
-
-	const middle = {
-		position: 'absolute',
-		top: 0,
-		left: 5,
-		right: 5,
-		height: layout.height,
-	} as ImageStyle;
-
-	const left = {
-		position: 'absolute',
-		top: 0,
-		height: layout.height,
-		aspectRatio: 1,
-		left: 0,
-	} as ImageStyle;
-
-	const right = {
-		position: 'absolute',
-		top: 0,
-		height: layout.height,
-		aspectRatio: 144 / 308,
-		right: 0,
-		justifyContent: 'center',
-		alignItems: 'center',
-	} as ImageStyle;
+	const ref = React.useRef<View>(null);
 
 	const leftSide = {
 		width: 3,
@@ -80,16 +52,6 @@ const Dropdown: React.FC<Props> = ({
 		position: 'absolute',
 		right: -3,
 	} as ImageStyle;
-
-	const animatedHoverStyle = useAnimatedStyle(() => {
-		return {
-			opacity: withTiming(animatedOpacity.value),
-		};
-	});
-
-	const onHoverIn = () => (animatedOpacity.value = 1);
-
-	const onHoverOut = () => (animatedOpacity.value = 0);
 
 	const showDropdown = () => {
 		ref?.current?.measure((_fx, _fy, _w, h, _px, py) => {
@@ -146,59 +108,20 @@ const Dropdown: React.FC<Props> = ({
 	};
 
 	return (
-		<View>
-			<TouchableOpacity
-				ref={ref}
+		<View
+			style={containerStyle}
+			onLayout={(e) => setLayout(e.nativeEvent.layout)}
+			ref={ref}
+		>
+			<CustomizedButton
 				onPress={toggleDropdown}
-				style={styles.container}
-				onLayout={(e) => setLayout(e.nativeEvent.layout)}
+				containerStyle={styles.container}
 			>
-				<Hoverable
-					style={{ ...middle, left: 0, right: 0, justifyContent: 'center' }}
-					onHoverIn={onHoverIn}
-					onHoverOut={onHoverOut}
-				>
-					<Animated.View>
-						<Image
-							source={resources.marketplace.underRealmButton.normal.middle}
-							resizeMode={'repeat'}
-							style={middle}
-						/>
-						<Image
-							source={resources.marketplace.underRealmButton.normal.left}
-							style={left}
-						/>
-						<Image
-							source={resources.cardLibrary.dropdownButtonNormalRightEdge}
-							style={right}
-						/>
-						<Animated.Image
-							source={resources.marketplace.underRealmButton.hover.middle}
-							resizeMode={'repeat'}
-							style={[middle, animatedHoverStyle]}
-						/>
-						<Animated.Image
-							source={resources.marketplace.underRealmButton.hover.left}
-							style={[left, animatedHoverStyle]}
-						/>
-						<Animated.Image
-							source={resources.cardLibrary.dropdownButtonHoverRightEdge}
-							style={[right, animatedHoverStyle]}
-						/>
-						<View style={right}>
-							<Image
-								source={resources.cardLibrary.arrow}
-								style={styles.arrow}
-							/>
-						</View>
-						<View>
-							<Text style={styles.labelButton}>
-								{selectedIndex > -1 ? data[selectedIndex].label : placeholder}
-							</Text>
-						</View>
-					</Animated.View>
-				</Hoverable>
-			</TouchableOpacity>
+				<Image source={resources.cardLibrary.arrow} style={styles.arrow} />
+				<Text style={styles.labelButton}>
+					{selectedIndex > -1 ? data[selectedIndex].label : placeholder}
+				</Text>
+			</CustomizedButton>
 			{visible && renderDropDown()}
 		</View>
 	);
@@ -219,9 +142,10 @@ const styles = StyleSheet.create({
 		color: '#fff',
 	},
 	arrow: {
-		position: 'absolute',
 		width: 10,
 		height: 6,
+		position: 'absolute',
+		right: 20,
 	},
 	dropdownContainer: {
 		position: 'absolute',

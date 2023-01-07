@@ -5,12 +5,16 @@ import ScrollLayout from 'components/layouts/Scroll';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { navigationHeight } from 'components/Navigation/shared';
 import Dropdown from 'screens/CardLibrary/Library/Dropdown';
-import { classesMock } from 'screens/CardLibrary/Library/mocks';
+import { Typecard } from 'screens/CardLibrary/Library/mocks';
+import SearchBar from 'screens/CardLibrary/Library/SearchBar';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
+import FilterButton from "screens/CardLibrary/Library/CustomizedButton";
+import CustomizedButton from "screens/CardLibrary/Library/CustomizedButton";
 
 const Library: React.FC = () => {
 	const [selectedClass, setSelectedClass] = React.useState<number>(-1);
+	const [search, setSearch] = React.useState<string>('');
 	return (
 		<View style={[iStyles.wideContainer, styles.container]}>
 			<Image
@@ -36,13 +40,17 @@ const Library: React.FC = () => {
 					source={resources.cardLibrary.searchBarBackground}
 					style={styles.searchBarBackground}
 				>
-					<Text>Search bar</Text>
 					<Dropdown
-						data={classesMock}
+						data={Typecard}
 						onSelect={setSelectedClass}
 						selectedIndex={selectedClass}
-						placeholder="All Classes"
+						placeholder="Typecard"
+						containerStyle={{ marginRight: 8 }}
 					/>
+					<SearchBar value={search} onChangeText={setSearch} />
+					<CustomizedButton onPress={() => {}}>
+						<Text>Filter</Text>
+					</CustomizedButton>
 				</ImageBackground>
 			</ScrollLayout>
 		</View>
@@ -82,5 +90,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: 130,
 		alignItems: 'center',
+		flexDirection: 'row',
+		justifyContent: 'center',
 	},
 });

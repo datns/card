@@ -197,5 +197,7 @@ export default {
 		dropdownSide: require('../../../assets/cardLibrary/dropdown-side.png'),
 		dropdownButtonNormalRightEdge: require('../../../assets/cardLibrary/dropdown-button-normal-right-edge.png'),
 		dropdownButtonHoverRightEdge: require('../../../assets/cardLibrary/dropdown-button-hover-right-edge.png'),
+		searchBackground: require('../../../assets/cardLibrary/search-background.png'),
+		searchIcon: require('../../../assets/cardLibrary/search-icon.png'),
 	},
 };

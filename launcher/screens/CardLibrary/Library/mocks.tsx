@@ -1,30 +1,45 @@
-export const classesMock = [
+export const Classes = [
 	{
 		value: 'all',
 		label: 'All Classes',
 	},
 	{
-		value: 'demonHunter',
-		label: 'Demon Hunter',
+		value: 'assasin',
+		label: 'Assasin',
 	},
 	{
-		value: 'druid',
-		label: 'Druid',
+		value: 'knight',
+		label: 'Knight',
 	},
 	{
-		value: 'hunter',
-		label: 'Hunter',
+		value: 'tanker',
+		label: 'Tanker',
 	},
 	{
-		value: 'mage',
-		label: 'Mage',
+		value: 'wizard',
+		label: 'Wizard',
 	},
 	{
-		value: 'paladin',
-		label: 'Paladin',
+		value: 'summoner',
+		label: 'Summoner',
 	},
 	{
-		value: 'priest',
-		label: 'Priest',
+		value: 'beast',
+		label: 'Beast',
+	},
+];
+
+export const Typecard = [
+	{
+		label: 'Hero',
+		value: 'hero',
+	},
+	{
+		label: 'Troop',
+		value: 'troop',
+	},
+	{
+		label: 'Spell',
+		value: 'spell',
 	},
 ];
