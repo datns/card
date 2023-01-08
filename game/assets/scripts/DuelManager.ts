@@ -114,6 +114,8 @@ export class DuelManager extends Component {
 	}
 
 	onMouseMove(e: EventMouse): void {
+		if (system.duel.firstMover.length === 0) return;
+
 		if (system.dragging && system.activeCard) {
 			this.onCardDrag(e);
 		} else if (system.duel && system.playerIds) {
