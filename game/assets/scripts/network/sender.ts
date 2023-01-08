@@ -54,3 +54,7 @@ export const sendCardSummon = (cardId: string, index: number): void => {
 
 	sendBundles(commandBundles);
 };
+
+export const sendEndTurn = (): void => {
+	sendBundles(move.endTurn(system.duel).commandBundles);
+};

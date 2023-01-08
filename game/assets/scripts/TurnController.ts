@@ -3,9 +3,11 @@ import { _decorator, Button, Color, Component, Node } from 'cc';
 import { animateFade, animateSwapLabel } from './tween/common';
 import { setCursor } from './util/helper';
 import { system } from './util/system';
+import { sendEndTurn } from './network';
 
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
+const ButtonEvents = Button.EventType;
 
 @ccclass('TurnController')
 export class TurnController extends Component {
@@ -23,6 +25,7 @@ export class TurnController extends Component {
 
 		this.orb.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
 		this.orb.on(NodeEvents.MOUSE_LEAVE, this.onMouseLeave.bind(this));
+		this.orb.on(ButtonEvents.CLICK, this.onButtonClick.bind(this));
 
 		this.unSubscribers.push(
 			system.duel.subscribe('turn', this.onTurnChange.bind(this), true),
@@ -62,5 +65,9 @@ export class TurnController extends Component {
 
 	onMouseLeave(): void {
 		setCursor('auto');
+	}
+
+	onButtonClick(): void {
+		sendEndTurn();
 	}
 }
