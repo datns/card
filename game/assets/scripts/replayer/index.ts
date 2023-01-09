@@ -1,4 +1,6 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
+import { animateFights } from 'db://assets/scripts/replayer/fight';
+import { animateRibbonAppear } from 'db://assets/scripts/tween/hud';
 
 import { system } from '../util/system';
 
@@ -18,14 +20,24 @@ export const synchronizeDuel = async (): Promise<void> => {
 	for (let i = 0; i < diff.fragment.length; i++) {
 		const bundle = diff.fragment[i] as DuelCommandBundle;
 		const bundleGroup = bundle?.group;
+		const isMyPhase = bundle.phaseOf === system.playerIds.me;
 		const isCardDrawBundle = cardDrawGroups.indexOf(bundleGroup) >= 0;
+		const isTurnDraw = bundleGroup === BundleGroup.TurnDraw;
 
 		runCommandBundle(bundle);
 
-		if (isCardDrawBundle) {
+		if (isTurnDraw) {
+			if (isMyPhase) {
+				await animateRibbonAppear('Your Turn');
+			}
+
+			await animateCardDraw(bundle);
+		} else if (isCardDrawBundle) {
 			await animateCardDraw(bundle);
 		} else if (bundleGroup === BundleGroup.Summon) {
 			await animateSummon(bundle);
+		} else if (bundleGroup === BundleGroup.FightCombat) {
+			await animateFights(bundle);
 		}
 
 		if (diff.writeToHistory) {
