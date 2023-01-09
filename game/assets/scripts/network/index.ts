@@ -9,7 +9,7 @@ ws.onmessage = (item) => {
 	if (command === DuelCommands.ConnectMatch) {
 		handleConnect(payload, isMyCommand);
 	} else if (command === DuelCommands.SendBundle) {
-		if (!isMyCommand) handleBundles(payload);
+		handleBundles(payload);
 	}
 };
 
