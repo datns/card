@@ -1,3 +1,4 @@
+import Engine from '@metacraft/murg-engine';
 import { _decorator, Button, Color, Component, Node } from 'cc';
 
 import { animateFade, animateSwapLabel } from './tween/common';
@@ -6,6 +7,7 @@ import { system } from './util/system';
 import { sendEndTurn } from './network';
 
 const { ccclass } = _decorator;
+const { DuelPhases } = Engine;
 const NodeEvents = Node.EventType;
 const ButtonEvents = Button.EventType;
 
@@ -32,7 +34,15 @@ export class TurnController extends Component {
 		);
 
 		this.unSubscribers.push(
-			system.duel.subscribe('phaseOf', this.onPhaseOfChange.bind(this), true),
+			system.duel.subscribe('phase', (phase) =>
+				this.onPhaseChange(phase, system.duel.phaseOf),
+			),
+		);
+
+		this.unSubscribers.push(
+			system.duel.subscribe('phaseOf', (phaseOf) =>
+				this.onPhaseChange(system.duel.phase, phaseOf),
+			),
 		);
 	}
 
@@ -44,12 +54,15 @@ export class TurnController extends Component {
 		console.log(turn, '<-- turn changed');
 	}
 
-	onPhaseOfChange(owner: string): void {
-		const isMyPhase = system.playerIds.me === owner;
+	onPhaseChange(phase: string, phaseOf: string): void {
+		const isSetupPhase = phase === DuelPhases.Setup;
+		const isMyPhase = phaseOf === system.playerIds.me;
+		const button = this.orb.getComponent(Button);
 
-		this.orb.getComponent(Button).interactable = isMyPhase;
-		animateFade(this.playerTurnGlow, isMyPhase ? 255 : 0);
-		animateFade(this.enemyTurnGlow, isMyPhase ? 0 : 255);
+		button.interactable = isSetupPhase && isMyPhase;
+
+		animateFade(this.playerTurnGlow, isSetupPhase && isMyPhase ? 255 : 0);
+		animateFade(this.enemyTurnGlow, isSetupPhase && isMyPhase ? 0 : 255);
 		animateSwapLabel(
 			this.turnLabel,
 			isMyPhase ? 'end turn' : 'enemy turn',
@@ -60,7 +73,12 @@ export class TurnController extends Component {
 	}
 
 	onMouseEnter(): void {
-		setCursor('pointer');
+		const isSetupPhase = system.duel.phase === DuelPhases.Setup;
+		const isMyPhase = system.duel.phaseOf === system.playerIds.me;
+
+		if (isSetupPhase && isMyPhase) {
+			setCursor('pointer');
+		}
 	}
 
 	onMouseLeave(): void {
@@ -68,6 +86,9 @@ export class TurnController extends Component {
 	}
 
 	onButtonClick(): void {
-		sendEndTurn();
+		const isSetupPhase = system.duel.phase === DuelPhases.Setup;
+		const isMyPhase = system.duel.phaseOf === system.playerIds.me;
+
+		if (isSetupPhase && isMyPhase) sendEndTurn();
 	}
 }
