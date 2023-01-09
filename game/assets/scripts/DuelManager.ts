@@ -26,6 +26,8 @@ export class DuelManager extends Component {
 	start(): void {
 		system.globalNodes.duel = this.node;
 		system.globalNodes.cardPreview = this.node.getChildByPath('Card Preview');
+		system.globalNodes.ribbonMessage =
+			this.node.getChildByPath('Ribbon Message');
 
 		this.node.on(NodeEvents.MOUSE_UP, this.onMouseUp.bind(this));
 		this.node.on(NodeEvents.MOUSE_MOVE, this.onMouseMove.bind(this));
