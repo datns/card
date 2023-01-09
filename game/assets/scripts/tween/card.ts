@@ -49,7 +49,7 @@ export const expoCard = ({
 		.to(1.5 / speed, { rotation: r3 }, { easing: 'quadIn' });
 
 	const scale = tween(node)
-		.set({ scale: new Vec3(0.22, 0.22, 1) })
+		.set({ scale: new Vec3(0.18, 0.18, 1) })
 		.to(0.5 / speed, { scale: new Vec3(0.48, 0.48, 1) }, { easing: 'quadIn' })
 		.to(1 / speed, { scale: new Vec3(0.5, 0.5, 1) }, { easing: 'quadOut' });
 
@@ -97,7 +97,7 @@ export const animateDrawEnemyCard = ({
 
 		tween(node)
 			.delay(delay)
-			.set({ position: from, rotation: r1, scale: new Vec3(0.22, 0.22, 1) })
+			.set({ position: from, rotation: r1, scale: new Vec3(0.18, 0.18, 1) })
 			.to(
 				1,
 				{ position: dest, rotation: r2, scale: new Vec3(0.22, 0.22, 1) },
