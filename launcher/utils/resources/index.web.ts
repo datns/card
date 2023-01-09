@@ -221,4 +221,17 @@ export default {
 		labelShape: { uri: '/story/label-shape.png' },
 		chevron: { uri: '/story/chevron.png' },
 	},
+	cardLibrary: {
+		mainBackground: { uri: 'cardLibrary/main-background.png' },
+		cardsImage: { uri: 'cardLibrary/cards-image.png' },
+		searchBarBackground: { uri: '/cardLibrary/search-bar-background.png' },
+		arrow: { uri: '/cardLibrary/arrow.png' },
+		dropdownSide: { uri: '/cardLibrary/dropdown-side.png' },
+		dropdownButtonNormalRightEdge: {
+			uri: '/cardLibrary/dropdown-button-normal-right-edge.png',
+		},
+		dropdownButtonHoverRightEdge: {
+			uri: '/cardLibrary/dropdown-button-hover-right-edge.png',
+		},
+	},
 };

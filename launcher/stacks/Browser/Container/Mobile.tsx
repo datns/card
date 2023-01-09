@@ -13,6 +13,7 @@ import MintStack from 'stacks/Browser/Mint';
 import { drawerScreenOptions } from 'stacks/Browser/shared';
 
 import DrawerMenu from './DrawerMenu';
+import CardLibraryStack from "stacks/Browser/CardLibrary";
 
 const Drawer = createDrawerNavigator();
 
@@ -34,6 +35,7 @@ export const Mobile: FC = () => {
 			<Drawer.Screen name="Mint" component={MintStack} />
 			<Drawer.Screen name="Guide" component={GuideScreen} />
 			<Drawer.Screen name="Story" component={StoryScreen} />
+			<Drawer.Screen name="CardLibrary" component={CardLibraryStack} />
 		</Drawer.Navigator>
 	);
 };
