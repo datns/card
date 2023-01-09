@@ -49,7 +49,7 @@ export class UnitManager extends Component {
 	setCardId(id: string): void {
 		if (id === this.cardId) return;
 		this.cardId = id;
-		if (this.cardFoil) this.subscribeCardChange();
+		this.subscribeCardChange();
 	}
 
 	subscribeCardChange(): void {
@@ -62,6 +62,8 @@ export class UnitManager extends Component {
 	}
 
 	onStateChange(state: CardState, lastState: CardState): void {
+		if (!this.cardFoil) return;
+
 		if (state.health !== lastState?.health) {
 			this.cardHealth.string = String(state.health);
 		}
