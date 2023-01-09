@@ -10,7 +10,7 @@ export const animateCardAttack = async (
 	const fastDelta = isMovingUp ? -fastSeed : fastSeed;
 	const slowSeed = 5;
 	const slowDelta = isMovingUp ? -slowSeed : slowSeed;
-	const destSeed = isPlayerAttack ? 10 : 56;
+	const destSeed = isPlayerAttack ? 0 : 60;
 	const destDelta = isMovingUp ? -destSeed : destSeed;
 
 	return new Promise((resolve) => {
