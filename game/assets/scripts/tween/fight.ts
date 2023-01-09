@@ -6,11 +6,11 @@ export const animateCardAttack = async (
 ): Promise<void> => {
 	const from = node.getPosition();
 	const isMovingUp = from.y < 0;
-	const fastSeed = 20;
+	const fastSeed = 24;
 	const fastDelta = isMovingUp ? -fastSeed : fastSeed;
 	const slowSeed = 5;
 	const slowDelta = isMovingUp ? -slowSeed : slowSeed;
-	const destSeed = isPlayerAttack ? 0 : 60;
+	const destSeed = isPlayerAttack ? 46 : 62;
 	const destDelta = isMovingUp ? -destSeed : destSeed;
 
 	return new Promise((resolve) => {
