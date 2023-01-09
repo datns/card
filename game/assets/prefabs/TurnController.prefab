@@ -517,7 +517,7 @@
     "__prefab": {
       "__id__": 21
     },
-    "_opacity": 255,
+    "_opacity": 0,
     "_id": ""
   },
   {
@@ -667,7 +667,7 @@
     "__prefab": {
       "__id__": 29
     },
-    "_opacity": 255,
+    "_opacity": 0,
     "_id": ""
   },
   {
@@ -835,7 +835,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "end turn",
+    "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 15,
