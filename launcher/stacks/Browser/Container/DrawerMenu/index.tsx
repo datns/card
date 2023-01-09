@@ -61,7 +61,7 @@ export const DrawerMenu: FC<DrawerContentComponentProps> = (props) => {
 						<Text style={[sharedStyle.buttonText, { fontSize: 13 }]}>Play</Text>
 					</UnderRealmButton>
 					<Text style={styles.notiText}>
-						*Available only on desktop web brwoser
+						*Available only on desktop web browser
 					</Text>
 				</View>
 				<Image
