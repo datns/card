@@ -235,5 +235,10 @@ export default {
 		},
 		searchBackground: { uri: '/cardLibrary/search-background.png' },
 		searchIcon: { uri: '/cardLibrary/search-icon.png' },
+		normalFilterIcon: { uri: '/cardLibrary/normal-filter-icon.png' },
+		activeFilterIcon: { uri: '/cardLibrary/active-filter-icon.png' },
+		expandedSearchBarBackground: {
+			uri: '/cardLibrary/expanded-search-bar-background.png',
+		},
 	},
 };

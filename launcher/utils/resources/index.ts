@@ -199,5 +199,8 @@ export default {
 		dropdownButtonHoverRightEdge: require('../../../assets/cardLibrary/dropdown-button-hover-right-edge.png'),
 		searchBackground: require('../../../assets/cardLibrary/search-background.png'),
 		searchIcon: require('../../../assets/cardLibrary/search-icon.png'),
+		normalFilterIcon: require('../../../assets/cardLibrary/normal-filter-icon.png'),
+		activeFilterIcon: require('../../../assets/cardLibrary/active-filter-icon.png'),
+		expandedSearchBarBackground: require('../../../assets/cardLibrary/expanded-search-bar-background.png.png'),
 	},
 };

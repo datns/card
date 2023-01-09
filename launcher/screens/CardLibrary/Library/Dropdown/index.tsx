@@ -118,8 +118,8 @@ const Dropdown: React.FC<Props> = ({
 				containerStyle={styles.container}
 			>
 				<Image source={resources.cardLibrary.arrow} style={styles.arrow} />
-				<Text style={styles.labelButton}>
-					{selectedIndex > -1 ? data[selectedIndex].label : placeholder}
+				<Text style={styles.labelButton} responsiveSizes={[12]}>
+					{selectedIndex > 0 ? data[selectedIndex].label : placeholder}
 				</Text>
 			</CustomizedButton>
 			{visible && renderDropDown()}
@@ -133,13 +133,12 @@ const styles = StyleSheet.create({
 	container: {
 		paddingVertical: 12,
 		paddingHorizontal: 10,
-		width: 220,
-		height: 50,
 		justifyContent: 'center',
 	},
 	labelButton: {
 		textAlign: 'center',
 		color: '#fff',
+		fontWeight: '600',
 	},
 	arrow: {
 		width: 10,
@@ -154,5 +153,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 8,
 		borderColor: '#644d3d',
 		borderWidth: 3,
+		zIndex: 999,
 	},
 });

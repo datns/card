@@ -1,7 +1,7 @@
 export const Classes = [
 	{
-		value: 'all',
-		label: 'All Classes',
+		value: 'any',
+		label: 'Any',
 	},
 	{
 		value: 'assasin',
@@ -29,7 +29,11 @@ export const Classes = [
 	},
 ];
 
-export const Typecard = [
+export const CardType = [
+	{
+		label: 'Any',
+		value: 'any',
+	},
 	{
 		label: 'Hero',
 		value: 'hero',
@@ -41,5 +45,40 @@ export const Typecard = [
 	{
 		label: 'Spell',
 		value: 'spell',
+	},
+];
+
+export const Elemental = [
+	{
+		label: 'Any',
+		value: 'any',
+	},
+	{
+		label: 'Dark',
+		value: 'dark',
+	},
+	{
+		label: 'Earth',
+		value: 'earth',
+	},
+	{
+		label: 'fire',
+		value: 'Fire',
+	},
+	{
+		label: 'Light',
+		value: 'light',
+	},
+	{
+		label: 'Metal',
+		value: 'metal',
+	},
+	{
+		label: 'Water',
+		value: 'water',
+	},
+	{
+		label: 'Wood',
+		value: 'wood',
 	},
 ];

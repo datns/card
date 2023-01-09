@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren } from 'react';
 import {
 	Image,
 	ImageStyle,
@@ -24,7 +24,7 @@ interface Props {
 }
 const CustomizedButton: React.FC<PropsWithChildren<Props>> = ({
 	onPress,
-																  containerStyle,
+	containerStyle,
 	children,
 }) => {
 	const [layout, setLayout] = React.useState(idleLayout);

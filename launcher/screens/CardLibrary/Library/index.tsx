@@ -1,20 +1,85 @@
 import React from 'react';
 import { Image, ImageBackground, StyleSheet, View } from 'react-native';
+import { makeMeta } from '@metacraft/murg-engine';
 import { Text } from '@metacraft/ui';
 import ScrollLayout from 'components/layouts/Scroll';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { navigationHeight } from 'components/Navigation/shared';
+import CustomizedButton from 'screens/CardLibrary/Library/CustomizedButton';
 import Dropdown from 'screens/CardLibrary/Library/Dropdown';
-import { Typecard } from 'screens/CardLibrary/Library/mocks';
+import {
+	CardType,
+	Classes,
+	Elemental,
+} from 'screens/CardLibrary/Library/mocks';
 import SearchBar from 'screens/CardLibrary/Library/SearchBar';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
-import FilterButton from "screens/CardLibrary/Library/CustomizedButton";
-import CustomizedButton from "screens/CardLibrary/Library/CustomizedButton";
 
 const Library: React.FC = () => {
-	const [selectedClass, setSelectedClass] = React.useState<number>(-1);
+	const [selectedType, setSelectedType] = React.useState<number>(0);
 	const [search, setSearch] = React.useState<string>('');
+	const [showFilter, setShowFilter] = React.useState<boolean>(false);
+	const { version, entities, map } = makeMeta('00001');
+
+	console.log({
+		version,
+		entities,
+		map,
+	});
+	const renderAdditionalFilter = () => {
+		if (!showFilter) return null;
+		return (
+			<>
+				<View
+					style={{
+						width: '70%',
+						height: 1,
+						backgroundColor: '#644d3d',
+						marginVertical: 20,
+					}}
+				/>
+				<View style={{ flexDirection: 'row' }}>
+					<Dropdown
+						data={Classes}
+						onSelect={() => {}}
+						selectedIndex={0}
+						placeholder="Classes"
+						containerStyle={styles.dropdownContainer}
+					/>
+					<Dropdown
+						data={Elemental}
+						onSelect={() => {}}
+						selectedIndex={0}
+						placeholder="Elemental"
+						containerStyle={styles.dropdownContainer}
+					/>
+					<Dropdown
+						data={CardType}
+						onSelect={() => {}}
+						selectedIndex={0}
+						placeholder="Attack"
+						containerStyle={styles.dropdownContainer}
+					/>
+					<Dropdown
+						data={CardType}
+						onSelect={() => {}}
+						selectedIndex={0}
+						placeholder="Defense"
+						containerStyle={styles.dropdownContainer}
+					/>
+					<Dropdown
+						data={CardType}
+						onSelect={() => {}}
+						selectedIndex={0}
+						placeholder="HP"
+						containerStyle={styles.dropdownContainer}
+					/>
+				</View>
+			</>
+		);
+	};
+
 	return (
 		<View style={[iStyles.wideContainer, styles.container]}>
 			<Image
@@ -37,20 +102,45 @@ const Library: React.FC = () => {
 					/>
 				</View>
 				<ImageBackground
-					source={resources.cardLibrary.searchBarBackground}
-					style={styles.searchBarBackground}
+					source={resources.cardLibrary.expandedSearchBarBackground}
+					style={[
+						styles.searchBarBackground,
+						{ height: showFilter ? 210 : 130 },
+					]}
+					resizeMode="stretch"
 				>
-					<Dropdown
-						data={Typecard}
-						onSelect={setSelectedClass}
-						selectedIndex={selectedClass}
-						placeholder="Typecard"
-						containerStyle={{ marginRight: 8 }}
-					/>
-					<SearchBar value={search} onChangeText={setSearch} />
-					<CustomizedButton onPress={() => {}}>
-						<Text>Filter</Text>
-					</CustomizedButton>
+					<View
+						style={{
+							alignItems: 'center',
+							flexDirection: 'row',
+							justifyContent: 'center',
+						}}
+					>
+						<Dropdown
+							data={CardType}
+							onSelect={setSelectedType}
+							selectedIndex={selectedType}
+							placeholder="Card Type"
+							containerStyle={styles.dropdownContainer}
+						/>
+						<SearchBar value={search} onChangeText={setSearch} />
+						{selectedType === 1 && (
+							<CustomizedButton
+								onPress={() => setShowFilter((val) => !val)}
+								containerStyle={{ marginLeft: 8 }}
+							>
+								<View style={styles.filterContainer}>
+									<Image
+										source={resources.cardLibrary.activeFilterIcon}
+										style={{ width: 14, aspectRatio: 1, marginRight: 8 }}
+										resizeMode="contain"
+									/>
+									<Text style={styles.filterLabel}>Filter</Text>
+								</View>
+							</CustomizedButton>
+						)}
+					</View>
+					{renderAdditionalFilter()}
 				</ImageBackground>
 			</ScrollLayout>
 		</View>
@@ -89,8 +179,17 @@ const styles = StyleSheet.create({
 	searchBarBackground: {
 		width: '100%',
 		height: 130,
+		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	filterContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
+	},
+	filterLabel: {
+		fontWeight: '500',
+	},
+	dropdownContainer: {
+		marginRight: 8,
 	},
 });
