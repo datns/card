@@ -2,9 +2,9 @@ import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 import { instantiate, UIOpacity } from 'cc';
 
 import {
-	fromDragToGroundAnimate,
-	fromEnemyHandToGroundAnimate,
-	groundAppearAnimate,
+	animateFromDragToGround,
+	animateFromEnemyHandToGround,
+	animateGroundAppear,
 } from '../tween/card';
 import { UnitManager } from '../UnitManager';
 import { selectGroundNode } from '../util/helper';
@@ -50,14 +50,14 @@ export const animateSummon = ({
 					const targetPosition = groundPositions[toIndex];
 
 					unitNode.getChildByPath('back').active = false;
-					fromDragToGroundAnimate(cardNode, targetPosition).then(() => {
+					animateFromDragToGround(cardNode, targetPosition).then(() => {
 						cardNode?.destroy();
 						unitNode.setPosition(targetPosition);
-						groundAppearAnimate(unitNode, targetPosition).then(onMoveComplete);
+						animateGroundAppear(unitNode, targetPosition).then(onMoveComplete);
 					});
 				} else {
 					cardNode.destroy();
-					fromEnemyHandToGroundAnimate(
+					animateFromEnemyHandToGround(
 						unitNode,
 						cardNode.getPosition(),
 						groundPositions[toIndex],

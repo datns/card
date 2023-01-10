@@ -1,7 +1,7 @@
 import Engine from '@metacraft/murg-engine';
 import { _decorator, Component, EventMouse, Node, UIOpacity, Vec2 } from 'cc';
 
-import { raiseCardAnimate } from './tween/card';
+import { animateRaiseCard } from './tween/card';
 import { cardIdFromNode, setCursor } from './util/helper';
 import { system } from './util/system';
 
@@ -69,7 +69,7 @@ export class PreviewManager extends Component {
 		this.node.setPosition(190, 740);
 
 		if (system.activeCard) {
-			raiseCardAnimate(system.activeCard, 0, 0.02);
+			animateRaiseCard(system.activeCard, 0, 0.02);
 			const uiOpacity = system.activeCard.getComponent(
 				'cc.UIOpacity',
 			) as UIOpacity;

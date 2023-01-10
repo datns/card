@@ -12,7 +12,7 @@ export interface PlayerCardOption {
 const defaultExpoDest = new Vec3(440, -15, 0);
 const defaultFrom = new Vec3(425, -232, 0);
 
-export const expoCard = ({
+export const animateExpoCard = ({
 	node,
 	from = defaultFrom,
 	dest = defaultExpoDest,
@@ -67,7 +67,7 @@ export const animateDrawPlayerCard = ({
 	speed = 1,
 }: PlayerCardOption): Promise<void> => {
 	return new Promise((resolve) => {
-		expoCard({ node, from, dest: expoDest, delay, speed })
+		animateExpoCard({ node, from, dest: expoDest, delay, speed })
 			.to(
 				1,
 				{ position: dest, scale: new Vec3(0.4, 0.4, 1) },
@@ -108,7 +108,7 @@ export const animateDrawEnemyCard = ({
 	});
 };
 
-export const raiseCardAnimate = async (
+export const animateRaiseCard = async (
 	node: Node,
 	to = 100,
 	duration = 0.1,
@@ -121,7 +121,7 @@ export const raiseCardAnimate = async (
 	});
 };
 
-export const raisePreviewAnimate = async (
+export const animateRaisePreview = async (
 	node: Node,
 	from = -12,
 	duration = 0.1,
@@ -148,7 +148,7 @@ export const simpleMove = async (
 	});
 };
 
-export const fromEnemyHandToGroundAnimate = (
+export const animateFromEnemyHandToGround = (
 	node: Node,
 	from: Vec3,
 	to: Vec3,
@@ -170,7 +170,7 @@ export const fromEnemyHandToGroundAnimate = (
 	});
 };
 
-export const fromDragToGroundAnimate = (
+export const animateFromDragToGround = (
 	node: Node,
 	to: Vec3,
 ): Promise<void> => {
@@ -187,12 +187,28 @@ export const fromDragToGroundAnimate = (
 	});
 };
 
-export const groundAppearAnimate = (node: Node, from: Vec3): Promise<void> => {
+export const animateGroundAppear = (node: Node, from: Vec3): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node)
 			.set({ scale: new Vec3(0.25, 0.25, 1), position: from })
 			.to(0.5, { scale: new Vec3(0.24, 0.24, 1) })
 			.call(() => resolve())
+			.start();
+	});
+};
+
+export const animateGroundReveal = (node: Node): Promise<void> => {
+	return new Promise((resolve) => {
+		const r1 = Quat.fromEuler(new Quat(), 0, 180, 0);
+		const r2 = Quat.fromEuler(new Quat(), 0, 90, 0);
+		const r3 = Quat.fromEuler(new Quat(), 0, 0, 0);
+
+		tween(node)
+			.set({ rotation: r1 })
+			.to(0.25, { rotation: r2, scale: new Vec3(0.26, 0.26, 1) })
+			.call(() => (node.getChildByPath('back').active = false))
+			.to(0.25, { rotation: r3, scale: new Vec3(0.24, 0.24, 1) })
+			.call(resolve)
 			.start();
 	});
 };

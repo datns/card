@@ -1,5 +1,6 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 
+import { animateGroundReveal } from '../tween/card';
 import { animateCardAttack } from '../tween/fight';
 import { system } from '../util/system';
 
@@ -8,7 +9,24 @@ const { CommandSourceType, DuelCommandType } = Engine;
 export const animateFights = async ({
 	commands,
 }: DuelCommandBundle): Promise<void> => {
-	const promises = [];
+	const revealPromises = [];
+	const combatPromises = [];
+
+	for (let i = 0; i < system.duel.setting.groundSize; i += 1) {
+		const firstNode = system.cardRefs[system.duel.firstGround[i]];
+		const secondNode = system.cardRefs[system.duel.secondGround[i]];
+
+		console.log(i, firstNode?.active, secondNode?.active);
+		if (firstNode?.getChildByPath('back').active) {
+			revealPromises.push(animateGroundReveal(firstNode));
+		}
+
+		if (secondNode?.getChildByPath('back').active) {
+			revealPromises.push(animateGroundReveal(secondNode));
+		}
+	}
+
+	await Promise.all(revealPromises);
 
 	for (let i = 0; i < commands.length; i += 1) {
 		const command = commands[i];
@@ -21,10 +39,10 @@ export const animateFights = async ({
 			const isPlayerAttack = command.type === DuelCommandType.PlayerMutate;
 
 			if (fromNode) {
-				promises.push(animateCardAttack(fromNode, isPlayerAttack));
+				combatPromises.push(animateCardAttack(fromNode, isPlayerAttack));
 			}
 		}
 	}
 
-	await Promise.all(promises);
+	await Promise.all(combatPromises);
 };
