@@ -1,18 +1,20 @@
-import { CardState } from '@metacraft/murg-engine';
+import Engine, { CardState } from '@metacraft/murg-engine';
 import {
 	_decorator,
 	Component,
-	Label,
+	Node,
 	resources,
 	Sprite,
 	SpriteFrame,
 	UIOpacity,
 } from 'cc';
 
+import { animateAttributeChange } from './tween/common';
 import { getVisualUri } from './util/helper';
 import { system } from './util/system';
 
 const { ccclass } = _decorator;
+const { getCard } = Engine;
 
 @ccclass('UnitManager')
 export class UnitManager extends Component {
@@ -21,9 +23,9 @@ export class UnitManager extends Component {
 	uiOpacity: UIOpacity;
 	cardFoil: Sprite;
 	cardVisual: Sprite;
-	cardAttack: Label;
-	cardDefense: Label;
-	cardHealth: Label;
+	cardAttack: Node;
+	cardDefense: Node;
+	cardHealth: Node;
 
 	start(): void {
 		this.uiOpacity = this.node.getComponent(UIOpacity);
@@ -31,15 +33,9 @@ export class UnitManager extends Component {
 		this.cardVisual = this.node
 			.getChildByPath('front/visual')
 			.getComponent(Sprite);
-		this.cardAttack = this.node
-			.getChildByPath('front/attack')
-			.getComponent(Label);
-		this.cardDefense = this.node
-			.getChildByPath('front/defense')
-			.getComponent(Label);
-		this.cardHealth = this.node
-			.getChildByPath('front/health')
-			.getComponent(Label);
+		this.cardAttack = this.node.getChildByPath('front/attack') as Node;
+		this.cardDefense = this.node.getChildByPath('front/defense') as Node;
+		this.cardHealth = this.node.getChildByPath('front/health') as Node;
 
 		if (this.cardId) {
 			this.subscribeCardChange();
@@ -63,17 +59,30 @@ export class UnitManager extends Component {
 
 	onStateChange(state: CardState, lastState: CardState): void {
 		if (!this.cardFoil) return;
+		const card = getCard(system.duel.cardMap, state.id);
 
 		if (state.health !== lastState?.health) {
-			this.cardHealth.string = String(state.health);
+			animateAttributeChange(
+				this.cardHealth,
+				state.health,
+				card.attribute.health,
+			);
 		}
 
 		if (state.attack !== lastState?.attack) {
-			this.cardAttack.string = String(state.attack);
+			animateAttributeChange(
+				this.cardAttack,
+				state.attack,
+				card.attribute.attack,
+			);
 		}
 
 		if (state.defense !== lastState?.defense) {
-			this.cardDefense.string = String(state.defense);
+			animateAttributeChange(
+				this.cardDefense,
+				state.defense,
+				card.attribute.defense,
+			);
 		}
 
 		if (!lastState) {

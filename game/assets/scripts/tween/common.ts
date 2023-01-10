@@ -1,4 +1,5 @@
-import { Color, Label, Node, tween, UIOpacity } from 'cc';
+import { Color, Label, Node, tween, UIOpacity, Vec3 } from 'cc';
+import { getAttributeColor } from 'db://assets/scripts/util/helper';
 
 export const animateFade = async (
 	node: Node,
@@ -34,6 +35,26 @@ export const animateSwapLabel = async (
 				},
 			)
 			.to(duration / 2, { opacity: 255 }, { easing: 'expoInOut' })
+			.call(() => resolve())
+			.start();
+	});
+};
+
+export const animateAttributeChange = async (
+	node: Node,
+	value: number,
+	original: number,
+): Promise<void> => {
+	const label = node.getComponent(Label);
+
+	return new Promise((resolve) => {
+		label.string = String(value);
+		label.color = getAttributeColor(value, original);
+
+		tween(node)
+			.to(0.5, { scale: new Vec3(0.8, 0.8, 1) })
+			.to(0.5, { scale: new Vec3(1.2, 1.2, 1) }, { easing: 'expoOutIn' })
+			.to(0.5, { scale: new Vec3(1, 1, 1) }, { easing: 'expoOutIn' })
 			.call(() => resolve())
 			.start();
 	});

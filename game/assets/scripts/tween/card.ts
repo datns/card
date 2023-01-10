@@ -154,7 +154,7 @@ export const animateFromEnemyHandToGround = (
 	to: Vec3,
 ): Promise<void> => {
 	return new Promise((resolve) => {
-		const r1 = Quat.fromEuler(new Quat(), 180, 180, 0);
+		const r1 = Quat.fromEuler(new Quat(), 180, 0, 0);
 		const r2 = Quat.fromEuler(new Quat(), 0, 0, 0);
 		const translate = tween(node)
 			.set({ position: from })

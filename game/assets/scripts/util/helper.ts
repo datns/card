@@ -1,5 +1,5 @@
 import Engine, { DuelConfig, TemplateFragment } from '@metacraft/murg-engine';
-import { Node, Vec2, Vec3 } from 'cc';
+import { Color, Node, Vec2, Vec3 } from 'cc';
 
 import { CardManager } from '../CardManager';
 
@@ -135,4 +135,14 @@ export const getMyHandSize = (): number => {
 
 export const getMyGround = (): string[] => {
 	return selectGround(system.duel, system.playerIds.me);
+};
+
+export const getAttributeColor = (value: number, origin: number): Color => {
+	if (value > origin) {
+		return Color.fromHEX(new Color(), '#66FF66');
+	} else if (value < origin) {
+		return Color.fromHEX(new Color(), '#FF0000');
+	}
+
+	return Color.fromHEX(new Color(), '#FFFFFF');
 };
