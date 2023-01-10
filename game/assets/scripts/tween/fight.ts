@@ -28,3 +28,15 @@ export const animateCardAttack = async (
 			.start();
 	});
 };
+
+export const animateCardDeath = async (node: Node): Promise<void> => {
+	return new Promise((resolve) => {
+		tween(node)
+			.to(0.5, { scale: new Vec3(0, 0, 1) }, { easing: 'elasticInOut' })
+			.call(() => {
+				resolve();
+				node.destroy();
+			})
+			.start();
+	});
+};
