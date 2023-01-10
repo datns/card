@@ -154,23 +154,19 @@ export const fromEnemyHandToGroundAnimate = (
 	to: Vec3,
 ): Promise<void> => {
 	return new Promise((resolve) => {
-		const r1 = Quat.fromEuler(new Quat(), 0, 0, 180);
+		const r1 = Quat.fromEuler(new Quat(), 180, 180, 0);
 		const r2 = Quat.fromEuler(new Quat(), 0, 0, 0);
 		const translate = tween(node)
 			.set({ position: from })
-			.by(0.5, { position: new Vec3(0, 100, 0) })
-			.to(1.5, { position: to }, { easing: 'expoInOut' });
+			.to(1, { position: to }, { easing: 'expoInOut' });
 		const scale = tween(node)
-			.to(1.5, { scale: new Vec3(0.3, 0.3, 1) }, { easing: 'expoInOut' })
-			.to(0.5, { scale: new Vec3(0.23, 0.23, 1) }, { easing: 'expoInOut' });
+			.to(0.2, { scale: new Vec3(0.3, 0.3, 1) }, { easing: 'expoInOut' })
+			.to(0.8, { scale: new Vec3(0.23, 0.23, 1) }, { easing: 'expoInOut' });
 		const rotate = tween(node)
 			.set({ rotation: r1 })
 			.to(1, { rotation: r2 }, { easing: 'expoInOut' });
 
-		tween(node)
-			.parallel(translate, scale, rotate)
-			.call(() => resolve())
-			.start();
+		tween(node).parallel(translate, rotate, scale).call(resolve).start();
 	});
 };
 
@@ -180,9 +176,9 @@ export const fromDragToGroundAnimate = (
 ): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node)
-			.to(0.05, { scale: new Vec3(0.52, 0.52, 1) }, { easing: 'expoOut' })
+			.to(0.1, { scale: new Vec3(0.52, 0.52, 1) }, { easing: 'expoOut' })
 			.to(
-				0.1,
+				0.5,
 				{ position: to, scale: new Vec3(0.23, 0.23, 1) },
 				{ easing: 'expoInOut' },
 			)
@@ -194,8 +190,8 @@ export const fromDragToGroundAnimate = (
 export const groundAppearAnimate = (node: Node, from: Vec3): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node)
-			.set({ scale: new Vec3(0.2, 0.2, 1), position: from })
-			.to(0.5, { scale: new Vec3(0.24, 0.24, 1) }, { easing: 'expoOut' })
+			.set({ scale: new Vec3(0.25, 0.25, 1), position: from })
+			.to(0.5, { scale: new Vec3(0.24, 0.24, 1) })
 			.call(() => resolve())
 			.start();
 	});

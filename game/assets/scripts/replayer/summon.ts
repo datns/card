@@ -48,8 +48,10 @@ export const animateSummon = ({
 
 				if (isMySummon) {
 					const targetPosition = groundPositions[toIndex];
+
+					unitNode.getChildByPath('back').active = false;
 					fromDragToGroundAnimate(cardNode, targetPosition).then(() => {
-						cardNode.destroy();
+						cardNode?.destroy();
 						unitNode.setPosition(targetPosition);
 						groundAppearAnimate(unitNode, targetPosition).then(onMoveComplete);
 					});
