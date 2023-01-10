@@ -5,6 +5,7 @@ import { animateRibbonAppear } from 'db://assets/scripts/tween/hud';
 import { system } from '../util/system';
 
 import { animateCardDraw } from './draw';
+import { animateReinforces } from './reinforce';
 import { animateSummon } from './summon';
 import { extractHistoryDiff } from './util';
 
@@ -38,6 +39,8 @@ export const synchronizeDuel = async (): Promise<void> => {
 			await animateSummon(bundle);
 		} else if (bundleGroup === BundleGroup.FightCombat) {
 			await animateFights(bundle);
+		} else if (bundleGroup === BundleGroup.Reinforce) {
+			await animateReinforces(bundle);
 		}
 
 		if (diff.writeToHistory) {
