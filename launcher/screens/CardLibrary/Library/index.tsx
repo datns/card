@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, ImageBackground, StyleSheet, View } from 'react-native';
 import { makeMeta } from '@metacraft/murg-engine';
 import { Text } from '@metacraft/ui';
+import Card from 'components/Card';
 import ScrollLayout from 'components/layouts/Scroll';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { navigationHeight } from 'components/Navigation/shared';
@@ -21,6 +22,15 @@ const Library: React.FC = () => {
 	const [search, setSearch] = React.useState<string>('');
 	const [showFilter, setShowFilter] = React.useState<boolean>(false);
 	const { version, entities, map } = makeMeta('00001');
+
+	const card1: {
+		attribute: { attack: number; defense: number; health: number };
+		name: string;
+		rarity: number;
+		elemental: string;
+		class: string;
+		id: string;
+	} = map['000010001'];
 
 	console.log({
 		version,
@@ -88,6 +98,14 @@ const Library: React.FC = () => {
 			/>
 			<ScrollLayout>
 				<View style={{ alignItems: 'center', paddingVertical: 40 }}>
+					<Card
+						attribute={card1.attribute}
+						elemental={card1.elemental}
+						class={card1.class}
+						rarity={5}
+						name={card1.name}
+						id={card1.id}
+					/>
 					<Image
 						source={resources.cardLibrary.cardsImage}
 						style={styles.cardsImage}

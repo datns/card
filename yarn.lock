@@ -4846,6 +4846,13 @@
     react "^18.0.0"
     react-native-svg "^13.0.0"
 
+"@metacraft/murg-engine@^0.0.35":
+  version "0.0.35"
+  resolved "https://registry.yarnpkg.com/@metacraft/murg-engine/-/murg-engine-0.0.35.tgz#0a444fe0eddc841c6724a256d5c9af964fa64187"
+  integrity sha512-xWs+xn/yAYKz0t/Vrhii84xWeGWsPR/eOpNcsu/o+9ZkBAX9owuQI1KlUiw10iLtSFygIh2mV+4GEk4XTv1CQw==
+  dependencies:
+    mustache "^4.2.0"
+
 "@metacraft/tsconfig@^0.0.10":
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/@metacraft/tsconfig/-/tsconfig-0.0.10.tgz#a7e3e7c26807acca0eea8607a5f32e9168fa74cf"

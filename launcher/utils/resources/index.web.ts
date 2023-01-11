@@ -241,4 +241,31 @@ export default {
 			uri: '/cardLibrary/expanded-search-bar-background.png',
 		},
 	},
+	card: {
+		back: { uri: '/card/back.png' },
+		front: { uri: '/card/front.png' },
+		gem: { uri: '/card/gem.png' },
+		class: {
+			assassin: { uri: '/card/class-assassin.png' },
+			knight: { uri: '/card/class-knight.png' },
+			summoner: { uri: '/card/class-summoner.png' },
+			tanker: { uri: '/card/class-tank.png' },
+			wizard: { uri: '/card/class-wizard.png' },
+		},
+		foil: {
+			dark: { uri: '/card/foil-dark.png' },
+			earth: { uri: '/card/foil-earth.png' },
+			fire: { uri: '/card/foil-fire.png' },
+			light: { uri: '/card/foil-light.png' },
+			metal: { uri: '/card/foil-metal.png' },
+			water: { uri: '/card/foil-water.png' },
+			wood: { uri: '/card/foil-wood.png' },
+		},
+		type: {
+			all: { uri: '/card/type-all.png' },
+			hero: { uri: '/card/type-hero.png' },
+			spell: { uri: '/card/type-spell.png' },
+			troop: { uri: '/card/type-troop.png' },
+		},
+	},
 };
