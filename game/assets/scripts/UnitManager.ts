@@ -9,12 +9,15 @@ import {
 	UIOpacity,
 } from 'cc';
 
+import { animatePreviewZoom } from './tween/card';
 import { animateAttributeChange } from './tween/common';
 import { getVisualUri } from './util/helper';
 import { system } from './util/system';
+import { CardManager } from './CardManager';
 
 const { ccclass } = _decorator;
 const { getCard } = Engine;
+const NodeEvents = Node.EventType;
 
 @ccclass('UnitManager')
 export class UnitManager extends Component {
@@ -40,6 +43,9 @@ export class UnitManager extends Component {
 		if (this.cardId) {
 			this.subscribeCardChange();
 		}
+
+		this.node.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
+		this.node.on(NodeEvents.MOUSE_LEAVE, this.onMouseLeave.bind(this));
 	}
 
 	setCardId(id: string): void {
@@ -93,5 +99,21 @@ export class UnitManager extends Component {
 				}
 			});
 		}
+	}
+
+	onMouseEnter(): void {
+		if (system.dragging || !this.cardId) return;
+		if (this.node.getChildByPath('back')?.active) return;
+
+		system.globalNodes.cardPreview
+			.getChildByPath('Card')
+			.getComponent(CardManager)
+			.setCardId(this.cardId);
+
+		animatePreviewZoom(system.globalNodes.cardPreview, this.node);
+	}
+
+	onMouseLeave(): void {
+		system.globalNodes.cardPreview.setPosition(190, 740);
 	}
 }

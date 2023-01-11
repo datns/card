@@ -121,15 +121,43 @@ export const animateRaiseCard = async (
 	});
 };
 
-export const animateRaisePreview = async (
+export const animatePreviewRaise = async (
 	node: Node,
-	from = -12,
+	from = -8,
 	duration = 0.1,
 ): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node.getChildByPath('Card'))
 			.set({ position: new Vec3(0, from, 0) })
 			.to(duration, { position: new Vec3(0, 0, 0) }, { easing: 'cubicInOut' })
+			.call(() => resolve())
+			.start();
+	});
+};
+
+export const animatePreviewZoom = async (
+	node: Node,
+	targetNode: Node,
+): Promise<void> => {
+	const at = targetNode.getPosition();
+	const xOffset = at.x >= 0 ? -170 : 170;
+	const yOffset = at.y > 0 ? -38 : 38;
+
+	return new Promise((resolve) => {
+		node.setPosition(at.x + xOffset, at.y + yOffset);
+		tween(node.getChildByPath('Card'))
+			.set({ scale: new Vec3(0, 0, 1) })
+			.to(0.1, { scale: new Vec3(0.6, 0.6, 1) }, { easing: 'cubicInOut' })
+			.call(() => resolve())
+			.start();
+	});
+};
+
+export const animatePreviewZoomOut = async (node: Node): Promise<void> => {
+	return new Promise((resolve) => {
+		node.setPosition(190, 740);
+		tween(node.getChildByPath('Card'))
+			.to(0.1, { scale: new Vec3(0, 0, 1) }, { easing: 'cubicInOut' })
 			.call(() => resolve())
 			.start();
 	});

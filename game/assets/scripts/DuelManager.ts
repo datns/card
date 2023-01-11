@@ -2,8 +2,8 @@ import Engine from '@metacraft/murg-engine';
 import { _decorator, Component, EventMouse, Node, UIOpacity } from 'cc';
 
 import {
+	animatePreviewRaise,
 	animateRaiseCard,
-	animateRaisePreview,
 	simpleMove,
 } from './tween/card';
 import { cardIdFromNode, getMyGround } from './util/helper';
@@ -175,7 +175,7 @@ export class DuelManager extends Component {
 			.setCardId(cardId);
 		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
 		animateRaiseCard(node, 100);
-		animateRaisePreview(system.globalNodes.cardPreview);
+		animatePreviewRaise(system.globalNodes.cardPreview);
 		node.getComponent(UIOpacity).opacity = 20;
 	}
 
