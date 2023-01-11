@@ -1,23 +1,23 @@
 import { DuelCommands } from '../util/types';
 
-import { handleBundles, handleConnect } from './handlers';
-import { ws } from './instance';
+import * as handlers from './handlers';
+import { connectionInstance } from './util';
 
-ws.onmessage = (item) => {
+connectionInstance.onmessage = (item) => {
 	const { isMyCommand, command, payload } = JSON.parse(item.data);
 
 	if (command === DuelCommands.ConnectMatch) {
-		handleConnect(payload, isMyCommand);
+		handlers.connect(payload, isMyCommand);
 	} else if (command === DuelCommands.SendBundle) {
-		handleBundles(payload);
+		handlers.incomingBundles(payload);
 	}
 };
 
-ws.onerror = (error) => {
+connectionInstance.onerror = (error) => {
 	console.log(error);
 };
 
-ws.onopen = () => {
+connectionInstance.onopen = () => {
 	console.log('socket connected!');
 };
 

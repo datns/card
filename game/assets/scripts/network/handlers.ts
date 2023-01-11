@@ -1,45 +1,44 @@
 import Engine, { DuelCommandBundle, DuelConfig } from '@metacraft/murg-engine';
 
-import { synchronizeDuel } from '../replayer';
+import { replay } from '../replay';
 import { CardDuel } from '../util/graphql';
 import { extractPlayerIds } from '../util/helper';
 import { system } from '../util/system';
 import { JwtPayload } from '../util/types';
 
+import { mergeRemoteHistory } from './util';
+
 const { getInitialState, mergeFragmentToState } = Engine;
-interface ConnectMatchPayload {
+interface ConnectPayload {
 	jwt: string;
 	context: JwtPayload;
 	duel: CardDuel;
 }
 
-export const handleConnect = (
-	{ jwt, context, duel }: ConnectMatchPayload,
+export const connect = (
+	{ jwt, context, duel }: ConnectPayload,
 	isMyCommand?: boolean,
 ): void => {
 	if (!isMyCommand) return;
 	const state = getInitialState(duel.config as DuelConfig);
+	const config = duel.config as DuelConfig;
+	const history = duel.history as DuelCommandBundle[];
 
-	system.serverState = {
-		jwt,
-		context,
-		config: duel.config as DuelConfig,
-		history: duel.history as DuelCommandBundle[],
-	};
-	system.playerIds = extractPlayerIds(
-		duel.config as DuelConfig,
-		context.userId,
-	);
 	mergeFragmentToState(system.duel, state);
+	system.serverState = { jwt, context, config, history: [] };
+	system.playerIds = extractPlayerIds(config, context.userId);
 	system.globalNodes.board?.emit('stateReady');
 
-	setTimeout(() => synchronizeDuel(), 200);
+	mergeRemoteHistory(history, 0);
+	setTimeout(() => replay(), 200);
 };
 
-export const handleBundles = (bundles: DuelCommandBundle[]): void => {
-	bundles.forEach((bundle) => {
-		system.history.push(bundle);
-	});
+export interface IncomingBundles {
+	level: number;
+	bundles: DuelCommandBundle[];
+}
 
-	synchronizeDuel();
+export const incomingBundles = ({ level, bundles }: IncomingBundles): void => {
+	mergeRemoteHistory(bundles, level);
+	replay();
 };

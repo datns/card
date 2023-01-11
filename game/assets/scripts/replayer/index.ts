@@ -45,6 +45,9 @@ export const synchronizeDuel = async (): Promise<void> => {
 
 		if (diff.writeToHistory) {
 			system.history.push(bundle);
+		} else {
+			/* WARNING: Simulate server sync, should not include anywhere in runtime */
+			system.serverState.history.push(bundle);
 		}
 	}
 };

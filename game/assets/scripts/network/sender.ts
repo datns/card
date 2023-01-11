@@ -1,11 +1,11 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 import deepClone from 'lodash.clonedeep';
 
-import { synchronizeDuel } from '../replayer';
+import { replay } from '../replay';
 import { system } from '../util/system';
 import { CommandPayload, DuelCommands } from '../util/types';
 
-import { ws } from './instance';
+import { connectionInstance } from './util';
 
 const { getCardState, move, DuelPlace } = Engine;
 
@@ -17,7 +17,7 @@ export const sendCommand = (command: DuelCommands, payload?: any): void => {
 	};
 
 	if (data) data.payload = payload;
-	ws.send(JSON.stringify(data));
+	connectionInstance.send(JSON.stringify(data));
 };
 
 export const sendConnect = (): void => {
@@ -28,13 +28,14 @@ export const sendConnect = (): void => {
 };
 
 export const sendBundles = (bundles: DuelCommandBundle[]): void => {
-	bundles.forEach((bundle) => {
-		system.history.push(bundle);
-	});
-
 	sendCommand(DuelCommands.SendBundle, bundles);
 
-	synchronizeDuel();
+	/* optimistic simulate command success, will be overrides by server response */
+	bundles.forEach((bundle) => {
+		system.remoteHistory.push(bundle);
+	});
+
+	replay();
 };
 
 export const sendCardSummon = (cardId: string, index: number): void => {
