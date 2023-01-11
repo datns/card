@@ -1,10 +1,10 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
-import { animateFights } from 'db://assets/scripts/replayer/fight';
-import { animateRibbonAppear } from 'db://assets/scripts/tween/hud';
 
+import { animateRibbonAppear } from '../tween';
 import { system } from '../util/system';
 
 import { animateCardDraw } from './draw';
+import { animateFights } from './fight';
 import { animateReinforces } from './reinforce';
 import { animateSummon } from './summon';
 import { extractHistoryDiff } from './util';

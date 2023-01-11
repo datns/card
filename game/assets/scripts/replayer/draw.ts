@@ -2,7 +2,7 @@ import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 import { instantiate } from 'cc';
 
 import { CardManager } from '../CardManager';
-import { animateDrawEnemyCard, animateDrawPlayerCard } from '../tween/card';
+import { animateDrawEnemyCard, animateDrawPlayerCard } from '../tween';
 import { selectDeckNode, selectHandNode } from '../util/helper';
 import { getCenterExpos, getHandExpos, getRightExpos } from '../util/layout';
 import { system } from '../util/system';

@@ -5,7 +5,7 @@ import {
 	animateFromDragToGround,
 	animateFromEnemyHandToGround,
 	animateGroundAppear,
-} from '../tween/card';
+} from '../tween';
 import { UnitManager } from '../UnitManager';
 import { selectGroundNode } from '../util/helper';
 import { getGroundExpos } from '../util/layout';

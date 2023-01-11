@@ -1,11 +1,11 @@
 import Engine, { PlayerState } from '@metacraft/murg-engine';
 import { _decorator, Animation, Component, Label, Node } from 'cc';
 
-import { simpleMove } from './tween/card';
 import { selectHandNode } from './util/helper';
 import { getHandExpos } from './util/layout';
 import { system } from './util/system';
 import { sendConnect } from './network';
+import { simpleMove } from './tween';
 
 const { ccclass } = _decorator;
 const { DuelPlace, selectStateKey } = Engine;

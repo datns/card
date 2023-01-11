@@ -1,7 +1,7 @@
 import Engine, { DuelCommand, DuelCommandBundle } from '@metacraft/murg-engine';
 import isEqual from 'lodash.isequal';
 
-import { simpleMove } from '../tween/card';
+import { simpleMove } from '../tween';
 import { selectHandNode } from '../util/helper';
 import { getHandExpos } from '../util/layout';
 import { system } from '../util/system';

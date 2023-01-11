@@ -1,6 +1,6 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 
-import { simpleMove } from '../tween/card';
+import { simpleMove } from '../tween';
 import { getGroundExpos } from '../util/layout';
 import { system } from '../util/system';
 

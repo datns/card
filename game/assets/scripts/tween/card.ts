@@ -146,7 +146,7 @@ export const animatePreviewZoom = async (
 	return new Promise((resolve) => {
 		node.setPosition(at.x + xOffset, at.y + yOffset);
 		tween(node.getChildByPath('Card'))
-			.set({ scale: new Vec3(0, 0, 1) })
+			.set({ scale: new Vec3(0.5, 0.5, 1) })
 			.to(0.1, { scale: new Vec3(0.6, 0.6, 1) }, { easing: 'cubicInOut' })
 			.call(() => resolve())
 			.start();

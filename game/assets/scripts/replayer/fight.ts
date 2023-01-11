@@ -1,7 +1,10 @@
 import Engine, { DuelCommand, DuelCommandBundle } from '@metacraft/murg-engine';
 
-import { animateGroundReveal } from '../tween/card';
-import { animateCardAttack, animateCardDeath } from '../tween/fight';
+import {
+	animateCardAttack,
+	animateCardDeath,
+	animateGroundReveal,
+} from '../tween';
 import { system } from '../util/system';
 
 const { CommandSourceType, DuelCommandType, DuelPlace } = Engine;

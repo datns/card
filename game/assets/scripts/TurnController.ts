@@ -1,10 +1,10 @@
 import Engine from '@metacraft/murg-engine';
 import { _decorator, Button, Color, Component, Node } from 'cc';
 
-import { animateFade, animateSwapLabel } from './tween/common';
 import { setCursor } from './util/helper';
 import { system } from './util/system';
 import { sendEndTurn } from './network';
+import { animateFade, animateSwapLabel } from './tween';
 
 const { ccclass } = _decorator;
 const { DuelPhases } = Engine;

@@ -9,11 +9,10 @@ import {
 	UIOpacity,
 } from 'cc';
 
-import { animatePreviewZoom } from './tween/card';
-import { animateAttributeChange } from './tween/common';
 import { getVisualUri } from './util/helper';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
+import { animateAttributeChange, animatePreviewZoom } from './tween';
 
 const { ccclass } = _decorator;
 const { getCard } = Engine;

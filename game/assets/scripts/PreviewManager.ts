@@ -1,9 +1,9 @@
 import Engine from '@metacraft/murg-engine';
 import { _decorator, Component, EventMouse, Node, UIOpacity, Vec2 } from 'cc';
 
-import { animateRaiseCard } from './tween/card';
 import { cardIdFromNode, setCursor } from './util/helper';
 import { system } from './util/system';
+import { animateRaiseCard } from './tween';
 
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
