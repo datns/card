@@ -1,6 +1,19 @@
 import { Color, Label, Node, tween, UIOpacity, Vec3 } from 'cc';
 import { getAttributeColor } from 'db://assets/scripts/util/helper';
 
+export const simpleMove = async (
+	node: Node,
+	to: Vec3,
+	duration = 0.2,
+): Promise<void> => {
+	return new Promise((resolve) => {
+		tween(node)
+			.to(duration, { position: to }, { easing: 'expoInOut' })
+			.call(() => resolve())
+			.start();
+	});
+};
+
 export const animateFade = async (
 	node: Node,
 	to: number,
