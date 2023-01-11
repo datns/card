@@ -85,7 +85,7 @@ export class DuelManager extends Component {
 		const hand = selectHand(system.duel, system.playerIds.me);
 		const indexInHand = hand.indexOf(cardId);
 		const expoPositions = getHandExpos(
-			system.globalNodes.playerHand,
+			system.globalNodes.playerHandGuide,
 			hand.length,
 		);
 
@@ -118,7 +118,8 @@ export class DuelManager extends Component {
 			this.onCardDrag(e);
 		} else if (system.duel && system.playerIds) {
 			const handCardIds = selectHand(system.duel, system.playerIds.me);
-			const handPosition = system.globalNodes.playerHand.getWorldPosition();
+			const handPosition =
+				system.globalNodes.playerHandGuide.getWorldPosition();
 			const mousePosition = e.getUILocation();
 			let chosen: { node: Node; distance: number; cardId: string };
 

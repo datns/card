@@ -121,8 +121,8 @@ export const selectGroundNode = (owner: string): Node => {
 
 export const selectHandNode = (owner: string): Node => {
 	return system.playerIds.me === owner
-		? system.globalNodes.playerHand
-		: system.globalNodes.enemyHand;
+		? system.globalNodes.playerHandGuide
+		: system.globalNodes.enemyHandGuide;
 };
 
 export const getHandSize = (owner: string): number => {

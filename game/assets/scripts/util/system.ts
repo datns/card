@@ -1,12 +1,13 @@
 import Engine, {
 	DuelCommandBundle,
+	DuelConfig,
 	DuelState,
 	PlayerState,
 } from '@metacraft/murg-engine';
 import { Node } from 'cc';
 import isEqual from 'lodash.isequal';
 
-import { PlayerIds, ServerState } from '../util/types';
+import { JwtPayload, PlayerIds, ServerState } from '../util/types';
 
 const { defaultSetting, DuelPhases, nanoId } = Engine;
 
@@ -94,10 +95,15 @@ export interface System {
 	playerIds: PlayerIds;
 	serverState?: ServerState;
 	duel?: DuelProxy;
+	context?: JwtPayload;
+	config?: DuelConfig;
+	remoteHistory?: DuelCommandBundle[];
 	history: DuelCommandBundle[];
+	replayLevel: number;
 	globalNodes: {
 		duel?: Node;
 		board?: Node;
+		ribbonMessage?: Node;
 		cardTemplate?: Node;
 		cardPreview?: Node;
 		unitPreview?: Node;
@@ -108,9 +114,11 @@ export interface System {
 		leftExpo?: Node;
 		rightExpo?: Node;
 		playerHand?: Node;
+		playerHandGuide?: Node;
 		playerGround?: Node;
 		summonZone?: Node;
 		enemyHand?: Node;
+		enemyHandGuide?: Node;
 		enemyGround?: Node;
 	};
 	cardRefs: Record<string, Node>;
@@ -155,9 +163,12 @@ export const system: System = {
 		firstGrave: [],
 		secondGrave: [],
 	}),
+	serverState: {},
 	cardRefs: {},
 	globalNodes: {},
 	history: [],
+	remoteHistory: [],
+	replayLevel: 0,
 	previewing: false,
 	dragging: false,
 };
