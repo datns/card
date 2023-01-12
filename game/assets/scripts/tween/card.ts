@@ -20,13 +20,14 @@ export const animateExpoCard = ({
 	speed = 1,
 }: PlayerCardOption): Tween<Node> => {
 	let flipped = false;
+	const p1 = new Vec3(dest.x, dest.y - 25, dest.z);
 	const r1 = Quat.fromEuler(new Quat(), 90, 90, 91);
 	const r2 = Quat.fromEuler(new Quat(), 12, 0, 0);
 	const r3 = Quat.fromEuler(new Quat(), 0, 0, 0);
 	const translate = tween(node)
 		.set({ position: from })
-		.to(0.5 / speed, { position: dest }, { easing: 'cubicIn' })
-		.by(1 / speed, { position: new Vec3(0, 15, 0) }, { easing: 'quadOut' });
+		.to(0.5 / speed, { position: p1 }, { easing: 'cubicIn' })
+		.to(1.5 / speed, { position: dest }, { easing: 'backIn' });
 
 	const rotate = tween(node)
 		.set({ rotation: r1, active: true })
@@ -69,7 +70,7 @@ export const animateDrawPlayerCard = ({
 	return new Promise((resolve) => {
 		animateExpoCard({ node, from, dest: expoDest, delay, speed })
 			.to(
-				1,
+				0.8,
 				{ position: dest, scale: new Vec3(0.4, 0.4, 1) },
 				{ easing: 'expoOut' },
 			)
