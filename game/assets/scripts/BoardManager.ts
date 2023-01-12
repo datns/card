@@ -5,10 +5,18 @@ import { selectHandNode } from './util/helper';
 import { getHandExpos } from './util/layout';
 import { system } from './util/system';
 import { sendConnect } from './network';
-import { simpleMove } from './tween';
+import { cardGlowOff, cardGlowOn, simpleMove } from './tween';
 
 const { ccclass } = _decorator;
-const { DuelPlace, selectStateKey } = Engine;
+const {
+	CardType,
+	DuelPlace,
+	DuelPhases,
+	selectStateKey,
+	selectPlayer,
+	selectHand,
+	getCard,
+} = Engine;
 
 interface Props {
 	animation?: Animation;
@@ -144,10 +152,18 @@ export class BoardManager extends Component {
 				this.onEnemyHandUpdate.bind(this),
 			),
 		);
+
+		this.unSubscribers.push(
+			system.duel.subscribe('phase', this.onPhaseUpdate.bind(this)),
+		);
 	}
 
-	onPlayerUpdate(player: PlayerState): void {
+	onPlayerUpdate(player: PlayerState, old: PlayerState): void {
 		this.playerHealth.string = String(player.health);
+
+		if (player.perTurnHero !== old?.perTurnHero) {
+			setTimeout(() => this.updateInteractions(), 0);
+		}
 	}
 
 	onPlayerDeckUpdate(deck: string[]): void {
@@ -168,6 +184,36 @@ export class BoardManager extends Component {
 
 	onEnemyHandUpdate(hand: []): void {
 		this.reArrangeHand(system.playerIds.enemy, hand);
+	}
+
+	onPhaseUpdate(): void {
+		setTimeout(() => this.updateInteractions(), 0);
+	}
+
+	updateInteractions(): void {
+		const me = selectPlayer(system.duel, system.playerIds.me);
+		const isMyPhase = system.duel.phaseOf === system.playerIds.me;
+		const isSetupPhase = system.duel.phase === DuelPhases.Setup;
+		const isCommandAble = isMyPhase && isSetupPhase;
+		const canSummonHero = isCommandAble && me.perTurnHero > 0;
+		const myHand = selectHand(system.duel, system.playerIds.me);
+
+		system.isCommandAble = isCommandAble;
+
+		myHand.forEach((id) => {
+			const card = getCard(system.duel.cardMap, id);
+			const node = system.cardRefs[id];
+
+			if (card.kind === CardType.Hero) {
+				if (canSummonHero) {
+					cardGlowOn(node);
+				} else {
+					cardGlowOff(node);
+				}
+			} else {
+				cardGlowOn(node);
+			}
+		});
 	}
 
 	reArrangeHand(owner: string, hand: []): void {

@@ -124,6 +124,7 @@ export interface System {
 		summonZoneGuide?: Node;
 	};
 	cardRefs: Record<string, Node>;
+	isCommandAble: boolean;
 	previewing: boolean;
 	dragging: boolean;
 	activeCard?: Node;
@@ -166,6 +167,7 @@ export const system: System = {
 		secondGrave: [],
 	}),
 	serverState: {},
+	isCommandAble: false,
 	cardRefs: {},
 	globalNodes: {},
 	history: [],

@@ -1,4 +1,4 @@
-import { Node, Quat, Tween, tween, Vec3 } from 'cc';
+import { Node, Quat, Tween, tween, UIOpacity, Vec3 } from 'cc';
 
 export interface PlayerCardOption {
 	node: Node;
@@ -106,4 +106,23 @@ export const animateDrawEnemyCard = ({
 			.call(() => resolve())
 			.start();
 	});
+};
+
+export const cardGlowOn = (node: Node): void => {
+	const glow = node.getChildByPath('glow');
+
+	glow.active = true;
+	tween(glow.getComponent(UIOpacity))
+		.set({ opacity: 0 })
+		.to(1, { opacity: 150 }, { easing: 'expoOut' })
+		.start();
+};
+
+export const cardGlowOff = (node: Node): void => {
+	const glow = node.getChildByPath('glow');
+
+	tween(glow.getComponent(UIOpacity))
+		.to(1, { opacity: 0 }, { easing: 'expoOut' })
+		.call(() => (glow.active = false))
+		.start();
 };

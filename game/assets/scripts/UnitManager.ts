@@ -104,11 +104,11 @@ export class UnitManager extends Component {
 		if (system.dragging || !this.cardId) return;
 		if (this.node.getChildByPath('back')?.active) return;
 
-		system.globalNodes.cardPreview
-			.getChildByPath('Card')
-			.getComponent(CardManager)
-			.setCardId(this.cardId);
+		const cardNode = system.globalNodes.cardPreview.getChildByPath('Card');
+		const glowNode = system.globalNodes.cardPreview.getChildByPath('Card/glow');
 
+		glowNode.active = false;
+		cardNode.getComponent(CardManager).setCardId(this.cardId);
 		raiseUnitPreview(system.globalNodes.cardPreview, this.node);
 	}
 

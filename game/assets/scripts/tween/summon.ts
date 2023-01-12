@@ -16,6 +16,7 @@ export const animatePlayerSummon = (
 		const xOffset = from.x > to.x ? 10 : -10;
 		const aboveTo = new Vec3(to.x + xOffset, to.y + 200, to.z);
 
+		node.getChildByPath('glow').active = false;
 		unit.getComponent(UnitManager).setCardId(cardId);
 		unit.parent = system.globalNodes.playerGround;
 

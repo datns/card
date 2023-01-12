@@ -166,10 +166,12 @@ export class DuelManager extends Component {
 	}
 
 	onCardHover(node: Node, cardId: string): void {
-		system.globalNodes.cardPreview
-			.getChildByPath('Card')
-			.getComponent(CardManager)
-			.setCardId(cardId);
+		const isActive = node.getChildByPath('glow').active;
+		const glowNode = system.globalNodes.cardPreview.getChildByPath('Card/glow');
+		const cardNode = system.globalNodes.cardPreview.getChildByPath('Card');
+
+		glowNode.active = isActive;
+		cardNode.getComponent(CardManager).setCardId(cardId);
 		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
 		raiseHandCard(node, 100);
 		raiseHandPreview(system.globalNodes.cardPreview);
