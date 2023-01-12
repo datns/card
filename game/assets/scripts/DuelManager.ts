@@ -6,7 +6,7 @@ import { getGroundExpos, getHandExpos } from './util/layout';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
 import { sendCardSummon } from './network';
-import { animatePreviewRaise, animateRaiseCard, simpleMove } from './tween';
+import { raiseHandCard, raiseHandPreview, simpleMove } from './tween';
 import { UnitManager } from './UnitManager';
 
 const { ccclass } = _decorator;
@@ -171,14 +171,14 @@ export class DuelManager extends Component {
 			.getComponent(CardManager)
 			.setCardId(cardId);
 		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
-		animateRaiseCard(node, 100);
-		animatePreviewRaise(system.globalNodes.cardPreview);
+		raiseHandCard(node, 100);
+		raiseHandPreview(system.globalNodes.cardPreview);
 		node.getComponent(UIOpacity).opacity = 20;
 	}
 
 	onCardLeave(node: Node): void {
-		animateRaiseCard(node, 0);
 		system.globalNodes.cardPreview.setPosition(190, 740);
+		raiseHandCard(node, 0);
 		node.getComponent(UIOpacity).opacity = 255;
 	}
 }

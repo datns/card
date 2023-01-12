@@ -12,7 +12,7 @@ import {
 import { getVisualUri } from './util/helper';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
-import { animateAttributeChange, animatePreviewZoom } from './tween';
+import { animateAttributeChange, raiseUnitPreview } from './tween';
 
 const { ccclass } = _decorator;
 const { getCard } = Engine;
@@ -109,7 +109,7 @@ export class UnitManager extends Component {
 			.getComponent(CardManager)
 			.setCardId(this.cardId);
 
-		animatePreviewZoom(system.globalNodes.cardPreview, this.node);
+		raiseUnitPreview(system.globalNodes.cardPreview, this.node);
 	}
 
 	onMouseLeave(): void {

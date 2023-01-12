@@ -3,7 +3,7 @@ import { _decorator, Component, EventMouse, Node, UIOpacity, Vec2 } from 'cc';
 
 import { cardIdFromNode, setCursor } from './util/helper';
 import { system } from './util/system';
-import { animateRaiseCard } from './tween';
+import { raiseHandCard } from './tween';
 
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
@@ -69,7 +69,7 @@ export class PreviewManager extends Component {
 		this.node.setPosition(190, 740);
 
 		if (system.activeCard) {
-			animateRaiseCard(system.activeCard, 0, 0.02);
+			raiseHandCard(system.activeCard, 0, 0.02);
 			const uiOpacity = system.activeCard.getComponent(
 				'cc.UIOpacity',
 			) as UIOpacity;

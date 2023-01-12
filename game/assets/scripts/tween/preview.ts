@@ -1,6 +1,6 @@
 import { Node, tween, Vec3 } from 'cc';
 
-export const animatePreviewZoom = async (
+export const raiseUnitPreview = async (
 	node: Node,
 	targetNode: Node,
 ): Promise<void> => {
@@ -11,32 +11,28 @@ export const animatePreviewZoom = async (
 	return new Promise((resolve) => {
 		node.setPosition(at.x + xOffset, at.y + yOffset);
 		tween(node.getChildByPath('Card'))
-			.set({ position: new Vec3(0, -8, 0), scale: new Vec3(0.5, 0.5, 1) })
-			.to(
-				0.1,
-				{ position: new Vec3(0, 0, 0), scale: new Vec3(0.6, 0.6, 1) },
-				{ easing: 'cubicInOut' },
-			)
+			.set({ position: new Vec3(0, -15, 0), scale: new Vec3(0.6, 0.6, 1) })
+			.to(0.15, { position: new Vec3(0, 0, 0) }, { easing: 'backOut' })
 			.call(() => resolve())
 			.start();
 	});
 };
 
-export const animatePreviewRaise = async (
+export const raiseHandPreview = async (
 	node: Node,
-	from = -8,
-	duration = 0.1,
+	from = -12,
+	duration = 0.15,
 ): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node.getChildByPath('Card'))
 			.set({ position: new Vec3(0, from, 0) })
-			.to(duration, { position: new Vec3(0, 0, 0) }, { easing: 'cubicInOut' })
+			.to(duration, { position: new Vec3(0, 0, 0) }, { easing: 'backOut' })
 			.call(() => resolve())
 			.start();
 	});
 };
 
-export const animateRaiseCard = async (
+export const raiseHandCard = async (
 	node: Node,
 	to = 100,
 	duration = 0.1,

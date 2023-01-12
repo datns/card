@@ -22,7 +22,7 @@ export const animatePlayerSummon = (
 		system.cardRefs[cardId] = unit;
 
 		tween(node)
-			.to(0.1, { scale: new Vec3(0.52, 0.52, 1) })
+			.to(0.1, { scale: new Vec3(0.52, 0.52, 1) }, { easing: 'backOut' })
 			.to(
 				0.4,
 				{ scale: new Vec3(0.23, 0.23, 1), position: aboveTo },
@@ -32,7 +32,7 @@ export const animatePlayerSummon = (
 				tween(unit)
 					.set({ position: aboveTo, scale: new Vec3(0.25, 0.25, 1) })
 					.to(
-						0.5,
+						0.3,
 						{ position: to, scale: new Vec3(0.24, 0.24, 1) },
 						{ easing: 'expoOut' },
 					)
