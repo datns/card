@@ -1,18 +1,22 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
+import { playSummon } from 'db://assets/scripts/replay/summon';
 import { animateRibbonAppear } from 'db://assets/scripts/tween';
 
 import { system } from '../util/system';
 
-import { replayDraw } from './draw';
+import { playDraw } from './draw';
 
 let replaying = false;
 const { BundleGroup, mergeFragmentToState, runCommand } = Engine;
 
 export const replay = async (): Promise<void> => {
-	if (replaying) return;
+	const remoteHistoryLength = system.remoteHistory.length;
+	const isUpToDate = system.replayLevel >= remoteHistoryLength;
+
+	if (replaying || isUpToDate) return;
 
 	replaying = true;
-	const remoteHistoryLength = system.remoteHistory.length;
+	console.log('replaying', system.replayLevel, '->', remoteHistoryLength);
 
 	for (let i = system.replayLevel; i < remoteHistoryLength; i += 1) {
 		const bundle = system.remoteHistory[i];
@@ -29,8 +33,12 @@ export const replay = async (): Promise<void> => {
 		}
 
 		if (isDraw) {
-			await replayDraw(bundle);
+			await playDraw(bundle);
+		} else if (BundleGroup.Summon === group) {
+			await playSummon(bundle);
 		}
+
+		system.replayLevel += 1;
 	}
 
 	// mergeFragmentToState(system.duel, );
@@ -38,6 +46,8 @@ export const replay = async (): Promise<void> => {
 	// const bundles = system.serverState.history.slice(fromIndex, toIndex);
 
 	replaying = false;
+
+	await replay();
 };
 
 export const runCommandBundle = (bundle: DuelCommandBundle): void => {

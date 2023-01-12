@@ -9,7 +9,7 @@ import { system } from '../util/system';
 
 const { selectHand } = Engine;
 
-export const replayDraw = async ({
+export const playDraw = async ({
 	phaseOf,
 	commands,
 }: DuelCommandBundle): Promise<void> => {
