@@ -36,17 +36,23 @@ export class BoardManager extends Component {
 		const centerExpo = this.node.getChildByPath('Guide/centerExpo') as Node;
 		const leftExpo = this.node.getChildByPath('Guide/leftExpo') as Node;
 		const rightExpo = this.node.getChildByPath('Guide/rightExpo') as Node;
-		const playerHand = this.node.getChildByPath('Player Hand') as Node;
+		const playerHand = this.node.getChildByPath('playerHand') as Node;
+		const enemyHand = this.node.getChildByPath('enemyHand') as Node;
+		const playerGround = this.node.getChildByPath('playerGround') as Node;
+		const enemyGround = this.node.getChildByPath('enemyGround') as Node;
 		const playerHandGuide = this.node.getChildByPath(
-			'Guide/playerHandGuide',
+			'Guide/playerHand',
 		) as Node;
-		const playerGround = this.node.getChildByPath('Guide/playerGround') as Node;
-		const summonZone = this.node.getChildByPath('Guide/summonZone') as Node;
-		const enemyHand = this.node.getChildByPath('Enemy Hand') as Node;
-		const enemyHandGuide = this.node.getChildByPath(
-			'Guide/enemyHandGuide',
+		const playerGroundGuide = this.node.getChildByPath(
+			'Guide/playerGround',
 		) as Node;
-		const enemyGround = this.node.getChildByPath('Guide/enemyGround') as Node;
+		const enemyHandGuide = this.node.getChildByPath('Guide/enemyHand') as Node;
+		const enemyGroundGuide = this.node.getChildByPath(
+			'Guide/enemyGround',
+		) as Node;
+		const summonZoneGuide = this.node.getChildByPath(
+			'Guide/summonZone',
+		) as Node;
 
 		this.animation = this.node.getComponent('cc.Animation') as Animation;
 		this.playerDeckCount = this.node
@@ -71,13 +77,15 @@ export class BoardManager extends Component {
 		system.globalNodes.centerExpo = centerExpo;
 		system.globalNodes.leftExpo = leftExpo;
 		system.globalNodes.rightExpo = rightExpo;
-		system.globalNodes.playerHandGuide = playerHandGuide;
 		system.globalNodes.playerHand = playerHand;
-		system.globalNodes.playerGround = playerGround;
-		system.globalNodes.summonZone = summonZone;
 		system.globalNodes.enemyHand = enemyHand;
-		system.globalNodes.enemyHandGuide = enemyHandGuide;
+		system.globalNodes.playerGround = playerGround;
 		system.globalNodes.enemyGround = enemyGround;
+		system.globalNodes.playerHandGuide = playerHandGuide;
+		system.globalNodes.playerGroundGuide = playerGroundGuide;
+		system.globalNodes.enemyHandGuide = enemyHandGuide;
+		system.globalNodes.enemyGroundGuide = enemyGroundGuide;
+		system.globalNodes.summonZoneGuide = summonZoneGuide;
 
 		system.globalNodes.board.on('stateReady', this.onStateReady.bind(this));
 		if (system.context) this.onStateReady();

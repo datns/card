@@ -37,7 +37,7 @@ export class DuelManager extends Component {
 
 	onUnitPreview(): void {
 		const previewNode = system.globalNodes.unitPreview;
-		const expoPositions = getGroundExpos(system.globalNodes.playerGround);
+		const expoPositions = getGroundExpos(system.globalNodes.playerGroundGuide);
 
 		previewNode
 			.getComponent(UnitManager)
@@ -58,7 +58,7 @@ export class DuelManager extends Component {
 
 	onCardDrag(e: EventMouse): void {
 		const { x, y } = e.getUILocation();
-		const zonePosition = system.globalNodes.summonZone.getWorldPosition();
+		const zonePosition = system.globalNodes.summonZoneGuide.getWorldPosition();
 		system.activeCard?.setWorldPosition(x, y, 0);
 
 		if (y > zonePosition.y) {
@@ -80,7 +80,7 @@ export class DuelManager extends Component {
 
 	onCardDrop(e: EventMouse): void {
 		const { x, y } = e.getUILocation();
-		const zonePosition = system.globalNodes.summonZone.getWorldPosition();
+		const zonePosition = system.globalNodes.summonZoneGuide.getWorldPosition();
 		const cardId = cardIdFromNode(system.activeCard);
 		const hand = selectHand(system.duel, system.playerIds.me);
 		const indexInHand = hand.indexOf(cardId);

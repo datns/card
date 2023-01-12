@@ -115,8 +115,8 @@ export const selectDeckNode = (owner: string): Node => {
 
 export const selectGroundNode = (owner: string): Node => {
 	return system.playerIds.me === owner
-		? system.globalNodes.playerGround
-		: system.globalNodes.enemyGround;
+		? system.globalNodes.playerGroundGuide
+		: system.globalNodes.enemyGroundGuide;
 };
 
 export const selectHandNode = (owner: string): Node => {

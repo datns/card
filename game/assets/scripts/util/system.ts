@@ -114,12 +114,14 @@ export interface System {
 		leftExpo?: Node;
 		rightExpo?: Node;
 		playerHand?: Node;
-		playerHandGuide?: Node;
-		playerGround?: Node;
-		summonZone?: Node;
 		enemyHand?: Node;
-		enemyHandGuide?: Node;
+		playerGround?: Node;
 		enemyGround?: Node;
+		playerHandGuide?: Node;
+		playerGroundGuide?: Node;
+		enemyHandGuide?: Node;
+		enemyGroundGuide?: Node;
+		summonZoneGuide?: Node;
 	};
 	cardRefs: Record<string, Node>;
 	previewing: boolean;
