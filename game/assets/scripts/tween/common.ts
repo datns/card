@@ -1,5 +1,7 @@
 import { Color, Label, Node, tween, UIOpacity, Vec3 } from 'cc';
-import { getAttributeColor } from 'db://assets/scripts/util/helper';
+
+import { getAttributeColor } from '../util/helper';
+import { system } from '../util/system';
 
 export const simpleMove = async (
 	node: Node,
@@ -71,4 +73,17 @@ export const animateAttributeChange = async (
 			.call(() => resolve())
 			.start();
 	});
+};
+
+export const shakeGround = (strength = 3, volume = 2): void => {
+	const instance = tween(system.globalNodes.board);
+
+	for (let i = 0; i < volume; i += 1) {
+		const x = Math.random() * strength;
+		const y = Math.random() * strength;
+
+		instance.to(0, { position: new Vec3(x, y, 0) }).delay(0.08);
+	}
+
+	instance.to(0.5, { position: new Vec3(0, 0, 0) }).start();
 };

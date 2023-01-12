@@ -5,7 +5,7 @@ export const animatePreviewZoom = async (
 	targetNode: Node,
 ): Promise<void> => {
 	const at = targetNode.getPosition();
-	const xOffset = at.x >= 0 ? -170 : 170;
+	const xOffset = at.x > 0 ? -170 : 170;
 	const yOffset = at.y > 0 ? -38 : 38;
 
 	return new Promise((resolve) => {
