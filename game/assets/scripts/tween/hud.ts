@@ -16,11 +16,11 @@ export const animateRibbonAppear = async (message: string): Promise<void> => {
 				scale: new Vec3(0, 0, 1),
 				position: new Vec3(0, 25, 0),
 			})
-			.to(1, { scale: new Vec3(1, 1, 1) }, { easing: 'circInOut' })
+			.to(0.5, { scale: new Vec3(1, 1, 1) }, { easing: 'backOut' })
 			.delay(2)
 			.call(() => {
 				tween(uiOpacity)
-					.to(0.5, { opacity: 0 })
+					.to(0.25, { opacity: 0 })
 					.call(() => {
 						node.setPosition(new Vec3(9999, 0, 0));
 						uiOpacity.opacity = 255;
@@ -28,7 +28,7 @@ export const animateRibbonAppear = async (message: string): Promise<void> => {
 					})
 					.start();
 			})
-			.to(0.5, { scale: new Vec3(0, 0, 1) }, { easing: 'expoInOut' })
+			.to(0.25, { scale: new Vec3(0, 0, 1) }, { easing: 'backIn' })
 			.start();
 	});
 };
