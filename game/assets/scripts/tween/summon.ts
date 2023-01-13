@@ -1,6 +1,7 @@
 import { instantiate, Node, Quat, tween, Vec3 } from 'cc';
 
 import { UnitManager } from '../UnitManager';
+import { playSound } from '../util/sound';
 import { system } from '../util/system';
 
 import { shakeGround } from './common';
@@ -24,6 +25,7 @@ export const animatePlayerSummon = (
 
 		tween(node)
 			.to(0.1, { scale: new Vec3(0.52, 0.52, 1) }, { easing: 'backOut' })
+			.call(() => playSound('summon-detach'))
 			.to(
 				0.4,
 				{ scale: new Vec3(0.23, 0.23, 1), position: aboveTo },
@@ -38,6 +40,7 @@ export const animatePlayerSummon = (
 						{ easing: 'expoOut' },
 					)
 					.call(() => {
+						playSound('card-landing');
 						shakeGround();
 						resolve();
 					})

@@ -1,5 +1,13 @@
 import Engine from '@metacraft/murg-engine';
-import { _decorator, Component, EventMouse, Node, UIOpacity } from 'cc';
+import {
+	_decorator,
+	AudioClip,
+	AudioSource,
+	Component,
+	EventMouse,
+	Node,
+	UIOpacity,
+} from 'cc';
 
 import { cardIdFromNode, getMyGround } from './util/helper';
 import { getGroundExpos, getHandExpos } from './util/layout';
@@ -9,7 +17,7 @@ import { sendCardSummon } from './network';
 import { raiseHandCard, raiseHandPreview, simpleMove } from './tween';
 import { UnitManager } from './UnitManager';
 
-const { ccclass } = _decorator;
+const { ccclass, property } = _decorator;
 const { selectHand, selectGround, getFirstEmptyLeft, getFirstEmptyRight } =
 	Engine;
 const NodeEvents = Node.EventType;
@@ -19,7 +27,11 @@ export class DuelManager extends Component {
 	previewingLeft = false;
 	previewingRight = false;
 
+	@property(AudioClip)
+	cardRaiseClip;
+
 	start(): void {
+		system.audioSource = this.node.getComponent(AudioSource);
 		system.globalNodes.duel = this.node;
 		system.globalNodes.cardPreview = this.node.getChildByPath('Card Preview');
 		system.globalNodes.ribbonMessage =
@@ -173,6 +185,7 @@ export class DuelManager extends Component {
 		glowNode.active = isActive;
 		cardNode.getComponent(CardManager).setCardId(cardId);
 		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
+		system.audioSource.playOneShot(this.cardRaiseClip);
 		raiseHandCard(node, 100);
 		raiseHandPreview(system.globalNodes.cardPreview);
 		node.getComponent(UIOpacity).opacity = 20;

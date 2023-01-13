@@ -1,5 +1,7 @@
 import { Node, Quat, Tween, tween, UIOpacity, Vec3 } from 'cc';
 
+import { playSound } from '../util/sound';
+
 export interface PlayerCardOption {
 	node: Node;
 	delay?: number;
@@ -40,7 +42,9 @@ export const animateExpoCard = ({
 					if (flipped) return;
 					const angle = new Vec3(0, 0, 0);
 					node.rotation.getEulerAngles(angle);
+
 					if (angle.z < 30) {
+						playSound('card-flip');
 						node.getChildByPath('back').active = false;
 						flipped = true;
 					}
@@ -115,7 +119,7 @@ export const cardGlowOn = (node: Node): void => {
 	glow.active = true;
 	tween(glow.getComponent(UIOpacity))
 		.set({ opacity: 0 })
-		.to(1, { opacity: 150 }, { easing: 'expoOut' })
+		.to(3, { opacity: 150 }, { easing: 'expoOut' })
 		.start();
 };
 

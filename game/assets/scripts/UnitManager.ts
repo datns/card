@@ -9,7 +9,8 @@ import {
 	UIOpacity,
 } from 'cc';
 
-import { getVisualUri } from './util/helper';
+import { getVisualUri, setCursor } from './util/helper';
+import { playSound } from './util/sound';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
 import { animateAttributeChange, raiseUnitPreview } from './tween';
@@ -101,6 +102,8 @@ export class UnitManager extends Component {
 	}
 
 	onMouseEnter(): void {
+		setCursor('pointer');
+
 		if (system.dragging || !this.cardId) return;
 		if (this.node.getChildByPath('back')?.active) return;
 
@@ -108,11 +111,13 @@ export class UnitManager extends Component {
 		const glowNode = system.globalNodes.cardPreview.getChildByPath('Card/glow');
 
 		glowNode.active = false;
+		playSound('card-raise');
 		cardNode.getComponent(CardManager).setCardId(this.cardId);
 		raiseUnitPreview(system.globalNodes.cardPreview, this.node);
 	}
 
 	onMouseLeave(): void {
+		setCursor('auto');
 		system.globalNodes.cardPreview.setPosition(190, 740);
 	}
 }

@@ -4,7 +4,7 @@ import Engine, {
 	DuelState,
 	PlayerState,
 } from '@metacraft/murg-engine';
-import { Node } from 'cc';
+import { AudioSource, Node } from 'cc';
 import isEqual from 'lodash.isequal';
 
 import { JwtPayload, PlayerIds, ServerState } from '../util/types';
@@ -123,6 +123,7 @@ export interface System {
 		enemyGroundGuide?: Node;
 		summonZoneGuide?: Node;
 	};
+	audioSource?: AudioSource;
 	cardRefs: Record<string, Node>;
 	isCommandAble: boolean;
 	previewing: boolean;
