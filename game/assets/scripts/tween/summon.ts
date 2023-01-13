@@ -25,7 +25,7 @@ export const animatePlayerSummon = (
 
 		tween(node)
 			.to(0.1, { scale: new Vec3(0.52, 0.52, 1) }, { easing: 'backOut' })
-			.call(() => playSound('summon-detach'))
+			.call(() => playSound('light-fire'))
 			.to(
 				0.4,
 				{ scale: new Vec3(0.23, 0.23, 1), position: aboveTo },
@@ -40,7 +40,7 @@ export const animatePlayerSummon = (
 						{ easing: 'expoOut' },
 					)
 					.call(() => {
-						playSound('card-landing');
+						playSound('fire');
 						shakeGround();
 						resolve();
 					})

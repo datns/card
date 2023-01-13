@@ -78,7 +78,10 @@ export const animateDrawPlayerCard = ({
 				{ position: dest, scale: new Vec3(0.4, 0.4, 1) },
 				{ easing: 'expoOut' },
 			)
-			.call(() => resolve())
+			.call(() => {
+				playSound('light-fire');
+				resolve();
+			})
 			.start();
 	});
 };
@@ -102,6 +105,7 @@ export const animateDrawEnemyCard = ({
 
 		tween(node)
 			.delay(delay)
+			.call(() => playSound('card-flip'))
 			.set({ position: from, rotation: r1, scale: new Vec3(0.18, 0.18, 1) })
 			.to(
 				1,
