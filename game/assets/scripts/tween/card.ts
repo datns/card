@@ -136,18 +136,43 @@ export const animateGlowOff = (node: Node): void => {
 		.start();
 };
 
-export const animateGroundReveal = (node: Node): Promise<void> => {
+export const animateGroundReveal = (
+	node: Node,
+	distance = 50,
+): Promise<void> => {
 	return new Promise((resolve) => {
-		const r1 = Quat.fromEuler(new Quat(), 0, 180, 0);
-		const r2 = Quat.fromEuler(new Quat(), 0, 90, 0);
-		const r3 = Quat.fromEuler(new Quat(), 0, 0, 0);
+		let flipped = false;
+		const r1 = Quat.fromEuler(new Quat(), 180, 0, 0);
+		const r2 = Quat.fromEuler(new Quat(), 0, 0, 0);
 
-		tween(node)
+		const translate = tween(node)
+			.by(0.25, { position: new Vec3(0, distance, 0) }, { easing: 'backOut' })
+			.by(0.75, { position: new Vec3(0, -distance, 0) }, { easing: 'expoOut' });
+		const scale = tween(node)
+			.to(0.25, { scale: new Vec3(0.25, 0.25, 1) })
+			.to(0.75, { scale: new Vec3(0.24, 0.24, 1) }, { easing: 'backOut' });
+		const rotate = tween(node)
 			.set({ rotation: r1 })
-			.to(0.25, { rotation: r2, scale: new Vec3(0.26, 0.26, 1) })
-			.call(() => (node.getChildByPath('back').active = false))
-			.to(0.25, { rotation: r3, scale: new Vec3(0.24, 0.24, 1) })
+			.to(
+				1,
+				{ rotation: r2 },
+				{
+					easing: 'expoOut',
+					onUpdate: (node: Node) => {
+						if (flipped) return;
+						const angle = new Vec3(0, 0, 0);
+						node.rotation.getEulerAngles(angle);
+
+						if (angle.x < 90) {
+							node.getChildByPath('back').active = false;
+							flipped = true;
+						}
+					},
+				},
+			)
 			.call(resolve)
 			.start();
+
+		tween(node).parallel(translate, scale, rotate).call(resolve).start();
 	});
 };

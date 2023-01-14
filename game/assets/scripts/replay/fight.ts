@@ -1,24 +1,29 @@
-import { DuelCommandBundle } from '@metacraft/murg-engine';
+import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
+import lodash from 'lodash';
 
-import { animateGroundReveal } from '../tween';
+import { animateCardAttack } from '../tween';
 import { system } from '../util/system';
+
+const { CommandSourceType } = Engine;
 
 export const playFight = async ({
 	commands,
 }: DuelCommandBundle): Promise<void> => {
-	const revealTweens = [];
-	const combatPromises = [];
+	const combatTweens = [];
+	const unitCommands = commands.filter(
+		(i) => i.target?.source?.type === CommandSourceType.Unit,
+	);
 
-	for (let i = 0; i < system.duel.setting.groundSize; i += 1) {
-		const firstNode = system.cardRefs[system.duel.firstGround[i]];
-		const secondNode = system.cardRefs[system.duel.secondGround[i]];
+	lodash
+		.uniqBy(unitCommands, (i) => i.target?.source?.id)
+		.forEach(({ target }, i) => {
+			const fromCardId = target.source.id;
+			const fromNode = system.cardRefs[fromCardId];
 
-		[firstNode, secondNode]
-			.filter((node) => node?.getChildByPath('back')?.active)
-			.forEach((node) => {
-				revealTweens.push(animateGroundReveal(node));
-			});
-	}
+			if (fromNode) {
+				combatTweens.push(animateCardAttack(fromNode, i));
+			}
+		});
 
-	await Promise.all(revealTweens);
+	await Promise.all(combatTweens);
 };
