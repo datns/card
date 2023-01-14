@@ -2,6 +2,7 @@ import Engine from '@metacraft/murg-engine';
 import { _decorator, Button, Color, Component, Node } from 'cc';
 
 import { setCursor } from './util/helper';
+import { playSound } from './util/sound';
 import { system } from './util/system';
 import { sendEndTurn } from './network';
 import { animateFade, animateSwapLabel } from './tween';
@@ -105,6 +106,9 @@ export class TurnController extends Component {
 		const isSetupPhase = system.duel.phase === DuelPhases.Setup;
 		const isMyPhase = system.duel.phaseOf === system.playerIds.me;
 
-		if (isSetupPhase && isMyPhase) sendEndTurn();
+		if (isSetupPhase && isMyPhase) {
+			playSound('end-turn');
+			sendEndTurn();
+		}
 	}
 }

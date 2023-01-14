@@ -156,7 +156,7 @@
     "_priority": 1073741824,
     "_fov": 42.817,
     "_fovAxis": 0,
-    "_orthoHeight": 529.5622895622896,
+    "_orthoHeight": 523.8301415487094,
     "_near": 0,
     "_far": 2000,
     "_color": {
@@ -1664,10 +1664,6 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "cardRaiseClip": {
-      "__uuid__": "1bb18a2a-d74d-45d9-855b-67e4ab025f97",
-      "__expectedType__": "cc.AudioClip"
-    },
     "_id": "c7SV7dIQdNToabw8rp8Ard"
   },
   {
@@ -1681,8 +1677,8 @@
     "__prefab": null,
     "_clip": null,
     "_loop": false,
-    "_playOnAwake": true,
-    "_volume": 0.3,
+    "_playOnAwake": false,
+    "_volume": 1,
     "_id": "3axKGA0CdFEIXRO49NjVbk"
   },
   {

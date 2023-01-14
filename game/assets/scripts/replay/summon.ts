@@ -1,6 +1,8 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
+import { instantiate, UIOpacity } from 'cc';
 
-import { animatePlayerSummon } from '../tween';
+import { animateEnemySummon, animatePlayerSummon, cardGlowOff } from '../tween';
+import { UnitManager } from '../UnitManager';
 import { selectGroundNode } from '../util/helper';
 import { getGroundExpos } from '../util/layout';
 import { system } from '../util/system';
@@ -19,17 +21,23 @@ export const playSummon = async ({
 		if (isMoveCommand) {
 			const cardId = target.from.id;
 			const isMyCommand = owner === system.playerIds.me;
-			const cardNode = system.cardRefs[cardId];
 			const groundPositions = getGroundExpos(selectGroundNode(owner));
+			const targetPosition = groundPositions[target.to.index];
+			const cardNode = system.cardRefs[cardId];
+			const unitNode = instantiate(system.globalNodes.unitTemplate);
+
+			unitNode.getComponent(UnitManager).setCardId(cardId);
+			unitNode.getComponent(UIOpacity);
 
 			if (isMyCommand) {
-				promises.push(
-					animatePlayerSummon(
-						cardId,
-						cardNode,
-						groundPositions[target.to.index],
-					),
-				);
+				unitNode.parent = system.globalNodes.playerGround;
+				cardGlowOff(cardNode);
+				promises.push(animatePlayerSummon(cardNode, unitNode, targetPosition));
+			} else {
+				unitNode.parent = system.globalNodes.enemyGround;
+				unitNode.getChildByPath('back').active = true;
+				promises.push(animateEnemySummon(cardNode, unitNode, targetPosition));
+				setTimeout(() => cardNode.destroy(), 0);
 			}
 		}
 	}

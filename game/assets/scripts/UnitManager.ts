@@ -111,7 +111,7 @@ export class UnitManager extends Component {
 		const glowNode = system.globalNodes.cardPreview.getChildByPath('Card/glow');
 
 		glowNode.active = false;
-		playSound('card-raise');
+		playSound('card-raise', 0.2);
 		cardNode.getComponent(CardManager).setCardId(this.cardId);
 		raiseUnitPreview(system.globalNodes.cardPreview, this.node);
 	}

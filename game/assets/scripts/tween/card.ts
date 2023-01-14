@@ -44,7 +44,7 @@ export const animateExpoCard = ({
 					node.rotation.getEulerAngles(angle);
 
 					if (angle.z < 30) {
-						playSound('card-flip');
+						playSound('card-flip', 0.5);
 						node.getChildByPath('back').active = false;
 						flipped = true;
 					}
@@ -79,7 +79,7 @@ export const animateDrawPlayerCard = ({
 				{ easing: 'expoOut' },
 			)
 			.call(() => {
-				playSound('light-fire');
+				playSound('light-fire', 0.3);
 				resolve();
 			})
 			.start();

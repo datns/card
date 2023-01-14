@@ -28,10 +28,10 @@ export const playDraw = async ({
 		const node = instantiate(system.globalNodes.cardTemplate);
 
 		node.getComponent(CardManager).setCardId(cardId);
-		node.parent = system.globalNodes.playerHand;
 		system.cardRefs[cardId] = node;
 
 		if (phaseOf === system.playerIds.me) {
+			node.parent = system.globalNodes.playerHand;
 			promises.push(
 				animateDrawPlayerCard({
 					node,
@@ -42,6 +42,7 @@ export const playDraw = async ({
 				}),
 			);
 		} else {
+			node.parent = system.globalNodes.enemyHand;
 			promises.push(
 				animateDrawEnemyCard({
 					node,
@@ -54,9 +55,6 @@ export const playDraw = async ({
 	}
 
 	await Promise.all(promises);
-
-	// const expoCreator = commands.length > 3 ? getCenterExpos : getRightExpos;
-	// const expoPositions = expoCreator(commands.length);
 };
 
 export const safeCardId = (duel: DuelState, id: string): string => {

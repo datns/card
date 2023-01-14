@@ -75,7 +75,7 @@ export const animateAttributeChange = async (
 	});
 };
 
-export const shakeGround = (strength = 3, volume = 2): void => {
+export const shakeGround = (strength = 6, volume = 5): void => {
 	const instance = tween(system.globalNodes.board);
 
 	for (let i = 0; i < volume; i += 1) {
