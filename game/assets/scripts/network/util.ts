@@ -16,9 +16,7 @@ export const mergeRemoteHistory = (
 		return { conflict: true };
 	}
 
-	const nextHistory = system.remoteHistory.slice(0, level).concat(bundles);
-
-	system.remoteHistory = nextHistory;
+	system.remoteHistory = system.remoteHistory.slice(0, level).concat(bundles);
 
 	return {
 		conflict: false,

@@ -10,7 +10,7 @@ import {
 } from 'cc';
 
 import { getVisualUri, setCursor } from './util/helper';
-import { playSound } from './util/sound';
+import { playSoundOnce } from './util/sound';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
 import { animateAttributeChange, raiseUnitPreview } from './tween';
@@ -111,7 +111,7 @@ export class UnitManager extends Component {
 		const glowNode = system.globalNodes.cardPreview.getChildByPath('Card/glow');
 
 		glowNode.active = false;
-		playSound('card-raise', 0.2);
+		playSoundOnce('card-raise', 0.2);
 		cardNode.getComponent(CardManager).setCardId(this.cardId);
 		raiseUnitPreview(system.globalNodes.cardPreview, this.node);
 	}

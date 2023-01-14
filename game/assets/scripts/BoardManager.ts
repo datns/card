@@ -3,6 +3,7 @@ import { _decorator, Animation, Component, Label, Node } from 'cc';
 
 import { selectHandNode } from './util/helper';
 import { getHandExpos } from './util/layout';
+import { switchSound } from './util/sound';
 import { system } from './util/system';
 import { sendConnect } from './network';
 import { cardGlowOff, cardGlowOn, simpleMove } from './tween';
@@ -163,6 +164,10 @@ export class BoardManager extends Component {
 
 		if (player.perTurnHero !== old?.perTurnHero) {
 			setTimeout(() => this.updateInteractions(), 0);
+		}
+
+		if (player.health < 150) {
+			switchSound('bgm-dungeon-peak', 0.3);
 		}
 	}
 
