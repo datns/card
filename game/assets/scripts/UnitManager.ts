@@ -16,7 +16,7 @@ import { CardManager } from './CardManager';
 import { animateAttributeChange, raiseUnitPreview } from './tween';
 
 const { ccclass } = _decorator;
-const { getCard } = Engine;
+const { getCard, extractPassivePair, getFacingIdentifier } = Engine;
 const NodeEvents = Node.EventType;
 
 @ccclass('UnitManager')
@@ -65,30 +65,24 @@ export class UnitManager extends Component {
 
 	onStateChange(state: CardState, lastState: CardState): void {
 		if (!this.cardFoil) return;
+
 		const card = getCard(system.duel.cardMap, state.id);
+		const facing = getFacingIdentifier(system.duel, state.owner, state.id);
+		const passiveAttr = extractPassivePair(system.duel, state.id, facing.id)[0];
+		const attack = state.attack + passiveAttr.attack;
+		const defense = state.defense + passiveAttr.defense;
+		const health = state.health + passiveAttr.health;
 
 		if (state.health !== lastState?.health) {
-			animateAttributeChange(
-				this.cardHealth,
-				state.health,
-				card.attribute.health,
-			);
+			animateAttributeChange(this.cardHealth, health, card.attribute.health);
 		}
 
 		if (state.attack !== lastState?.attack) {
-			animateAttributeChange(
-				this.cardAttack,
-				state.attack,
-				card.attribute.attack,
-			);
+			animateAttributeChange(this.cardAttack, attack, card.attribute.attack);
 		}
 
 		if (state.defense !== lastState?.defense) {
-			animateAttributeChange(
-				this.cardDefense,
-				state.defense,
-				card.attribute.defense,
-			);
+			animateAttributeChange(this.cardDefense, defense, card.attribute.defense);
 		}
 
 		if (!lastState) {
