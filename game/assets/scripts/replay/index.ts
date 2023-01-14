@@ -1,6 +1,6 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 
-import { animateRibbonAppear } from '../tween';
+import { showTurnRibbon } from '../tween';
 import { system } from '../util/system';
 
 import { playDraw } from './draw';
@@ -15,10 +15,9 @@ export const replay = async (): Promise<void> => {
 	const remoteHistoryLength = system.remoteHistory.length;
 	const isUpToDate = system.replayLevel >= remoteHistoryLength;
 
-	if (replaying || isUpToDate) return;
+	if (system.winner || replaying || isUpToDate) return;
 
 	replaying = true;
-	console.log('replaying', system.replayLevel, '->', remoteHistoryLength);
 
 	for (let i = system.replayLevel; i < remoteHistoryLength; i += 1) {
 		const bundle = system.remoteHistory[i];
@@ -31,7 +30,7 @@ export const replay = async (): Promise<void> => {
 		runCommandBundle(bundle);
 
 		if (isTurnDraw && isMyPhase) {
-			await animateRibbonAppear('Your Turn');
+			await showTurnRibbon('Your Turn');
 		}
 
 		if (isDraw) {
@@ -46,10 +45,6 @@ export const replay = async (): Promise<void> => {
 
 		system.replayLevel += 1;
 	}
-
-	// mergeFragmentToState(system.duel, );
-	// const toIndex = system.serverState.history.length - 1;
-	// const bundles = system.serverState.history.slice(fromIndex, toIndex);
 
 	replaying = false;
 

@@ -1,6 +1,7 @@
 import Engine, { DuelCommandBundle, DuelConfig } from '@metacraft/murg-engine';
 
 import { replay } from '../replay';
+import { showEndGameRibbon } from '../tween';
 import { CardDuel } from '../util/graphql';
 import { extractPlayerIds } from '../util/helper';
 import { system } from '../util/system';
@@ -41,4 +42,16 @@ export interface IncomingBundles {
 export const incomingBundles = ({ level, bundles }: IncomingBundles): void => {
 	mergeRemoteHistory(bundles, level);
 	replay();
+};
+
+interface GameOver {
+	winner: string;
+}
+
+export const gameOver = ({ winner }: GameOver): void => {
+	const isVictory = system.playerIds.me === winner;
+	const ribbonMessage = isVictory ? 'Victory!' : 'Defeat!';
+
+	system.winner = winner;
+	showEndGameRibbon(ribbonMessage);
 };

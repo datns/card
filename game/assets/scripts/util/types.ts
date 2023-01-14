@@ -3,6 +3,7 @@ import { DuelCommandBundle, DuelConfig } from '@metacraft/murg-engine';
 export enum DuelCommands {
 	ConnectMatch = 'ConnectMatch',
 	SendBundle = 'SendBundle',
+	GameOver = 'GameOver',
 }
 
 export interface JwtPayload {

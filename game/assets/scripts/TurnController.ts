@@ -31,10 +31,6 @@ export class TurnController extends Component {
 		this.orb.on(ButtonEvents.CLICK, this.onButtonClick.bind(this));
 
 		this.unSubscribers.push(
-			system.duel.subscribe('turn', this.onTurnChange.bind(this), true),
-		);
-
-		this.unSubscribers.push(
 			system.duel.subscribe('phase', (phase) =>
 				this.onPhaseChange(phase, system.duel.phaseOf),
 			),
@@ -49,10 +45,6 @@ export class TurnController extends Component {
 
 	onDestroy(): void {
 		this.unSubscribers.forEach((unSub) => unSub());
-	}
-
-	onTurnChange(turn: number): void {
-		console.log(turn, '<-- turn changed');
 	}
 
 	onPhaseChange(phase: string, phaseOf: string): void {

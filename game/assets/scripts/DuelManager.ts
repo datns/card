@@ -31,8 +31,8 @@ export class DuelManager extends Component {
 		system.audioSource = this.node.getComponent(AudioSource);
 		system.globalNodes.duel = this.node;
 		system.globalNodes.cardPreview = this.node.getChildByPath('Card Preview');
-		system.globalNodes.ribbonMessage =
-			this.node.getChildByPath('Ribbon Message');
+		system.globalNodes.turnRibbon = this.node.getChildByPath('turnRibbon');
+		system.globalNodes.duelRibbon = this.node.getChildByPath('duelRibbon');
 
 		this.node.on(NodeEvents.MOUSE_UP, this.onMouseUp.bind(this));
 		this.node.on(NodeEvents.MOUSE_MOVE, this.onMouseMove.bind(this));

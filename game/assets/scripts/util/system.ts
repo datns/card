@@ -92,6 +92,7 @@ export const makeDuelProxy = (duel: DuelProxy): DuelProxy => {
 
 export interface System {
 	jwt?: string;
+	winner?: string;
 	playerIds: PlayerIds;
 	serverState?: ServerState;
 	duel?: DuelProxy;
@@ -103,7 +104,8 @@ export interface System {
 	globalNodes: {
 		duel?: Node;
 		board?: Node;
-		ribbonMessage?: Node;
+		turnRibbon?: Node;
+		duelRibbon?: Node;
 		cardTemplate?: Node;
 		cardPreview?: Node;
 		unitPreview?: Node;

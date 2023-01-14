@@ -10,6 +10,8 @@ connectionInstance.onmessage = (item) => {
 		handlers.connect(payload, isMyCommand);
 	} else if (command === DuelCommands.SendBundle) {
 		handlers.incomingBundles(payload);
+	} else if (command === DuelCommands.GameOver) {
+		handlers.gameOver(payload);
 	}
 };
 
