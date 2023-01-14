@@ -44,7 +44,7 @@ export const animateExpoCard = ({
 					node.rotation.getEulerAngles(angle);
 
 					if (angle.z < 30) {
-						playSoundOnce('card-flip', 0.5);
+						playSoundOnce('card-flip', 0.3);
 						node.getChildByPath('back').active = false;
 						flipped = true;
 					}
@@ -105,7 +105,7 @@ export const animateDrawEnemyCard = ({
 
 		tween(node)
 			.delay(delay)
-			.call(() => playSoundOnce('card-flip'))
+			.call(() => playSoundOnce('card-flip', 0.3))
 			.set({ position: from, rotation: r1, scale: new Vec3(0.18, 0.18, 1) })
 			.to(
 				1,
@@ -117,7 +117,7 @@ export const animateDrawEnemyCard = ({
 	});
 };
 
-export const cardGlowOn = (node: Node): void => {
+export const animateGlowOn = (node: Node): void => {
 	const glow = node.getChildByPath('glow');
 
 	glow.active = true;
@@ -127,11 +127,27 @@ export const cardGlowOn = (node: Node): void => {
 		.start();
 };
 
-export const cardGlowOff = (node: Node): void => {
+export const animateGlowOff = (node: Node): void => {
 	const glow = node.getChildByPath('glow');
 
 	tween(glow.getComponent(UIOpacity))
 		.to(1, { opacity: 0 }, { easing: 'expoOut' })
 		.call(() => (glow.active = false))
 		.start();
+};
+
+export const animateGroundReveal = (node: Node): Promise<void> => {
+	return new Promise((resolve) => {
+		const r1 = Quat.fromEuler(new Quat(), 0, 180, 0);
+		const r2 = Quat.fromEuler(new Quat(), 0, 90, 0);
+		const r3 = Quat.fromEuler(new Quat(), 0, 0, 0);
+
+		tween(node)
+			.set({ rotation: r1 })
+			.to(0.25, { rotation: r2, scale: new Vec3(0.26, 0.26, 1) })
+			.call(() => (node.getChildByPath('back').active = false))
+			.to(0.25, { rotation: r3, scale: new Vec3(0.24, 0.24, 1) })
+			.call(resolve)
+			.start();
+	});
 };

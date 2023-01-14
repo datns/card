@@ -6,7 +6,7 @@ import { getHandExpos } from './util/layout';
 import { switchSound } from './util/sound';
 import { system } from './util/system';
 import { sendConnect } from './network';
-import { cardGlowOff, cardGlowOn, simpleMove } from './tween';
+import { animateGlowOff, animateGlowOn, simpleMove } from './tween';
 
 const { ccclass } = _decorator;
 const {
@@ -166,8 +166,8 @@ export class BoardManager extends Component {
 			setTimeout(() => this.updateInteractions(), 0);
 		}
 
-		if (player.health < 150) {
-			switchSound('bgm-dungeon-peak', 0.3);
+		if (old?.health > peekHealthGap && player.health < peekHealthGap) {
+			switchSound('bgm-dungeon-peak', 0.2);
 		}
 	}
 
@@ -200,7 +200,7 @@ export class BoardManager extends Component {
 		const isMyPhase = system.duel.phaseOf === system.playerIds.me;
 		const isSetupPhase = system.duel.phase === DuelPhases.Setup;
 		const isCommandAble = isMyPhase && isSetupPhase;
-		const isHeroViable = isCommandAble && me.perTurnHero > 0;
+		const isHeroAvailable = isCommandAble && me.perTurnHero > 0;
 		const myHand = selectHand(system.duel, system.playerIds.me);
 
 		system.isCommandAble = isCommandAble;
@@ -210,7 +210,8 @@ export class BoardManager extends Component {
 				const card = getCard(system.duel.cardMap, id);
 				const node = system.cardRefs[id];
 				const isHeroCard = card.kind === CardType.Hero;
-				const toggle = isHeroCard && !isHeroViable ? cardGlowOff : cardGlowOn;
+				const toggle =
+					isHeroCard && !isHeroAvailable ? animateGlowOff : animateGlowOn;
 
 				toggle(node);
 			});
@@ -229,3 +230,5 @@ export class BoardManager extends Component {
 		}
 	}
 }
+
+const peekHealthGap = 200;

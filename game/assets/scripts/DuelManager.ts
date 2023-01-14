@@ -43,7 +43,7 @@ export class DuelManager extends Component {
 				.addEventListener('mouseout', this.onMouseOut.bind(this));
 		}
 
-		playSound('bgm-dungeon-crawl', 0.5);
+		playSound('bgm-dungeon-crawl', 0.3);
 	}
 
 	onUnitPreview(): void {
@@ -184,7 +184,7 @@ export class DuelManager extends Component {
 		glowNode.active = isActive;
 		cardNode.getComponent(CardManager).setCardId(cardId);
 		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
-		playSound('card-raise', 0.2);
+		playSoundOnce('hand-slide', 0.2);
 		raiseHandCard(node, 100);
 		raiseHandPreview(system.globalNodes.cardPreview);
 		node.getComponent(UIOpacity).opacity = 20;
