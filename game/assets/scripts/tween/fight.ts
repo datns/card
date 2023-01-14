@@ -1,11 +1,13 @@
 import { Node, Quat, tween, Vec3 } from 'cc';
 
 import { playSoundOnce } from '../util/sound';
+import { system } from '../util/system';
 
 import { shakeGround } from './common';
 
 export const animateCardAttack = async (
 	node: Node,
+	isDeath: boolean,
 	index: number,
 ): Promise<void> => {
 	const from = node.getPosition();
@@ -34,9 +36,7 @@ export const animateCardAttack = async (
 					playSoundOnce('ground-hit', 1);
 					shakeGround(10, 5);
 				}
-			})
-			.delay(0.2)
-			.to(0.5, { position: from }, { easing: 'backOut' });
+			});
 
 		const rotate = backFace?.active
 			? tween(node)
@@ -58,7 +58,25 @@ export const animateCardAttack = async (
 							},
 						},
 					)
-			: tween(node);
+			: tween(node).delay(1);
+
+		if (isDeath) {
+			node.parent = system.globalNodes.playerHand;
+			const randomOffset = Math.random() * 1280 - 640;
+
+			translate
+				.to(
+					0.5,
+					{
+						position: new Vec3(randomOffset, -400, 0),
+						scale: new Vec3(1, 1, 1),
+					},
+					{ easing: 'expoIn' },
+				)
+				.call(() => node.destroy());
+		} else {
+			translate.to(0.5, { position: from }, { easing: 'backOut' });
+		}
 
 		tween(node).parallel(translate, rotate).call(resolve).start();
 	});
