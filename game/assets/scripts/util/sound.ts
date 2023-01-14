@@ -8,6 +8,7 @@ export const playSound = (name: string, volume = 1): void => {
 		if (!err) {
 			system.audioSource.clip = sound;
 			system.audioSource.volume = volume;
+			system.audioSource.loop = true;
 			system.audioSource.play();
 		}
 	});
