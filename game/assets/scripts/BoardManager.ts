@@ -195,25 +195,21 @@ export class BoardManager extends Component {
 		const isMyPhase = system.duel.phaseOf === system.playerIds.me;
 		const isSetupPhase = system.duel.phase === DuelPhases.Setup;
 		const isCommandAble = isMyPhase && isSetupPhase;
-		const canSummonHero = isCommandAble && me.perTurnHero > 0;
+		const isHeroViable = isCommandAble && me.perTurnHero > 0;
 		const myHand = selectHand(system.duel, system.playerIds.me);
 
 		system.isCommandAble = isCommandAble;
 
-		myHand.forEach((id) => {
-			const card = getCard(system.duel.cardMap, id);
-			const node = system.cardRefs[id];
+		if (isCommandAble) {
+			myHand.forEach((id) => {
+				const card = getCard(system.duel.cardMap, id);
+				const node = system.cardRefs[id];
+				const isHeroCard = card.kind === CardType.Hero;
+				const toggle = isHeroCard && !isHeroViable ? cardGlowOff : cardGlowOn;
 
-			if (card.kind === CardType.Hero) {
-				if (canSummonHero) {
-					cardGlowOn(node);
-				} else {
-					cardGlowOff(node);
-				}
-			} else {
-				cardGlowOn(node);
-			}
-		});
+				toggle(node);
+			});
+		}
 	}
 
 	reArrangeHand(owner: string, hand: []): void {
