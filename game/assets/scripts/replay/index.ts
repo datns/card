@@ -1,10 +1,11 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
-import { playSummon } from 'db://assets/scripts/replay/summon';
-import { animateRibbonAppear } from 'db://assets/scripts/tween';
 
+import { animateRibbonAppear } from '../tween';
 import { system } from '../util/system';
 
 import { playDraw } from './draw';
+import { playFight } from './fight';
+import { playSummon } from './summon';
 
 let replaying = false;
 const { BundleGroup, mergeFragmentToState, runCommand } = Engine;
@@ -36,6 +37,8 @@ export const replay = async (): Promise<void> => {
 			await playDraw(bundle);
 		} else if (BundleGroup.Summon === group) {
 			await playSummon(bundle);
+		} else if (BundleGroup.FightCombat === group) {
+			await playFight(bundle);
 		}
 
 		system.replayLevel += 1;

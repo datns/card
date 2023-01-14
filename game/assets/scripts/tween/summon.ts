@@ -82,19 +82,3 @@ export const animateGroundAppear = (node: Node, from: Vec3): Promise<void> => {
 			.start();
 	});
 };
-
-export const animateGroundReveal = (node: Node): Promise<void> => {
-	return new Promise((resolve) => {
-		const r1 = Quat.fromEuler(new Quat(), 0, 180, 0);
-		const r2 = Quat.fromEuler(new Quat(), 0, 90, 0);
-		const r3 = Quat.fromEuler(new Quat(), 0, 0, 0);
-
-		tween(node)
-			.set({ rotation: r1 })
-			.to(0.25, { rotation: r2, scale: new Vec3(0.26, 0.26, 1) })
-			.call(() => (node.getChildByPath('back').active = false))
-			.to(0.25, { rotation: r3, scale: new Vec3(0.24, 0.24, 1) })
-			.call(resolve)
-			.start();
-	});
-};

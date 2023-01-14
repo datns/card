@@ -1,7 +1,11 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 import { instantiate, UIOpacity } from 'cc';
 
-import { animateEnemySummon, animatePlayerSummon, cardGlowOff } from '../tween';
+import {
+	animateEnemySummon,
+	animateGlowOff,
+	animatePlayerSummon,
+} from '../tween';
 import { UnitManager } from '../UnitManager';
 import { selectGroundNode } from '../util/helper';
 import { getGroundExpos } from '../util/layout';
@@ -28,10 +32,11 @@ export const playSummon = async ({
 
 			unitNode.getComponent(UnitManager).setCardId(cardId);
 			unitNode.getComponent(UIOpacity);
+			system.cardRefs[cardId] = unitNode;
 
 			if (isMyCommand) {
 				unitNode.parent = system.globalNodes.playerGround;
-				cardGlowOff(cardNode);
+				animateGlowOff(cardNode);
 				promises.push(animatePlayerSummon(cardNode, unitNode, targetPosition));
 			} else {
 				unitNode.parent = system.globalNodes.enemyGround;

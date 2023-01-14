@@ -19,7 +19,7 @@ export const animateRibbonAppear = async (message: string): Promise<void> => {
 			})
 			.call(() => playSoundOnce('your-turn4', 0.5))
 			.to(0.5, { scale: new Vec3(1, 1, 1) }, { easing: 'backOut' })
-			.delay(2)
+			.delay(1)
 			.call(() => playSoundOnce('your-turn3', 0.3))
 			.call(() => {
 				tween(uiOpacity)
