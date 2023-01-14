@@ -182,7 +182,7 @@ export class DuelManager extends Component {
 		const cardNode = system.globalNodes.cardPreview.getChildByPath('Card');
 
 		glowNode.active = isActive;
-		cardNode.getComponent(CardManager).setCardId(cardId);
+		cardNode.getComponent(CardManager).setCardId(cardId.substring(0, 9));
 		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
 		playSoundOnce('hand-slide', 0.2);
 		raiseHandCard(node, 100);

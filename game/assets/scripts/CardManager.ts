@@ -79,7 +79,17 @@ export class CardManager extends Component {
 	setCardId(id: string): void {
 		if (id === this.cardId) return;
 		this.cardId = id;
-		if (this.cardFront) this.subscribeCardChange();
+
+		if (id.indexOf('#') > 0) {
+			if (this.cardFront) {
+				this.subscribeCardChange();
+			}
+		} else {
+			setTimeout(() => {
+				const card = getCard(system.duel.cardMap, id);
+				this.onStateChange({ id, ...card.attribute } as never, null);
+			}, 200);
+		}
 	}
 
 	subscribeCardChange(): void {
