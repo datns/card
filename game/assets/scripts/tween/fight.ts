@@ -36,7 +36,8 @@ export const animateCardAttack = async (
 					playSoundOnce('ground-hit', 1);
 					shakeGround(10, 5);
 				}
-			});
+			})
+			.to(0.5, { position: from }, { easing: 'expoOut' });
 
 		const rotate = backFace?.active
 			? tween(node)
@@ -68,8 +69,8 @@ export const animateCardAttack = async (
 				.to(
 					0.5,
 					{
-						position: new Vec3(randomOffset, -400, 0),
-						scale: new Vec3(1, 1, 1),
+						position: new Vec3(randomOffset, from.y > 0 ? 600 : -600, 0),
+						scale: new Vec3(0.6, 0.6, 1),
 					},
 					{ easing: 'expoIn' },
 				)
@@ -82,14 +83,11 @@ export const animateCardAttack = async (
 	});
 };
 
-export const animateCardDeath = async (node: Node): Promise<void> => {
+export const animateRelocate = async (node: Node, to: Vec3): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node)
-			.to(0.5, { scale: new Vec3(0, 0, 1) }, { easing: 'elasticInOut' })
-			.call(() => {
-				resolve();
-				node.destroy();
-			})
+			.to(0.2, { position: to }, { easing: 'expoOut' })
+			.call(resolve)
 			.start();
 	});
 };

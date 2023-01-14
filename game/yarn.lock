@@ -2,12 +2,17 @@
 # yarn lockfile v1
 
 
-"@metacraft/murg-engine@^0.0.39":
-  version "0.0.39"
-  resolved "https://registry.yarnpkg.com/@metacraft/murg-engine/-/murg-engine-0.0.39.tgz#2a747a1ab8897fed259ea7b385f23d5056c957f7"
-  integrity sha512-5H+uq6EmoHDESdc/WGtOHNSPJfn7GPuWVO+JNuysrgkaG+qVlMV99ismKaNF3mos491+9XlkoRyKP/zeudI1Yw==
+"@metacraft/murg-engine@^0.0.40":
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/@metacraft/murg-engine/-/murg-engine-0.0.40.tgz#107abb01b3eaa31a59d367976169c4d4305a6a2d"
+  integrity sha512-I2gY/V3yDBoUqRflFiTGeF53nCl46llM5U8HIJwab7RCqDwiOHmOryuuO1br2U+iTwe3+RnkElDOodkxRsonoA==
   dependencies:
     mustache "^4.2.0"
+
+"@types/lodash@^4.14.191":
+  version "4.14.191"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.191.tgz#09511e7f7cba275acd8b419ddac8da9a6a79e2fa"
+  integrity sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==
 
 lodash@^4.17.21:
   version "4.17.21"
