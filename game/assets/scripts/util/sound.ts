@@ -3,13 +3,19 @@ import { AudioClip, resources } from 'cc';
 import { delay } from './helper';
 import { system } from './system';
 
-export const playSound = (name: string, volume = 1): void => {
-	resources.load(`sound/${name}`, (err, sound: AudioClip) => {
+export const playSound = (name: string, volume = 1, dimSpeed = 0.005): void => {
+	resources.load(`sound/${name}`, async (err, sound: AudioClip) => {
 		if (!err) {
+			system.audioSource.stop();
 			system.audioSource.clip = sound;
 			system.audioSource.volume = volume;
 			system.audioSource.loop = true;
 			system.audioSource.play();
+
+			for (let i = 0; i < volume; i += 0.01) {
+				system.audioSource.volume = i;
+				await delay(dimSpeed);
+			}
 		}
 	});
 };
@@ -24,13 +30,7 @@ export const switchSound = async (
 		await delay(dimSpeed);
 	}
 
-	system.audioSource.stop();
 	playSound(name, volume);
-
-	for (let i = 0; i < volume; i += 0.01) {
-		system.audioSource.volume = i;
-		await delay(dimSpeed);
-	}
 };
 
 export const playSoundOnce = (name: string, volume = 1): void => {
