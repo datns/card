@@ -1,7 +1,7 @@
 {
   "splash-setting": {
     "url": "/Users/le/Metacraft/card/game/assets/resources/graphic/loading/murg-logo.png",
-    "totalTime": 2000,
+    "totalTime": 1000,
     "displayWatermark": false,
     "clearColor": {
       "x": 0,
@@ -9,6 +9,6 @@
       "z": 0,
       "w": 1
     },
-    "displayRatio": 0.12
+    "displayRatio": 0.16
   }
 }

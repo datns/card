@@ -1,9 +1,13 @@
+import Engine from '@metacraft/murg-engine';
 import { _decorator, Component, EventMouse, Node, UIOpacity, Vec2 } from 'cc';
 
-import { setCursor, system } from './util/system';
+import { cardIdFromNode, setCursor } from './util/helper';
+import { system } from './util/system';
+import { raiseHandCard } from './tween';
 
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
+const { selectPlayer, getCard, CardType } = Engine;
 
 interface Props {
 	card?: Node;
@@ -44,12 +48,18 @@ export class PreviewManager extends Component {
 	}
 
 	onMouseMove(e: EventMouse): void {
-		if (!this.props.dragging) return;
+		if (!this.props.dragging || !system.isCommandAble) return;
 
 		const location = e.getLocation();
 		const distance = Vec2.distance(location, this.props.dragOffset);
 
 		if (distance > 5) {
+			const cardId = cardIdFromNode(system.activeCard);
+			const card = getCard(system.duel.cardMap, cardId);
+			const player = selectPlayer(system.duel, system.playerIds.me);
+
+			if (card.kind === CardType.Hero && player.perTurnHero <= 0) return;
+
 			this.hidePreview();
 			system.dragging = true;
 		}
@@ -59,6 +69,7 @@ export class PreviewManager extends Component {
 		this.node.setPosition(190, 740);
 
 		if (system.activeCard) {
+			raiseHandCard(system.activeCard, 0, 0.02);
 			const uiOpacity = system.activeCard.getComponent(
 				'cc.UIOpacity',
 			) as UIOpacity;

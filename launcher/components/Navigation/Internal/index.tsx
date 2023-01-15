@@ -57,7 +57,7 @@ export const InternalNavigation: FC<Props> = ({
 		// <TouchableOpacity>
 		// 	<UserSolidIcon size={28} />
 		// </TouchableOpacity>
-		<View />
+		<View style={{ width: 30 }} />
 	) : isHidingPlayButton ? (
 		<View />
 	) : (

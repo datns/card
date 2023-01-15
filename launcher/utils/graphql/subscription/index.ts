@@ -19,3 +19,11 @@ export const gameInvitation = gql`
 		}
 	}
 `;
+
+export const matchFind = gql`
+	subscription MatchFind($userId: String) {
+		matchFind(game: MURG, userId: $userId) {
+			id
+		}
+	}
+`;

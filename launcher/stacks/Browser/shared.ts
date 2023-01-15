@@ -4,6 +4,7 @@ import {
 	createNavigationContainerRef,
 	LinkingOptions,
 	NavigatorScreenParams,
+	ParamListBase,
 } from '@react-navigation/native';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
@@ -56,6 +57,8 @@ export type RootParamList = {
 	Marketplace: NavigatorScreenParams<MarketplaceParamList>;
 	Mint: NavigatorScreenParams<MintParamList>;
 	Guide: NavigatorScreenParams<GuideParamList>;
+	Story: NavigatorScreenParams<ParamListBase>;
+	CardLibrary: NavigatorScreenParams<ParamListBase>;
 	AuthResponse: undefined;
 };
 
@@ -97,9 +100,18 @@ export const linking: LinkingOptions<RootParamList> = {
 				},
 			},
 			Guide: {
-				path: '/guide',
+				path: '/how-to-play',
 				screens: {
 					Dashboard: '/',
+				},
+			},
+			Story: {
+				path: '/story',
+			},
+			CardLibrary: {
+				path: '/card-library',
+				screens: {
+					Library: '/',
 				},
 			},
 			AuthResponse: '/authreponse',

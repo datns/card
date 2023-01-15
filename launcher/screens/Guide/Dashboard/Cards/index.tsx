@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { DimensionState, dimensionState, Text } from '@metacraft/ui';
+import { DimensionState, dimensionState, Markdown, Text } from '@metacraft/ui';
 import { card } from 'screens/Guide/content';
 import Concept from 'screens/Guide/Dashboard/Concept';
 import { headingSize, sharedStyle } from 'screens/Guide/shared';
@@ -27,7 +27,7 @@ const Cards: React.FC<Record<string, unknown>> = () => {
 					return (
 						<React.Fragment key={item.title}>
 							<Text style={styles.propertyTitle}>{item.title}</Text>
-							<Text style={styles.propertyContent}>{item.text}</Text>
+							<Markdown content={item.text} />
 						</React.Fragment>
 					);
 				})}
@@ -42,13 +42,7 @@ const Cards: React.FC<Record<string, unknown>> = () => {
 			<Text style={styles.subHeading}>Getting to know your Card</Text>
 			<Text style={styles.content}>{card.intro}</Text>
 			<Image source={resources.guide.cardExplain} style={imageStyle} />
-			<Concept
-				content={card}
-				containerStyle={{
-					justifyContent: 'flex-start',
-				}}
-				renderDescription={renderDescription}
-			/>
+			<Concept content={card} renderDescription={renderDescription} />
 		</View>
 	);
 };
@@ -58,7 +52,6 @@ export default Cards;
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: 50,
-		paddingBottom: 80,
 	},
 	subHeading: {
 		fontSize: 30,
@@ -76,8 +69,5 @@ const styles = StyleSheet.create({
 		marginBottom: 8,
 		color: '#67564C',
 		alignSelf: 'flex-start',
-	},
-	propertyContent: {
-		fontFamily: 'Poppins',
 	},
 });

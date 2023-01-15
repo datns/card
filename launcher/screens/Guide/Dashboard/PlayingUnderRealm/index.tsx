@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text } from '@metacraft/ui';
+import { Markdown, Text } from '@metacraft/ui';
 import { play } from 'screens/Guide/content';
 import Concept from 'screens/Guide/Dashboard/Concept';
 import { headingSize, sharedStyle } from 'screens/Guide/shared';
 
 const PlayingUnderRealm: React.FC = () => {
 	const renderDescription = (des: string) => {
-		return <Text>{des}</Text>;
+		return <Markdown content={des} />;
 	};
 
 	return (
@@ -21,13 +21,7 @@ const PlayingUnderRealm: React.FC = () => {
 			<Text style={[sharedStyle.subHeading, styles.subHeading]}>
 				{play.intro}
 			</Text>
-			<Concept
-				content={play}
-				containerStyle={{
-					justifyContent: 'flex-start',
-				}}
-				renderDescription={renderDescription}
-			/>
+			<Concept content={play} renderDescription={renderDescription} />
 			{/*<Image source={resources.guide.battlefieldImage} style={imageStyle} />*/}
 		</View>
 	);
@@ -41,10 +35,5 @@ const styles = StyleSheet.create({
 	},
 	subHeading: {
 		textAlign: 'center',
-	},
-	conceptContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		marginBottom: 40,
 	},
 });
