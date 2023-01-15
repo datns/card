@@ -162,10 +162,10 @@ type Mutation {
 	editComment(input: EditCommentInput!): Comment
 	editThread(input: EditThreadInput!): Thread
 	emailConfirmedOrder(input: EmailConfirmedOrderInput): TokenOrder
-	findMatch(game: MetacraftGames!, version: String): CardDuel
 	increaseCounter(amount: Float): Float
 	inviteGame(input: InviteGameInput!): GameInvitation
 	registerTokenOrderNonce(orderId: String!): String
+	stopMatchFind: Boolean
 	subscribeGame(input: SubscribeGameInput): GameSubscription
 	"Up vote any Entity, could be Thread, Comment now.. and more to come"
 	upVote(
@@ -211,6 +211,7 @@ type Query {
 type Subscription {
 	counterIncreased: Float
 	gameInvitation(opponent: String!): GameInvitation
+	matchFind(game: MetacraftGames!, userId: String): CardDuel
 	matchFound(game: MetacraftGames!, userId: String): CardDuel
 }
 

@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
-import { Linking, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { dimensionState, Text } from '@metacraft/ui';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { useSnapshot } from 'utils/hook';
+import { accountState } from 'utils/state/account';
+import { liveActions, liveState } from 'utils/state/live';
 import { iStyles } from 'utils/styles';
 
 import LeaderBoard from './LeaderBoard';
@@ -11,6 +13,16 @@ import UnderRealmInfo from './UnderRealmInfo';
 
 export const LeftSection: FC = () => {
 	const { windowSize } = useSnapshot(dimensionState);
+	const { profile } = useSnapshot(accountState);
+	const { findingMatch } = useSnapshot(liveState);
+
+	const onFindMatch = () => {
+		if (findingMatch) {
+			liveActions.stopMatchFind();
+		} else {
+			liveActions.matchFind(profile.id);
+		}
+	};
 
 	return (
 		<View
@@ -26,15 +38,12 @@ export const LeftSection: FC = () => {
 						Are you ready to face the unknown enemy? Do your best and winning
 						might be on your side, Adventurer!
 					</Text>
-					<UnderRealmButton style={styles.button}>
-						<Text
-							style={styles.buttonText}
-							onPress={() => {
-								Linking.openURL(`${location.origin}/game/duel/demo`);
-							}}
-						>
-							Demo
-						</Text>
+					<UnderRealmButton style={styles.button} onPress={onFindMatch}>
+						{findingMatch ? (
+							<ActivityIndicator color="white" />
+						) : (
+							<Text style={styles.buttonText}>Find Match</Text>
+						)}
 					</UnderRealmButton>
 				</View>
 			</View>
