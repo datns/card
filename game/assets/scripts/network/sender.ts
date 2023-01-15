@@ -22,8 +22,10 @@ export const sendCommand = (command: DuelCommands, payload?: any): void => {
 
 export const sendConnect = (): void => {
 	const searchParams = new URLSearchParams(location.search);
-	system.jwt = searchParams.get('jwt') as string;
+	const searchJwt = searchParams.get('jwt') as string;
+	const localStorageJwt = localStorage?.getItem('murgJwt');
 
+	system.jwt = searchJwt || localStorageJwt;
 	sendCommand(DuelCommands.ConnectMatch);
 };
 
