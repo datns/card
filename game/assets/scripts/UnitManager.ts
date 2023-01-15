@@ -106,8 +106,8 @@ export class UnitManager extends Component {
 
 		glowNode.active = false;
 		playSoundOnce('card-raise', 0.2);
-		cardNode.getComponent(CardManager).setCardId(this.cardId.substring(0, 9));
 		raiseUnitPreview(system.globalNodes.cardPreview, this.node);
+		cardNode.getComponent(CardManager).setCardId(this.cardId.substring(0, 9));
 	}
 
 	onMouseLeave(): void {

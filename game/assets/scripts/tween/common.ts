@@ -65,13 +65,7 @@ export const animateAttributeChange = async (
 	return new Promise((resolve) => {
 		label.string = String(value);
 		label.color = getAttributeColor(value, original);
-
-		tween(node)
-			.to(0.5, { scale: new Vec3(0.8, 0.8, 1) })
-			.to(0.5, { scale: new Vec3(1.2, 1.2, 1) }, { easing: 'expoOutIn' })
-			.to(0.5, { scale: new Vec3(1, 1, 1) }, { easing: 'expoOutIn' })
-			.call(() => resolve())
-			.start();
+		resolve();
 	});
 };
 
