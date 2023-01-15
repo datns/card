@@ -20,7 +20,7 @@ export const connect = (
 	{ jwt, context, duel }: ConnectPayload,
 	isMyCommand?: boolean,
 ): void => {
-	if (!isMyCommand) return;
+	if (system.winner || !isMyCommand) return;
 	const state = getInitialState(duel.config as DuelConfig);
 	const config = duel.config as DuelConfig;
 	const history = duel.history as DuelCommandBundle[];
@@ -40,6 +40,8 @@ export interface IncomingBundles {
 }
 
 export const incomingBundles = ({ level, bundles }: IncomingBundles): void => {
+	if (system.winner) return;
+
 	mergeRemoteHistory(bundles, level);
 	replay();
 };
@@ -49,9 +51,10 @@ interface GameOver {
 }
 
 export const gameOver = ({ winner }: GameOver): void => {
+	if (system.winner) return;
+
 	const isVictory = system.playerIds.me === winner;
-	const ribbonMessage = isVictory ? 'Victory!' : 'Defeat!';
 
 	system.winner = winner;
-	showEndGameRibbon(ribbonMessage);
+	showEndGameRibbon(isVictory);
 };

@@ -6,7 +6,7 @@ export const raiseUnitPreview = async (
 ): Promise<void> => {
 	const at = targetNode.getPosition();
 	const xOffset = at.x > 0 ? -170 : 170;
-	const yOffset = at.y > 0 ? -38 : 38;
+	const yOffset = at.y > 0 ? 26 : 26;
 
 	return new Promise((resolve) => {
 		node.setPosition(at.x + xOffset, at.y + yOffset);

@@ -780,9 +780,15 @@
     "_fontSize": 18,
     "_maxWidth": 280,
     "_fontFamily": "Arial",
-    "_font": null,
-    "_isSystemFontUsed": true,
-    "_userDefinedFont": null,
+    "_font": {
+      "__uuid__": "a67dfddb-d392-4d94-97a4-a4479db99083",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
+    "_userDefinedFont": {
+      "__uuid__": "a67dfddb-d392-4d94-97a4-a4479db99083",
+      "__expectedType__": "cc.TTFFont"
+    },
     "_cacheMode": 0,
     "_imageAtlas": null,
     "_handleTouchEvent": true,

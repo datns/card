@@ -76,11 +76,21 @@ export const getClassUri = (classId: string): string => {
 	}
 };
 
+type SkillColors = 'black' | 'green' | 'blue' | 'red' | 'magenta';
+
+const colorMap: Record<SkillColors, string> = {
+	black: '#000000',
+	green: '#066922',
+	blue: '#1055BC',
+	red: '#AA1D21',
+	magenta: '#6e13a4',
+};
+
 export const getSkillDesc = (fragments: TemplateFragment[]): string => {
 	const inner = fragments
 		.map((fragment) => {
 			if (fragment.style) {
-				const color = fragment.style.color || '#111111';
+				const color = colorMap[fragment.style.color] || '#111111';
 				return `<color=${color}>${fragment.text}</color>`;
 			}
 
