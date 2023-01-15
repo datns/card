@@ -98,7 +98,7 @@ export class UnitManager extends Component {
 	onMouseEnter(): void {
 		setCursor('pointer');
 
-		if (system.dragging || !this.cardId) return;
+		if (system.winner || system.dragging || !this.cardId) return;
 		if (this.node.getChildByPath('back')?.active) return;
 
 		const cardNode = system.globalNodes.cardPreview.getChildByPath('Card');

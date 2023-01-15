@@ -48,7 +48,7 @@ export class PreviewManager extends Component {
 	}
 
 	onMouseMove(e: EventMouse): void {
-		if (!this.props.dragging) return;
+		if (!this.props.dragging || !system.isCommandAble) return;
 
 		const location = e.getLocation();
 		const distance = Vec2.distance(location, this.props.dragOffset);
