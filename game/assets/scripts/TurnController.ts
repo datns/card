@@ -98,7 +98,7 @@ export class TurnController extends Component {
 		const isSetupPhase = system.duel.phase === DuelPhases.Setup;
 		const isMyPhase = system.duel.phaseOf === system.playerIds.me;
 
-		if (isSetupPhase && isMyPhase) {
+		if (!system.winner && isSetupPhase && isMyPhase) {
 			playSoundOnce('end-turn');
 			sendEndTurn();
 		}
