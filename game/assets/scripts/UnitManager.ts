@@ -9,7 +9,7 @@ import {
 	UIOpacity,
 } from 'cc';
 
-import { getVisualUri, setCursor } from './util/helper';
+import { getFoilUri, getVisualUri, setCursor } from './util/helper';
 import { playSoundOnce } from './util/sound';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
@@ -86,10 +86,19 @@ export class UnitManager extends Component {
 		}
 
 		if (!lastState) {
-			const visualUri = getVisualUri(state.id.substring(0, 9));
+			const visualUri = getVisualUri(card.id);
+			const foilUri = getFoilUri(card.id, '-ground');
+
 			resources.load(visualUri, (err, spriteFrame: SpriteFrame) => {
 				if (!err) {
 					this.cardVisual.spriteFrame = spriteFrame;
+				}
+			});
+
+			resources.load(foilUri, (err, spriteFrame: SpriteFrame) => {
+				console.log(err);
+				if (!err) {
+					this.cardFoil.spriteFrame = spriteFrame;
 				}
 			});
 		}

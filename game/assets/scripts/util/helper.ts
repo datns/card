@@ -38,26 +38,26 @@ export const getVisualUri = (cardId: string): string => {
 	return `graphic/visuals/${cardId.substring(0, 5)}/spriteFrame`;
 };
 
-export const getFoilUri = (cardId: string): string => {
+export const getFoilUri = (cardId: string, suffix = ''): string => {
 	const elemental = cardId.substring(7, 9);
 
 	switch (elemental) {
 		case ElementalType.Metal:
-			return `graphic/cards/foil-metal/spriteFrame`;
+			return `graphic/cards/foil-metal${suffix}/spriteFrame`;
 		case ElementalType.Wood:
-			return `graphic/cards/foil-wood/spriteFrame`;
+			return `graphic/cards/foil-wood${suffix}/spriteFrame`;
 		case ElementalType.Water:
-			return `graphic/cards/foil-water/spriteFrame`;
+			return `graphic/cards/foil-water${suffix}/spriteFrame`;
 		case ElementalType.Fire:
-			return `graphic/cards/foil-fire/spriteFrame`;
+			return `graphic/cards/foil-fire${suffix}/spriteFrame`;
 		case ElementalType.Earth:
-			return `graphic/cards/foil-earth/spriteFrame`;
+			return `graphic/cards/foil-earth${suffix}/spriteFrame`;
 		case ElementalType.Dark:
-			return `graphic/cards/foil-dark/spriteFrame`;
+			return `graphic/cards/foil-dark${suffix}/spriteFrame`;
 		case ElementalType.Light:
-			return `graphic/cards/foil-light/spriteFrame`;
+			return `graphic/cards/foil-light${suffix}/spriteFrame`;
 		default:
-			return `graphic/cards/foil-metal/spriteFrame`;
+			return `graphic/cards/foil-metal${suffix}/spriteFrame`;
 	}
 };
 
