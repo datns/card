@@ -126,26 +126,24 @@ export class CardManager extends Component {
 		}
 
 		if (!lastState || cardChanged) {
-			resources.load(getVisualUri(card.id), (err, spriteFrame: SpriteFrame) => {
-				if (!err) {
-					this.cardVisual.spriteFrame = spriteFrame;
-				}
+			const visualUri = getVisualUri(card.id);
+			const foilUri = getFoilUri(card.id);
+			const classUri = getClassUri(card.class);
+
+			resources.load<SpriteFrame>(visualUri, (err, frame) => {
+				if (err) return;
+				this.cardVisual.spriteFrame = frame;
 			});
 
-			resources.load(getFoilUri(card.id), (err, spriteFrame: SpriteFrame) => {
-				if (!err) {
-					this.cardFoil.spriteFrame = spriteFrame;
-				}
+			resources.load<SpriteFrame>(foilUri, (err, frame) => {
+				if (err) return;
+				this.cardFoil.spriteFrame = frame;
 			});
 
-			resources.load(
-				getClassUri(card.class),
-				(err, spriteFrame: SpriteFrame) => {
-					if (!err) {
-						this.cardClass.spriteFrame = spriteFrame;
-					}
-				},
-			);
+			resources.load<SpriteFrame>(classUri, (err, frame) => {
+				if (err) return;
+				this.cardClass.spriteFrame = frame;
+			});
 		}
 	}
 

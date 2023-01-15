@@ -89,17 +89,14 @@ export class UnitManager extends Component {
 			const visualUri = getVisualUri(card.id);
 			const foilUri = getFoilUri(card.id, '-ground');
 
-			resources.load(visualUri, (err, spriteFrame: SpriteFrame) => {
-				if (!err) {
-					this.cardVisual.spriteFrame = spriteFrame;
-				}
+			resources.load<SpriteFrame>(visualUri, (err, frame) => {
+				if (err) return;
+				this.cardVisual.spriteFrame = frame;
 			});
 
-			resources.load(foilUri, (err, spriteFrame: SpriteFrame) => {
-				console.log(err);
-				if (!err) {
-					this.cardFoil.spriteFrame = spriteFrame;
-				}
+			resources.load<SpriteFrame>(foilUri, (err, frame) => {
+				if (err) return;
+				this.cardFoil.spriteFrame = frame;
 			});
 		}
 	}
