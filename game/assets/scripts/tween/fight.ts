@@ -62,9 +62,9 @@ export const animateCardAttack = async (
 			: tween(node).delay(1);
 
 		if (isDeath) {
-			node.parent = system.globalNodes.playerHand;
 			const randomOffset = Math.random() * 1280 - 640;
 
+			node.parent = system.globalNodes.playerHand;
 			translate
 				.to(
 					0.5,

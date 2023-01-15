@@ -5,6 +5,7 @@ import { system } from '../util/system';
 
 import { playDraw } from './draw';
 import { playFight } from './fight';
+import { playGeneric } from './generic';
 import { playReinforce } from './reinforce';
 import { playSummon } from './summon';
 
@@ -41,6 +42,8 @@ export const replay = async (): Promise<void> => {
 			await playFight(bundle);
 		} else if (BundleGroup.Reinforce === group) {
 			await playReinforce(bundle);
+		} else {
+			await playGeneric(bundle);
 		}
 
 		system.replayLevel += 1;
