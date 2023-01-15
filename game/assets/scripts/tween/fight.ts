@@ -33,7 +33,7 @@ export const animateCardAttack = async (
 			.to(0.2, { position: new Vec3(from.x, 0, 0) }, { easing: 'expoOut' })
 			.call(() => {
 				if (index === 0) {
-					playSoundOnce('ground-hit', 1);
+					playSoundOnce('attack', 1);
 					shakeGround(10, 5);
 				}
 			})
@@ -74,7 +74,10 @@ export const animateCardAttack = async (
 					},
 					{ easing: 'expoIn' },
 				)
-				.call(() => node.destroy());
+				.call(() => {
+					playSoundOnce('death', 0.5);
+					node.destroy();
+				});
 		} else {
 			translate.to(0.5, { position: from }, { easing: 'backOut' });
 		}
@@ -87,7 +90,10 @@ export const animateRelocate = async (node: Node, to: Vec3): Promise<void> => {
 	return new Promise((resolve) => {
 		tween(node)
 			.to(0.2, { position: to }, { easing: 'expoOut' })
-			.call(resolve)
+			.call(() => {
+				playSoundOnce('light-fire', 0.5);
+				resolve();
+			})
 			.start();
 	});
 };

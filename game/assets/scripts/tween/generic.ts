@@ -1,4 +1,5 @@
 import { Node, tween, Vec3 } from 'cc';
+import { playSoundOnce } from 'db://assets/scripts/util/sound';
 
 import { system } from '../util/system';
 
@@ -18,6 +19,7 @@ export const animateGroundRemoval = (node: Node): Promise<void> => {
 				{ easing: 'expoIn' },
 			)
 			.call(() => {
+				playSoundOnce('death', 0.5);
 				node.destroy();
 				resolve();
 			})

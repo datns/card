@@ -40,3 +40,14 @@ export const playSoundOnce = (name: string, volume = 1): void => {
 		}
 	});
 };
+
+export const stopAndPlayOnce = (name: string, volume = 1): void => {
+	system.audioSource.stop();
+
+	resources.load(`sound/${name}`, (err, sound: AudioClip) => {
+		if (!err) {
+			system.audioSource.stop();
+			system.audioSource.playOneShot(sound, volume);
+		}
+	});
+};
