@@ -2,7 +2,10 @@ import { DuelCommandBundle } from '@metacraft/murg-engine';
 
 import { system } from '../util/system';
 
-export const connectionInstance = new WebSocket('ws://localhost:3006');
+// const wsUri = 'ws://localhost:3006';
+const wsUri = 'wss://94zbw8sdk9.execute-api.ap-northeast-1.amazonaws.com/prod/';
+
+export const connectionInstance = new WebSocket(wsUri);
 
 export interface MergeHistoryResult {
 	conflict: boolean;

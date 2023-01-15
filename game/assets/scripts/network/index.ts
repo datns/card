@@ -4,10 +4,10 @@ import * as handlers from './handlers';
 import { connectionInstance } from './util';
 
 connectionInstance.onmessage = (item) => {
-	const { isMyCommand, command, payload } = JSON.parse(item.data);
+	const { command, payload } = JSON.parse(item.data);
 
 	if (command === DuelCommands.ConnectMatch) {
-		handlers.connect(payload, isMyCommand);
+		handlers.connect(payload);
 	} else if (command === DuelCommands.SendBundle) {
 		handlers.incomingBundles(payload);
 	} else if (command === DuelCommands.GameOver) {

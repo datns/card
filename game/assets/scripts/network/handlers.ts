@@ -16,11 +16,9 @@ interface ConnectPayload {
 	duel: CardDuel;
 }
 
-export const connect = (
-	{ jwt, context, duel }: ConnectPayload,
-	isMyCommand?: boolean,
-): void => {
-	if (system.winner || !isMyCommand) return;
+export const connect = ({ jwt, context, duel }: ConnectPayload): void => {
+	if (system.winner) return;
+
 	const state = getInitialState(duel.config as DuelConfig);
 	const config = duel.config as DuelConfig;
 	const history = duel.history as DuelCommandBundle[];
