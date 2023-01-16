@@ -39,7 +39,9 @@ export class BoardManager extends Component {
 	start(): void {
 		const cardTemplate = this.node.getChildByPath('Card Template') as Node;
 		const unitTemplate = this.node.getChildByPath('Unit Template') as Node;
-		const unitPreview = this.node.getChildByPath('Unit Preview') as Node;
+		const unitPreview = this.node.getChildByPath(
+			'Surface/Unit Preview',
+		) as Node;
 		const playerDeck = this.node.getChildByPath(
 			'Surface/Player Deck/foil',
 		) as Node;
