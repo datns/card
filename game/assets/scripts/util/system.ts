@@ -98,9 +98,8 @@ export interface System {
 	duel?: DuelProxy;
 	context?: JwtPayload;
 	config?: DuelConfig;
-	remoteHistory?: DuelCommandBundle[];
-	history: DuelCommandBundle[];
-	replayLevel: number;
+	history?: DuelCommandBundle[];
+	historyLevel: number;
 	globalNodes: {
 		duel?: Node;
 		board?: Node;
@@ -175,8 +174,7 @@ export const system: System = {
 	cardRefs: {},
 	globalNodes: {},
 	history: [],
-	remoteHistory: [],
-	replayLevel: 0,
+	historyLevel: 0,
 	previewing: false,
 	dragging: false,
 };
