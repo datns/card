@@ -1,4 +1,3 @@
-import { Linking } from 'react-native';
 import { ObservableSubscription } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { navigate } from 'stacks/Browser/shared';
@@ -53,9 +52,10 @@ export const matchFind = (userId: string): void => {
 			findMatchSubscription?.unsubscribe?.();
 			liveState.findingMatch = false;
 			await AsyncStorage.setItem('murgJwt', data.jwt);
-			await Linking.openURL(
-				`${location.origin}/game/duel/${data.matchFind.id}`,
-			);
+			navigate('Game', {
+				screen: 'Duel',
+				params: { id: data.matchFind.id },
+			} as never);
 		});
 
 	liveState.findingMatch = true;
