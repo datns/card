@@ -36,6 +36,7 @@ export class BoardManager extends Component {
 	props: Props = {};
 
 	start(): void {
+		const fog = this.node.getChildByPath('Air/fog');
 		const cardTemplate = this.node.getChildByPath('Card Template') as Node;
 		const unitTemplate = this.node.getChildByPath('Unit Template') as Node;
 		const unitPreview = this.node.getChildByPath(
@@ -85,6 +86,7 @@ export class BoardManager extends Component {
 			.getComponent('cc.Label') as Label;
 
 		system.globalNodes.board = this.node;
+		system.globalNodes.fog = fog;
 		system.globalNodes.cardTemplate = cardTemplate;
 		system.globalNodes.unitTemplate = unitTemplate;
 		system.globalNodes.unitPreview = unitPreview;
@@ -106,7 +108,7 @@ export class BoardManager extends Component {
 		system.globalNodes.board.on('stateReady', this.onStateReady.bind(this));
 		if (system.context) this.onStateReady();
 
-		this.animation.play('ground-reveal');
+		// this.animation.play('ground-reveal');
 		sendConnect();
 	}
 

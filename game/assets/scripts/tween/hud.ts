@@ -45,6 +45,12 @@ export const showEndGameRibbon = async (isVictory: boolean): Promise<void> => {
 			? 'Victory!'
 			: 'Defeat!';
 
+		system.globalNodes.playerHand.parent =
+			system.globalNodes.board.getChildByPath('Surface');
+		tween(system.globalNodes.fog.getComponent(UIOpacity))
+			.to(2, { opacity: 255 })
+			.start();
+
 		tween(node)
 			.set({
 				scale: new Vec3(0, 0, 1),

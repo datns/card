@@ -104,6 +104,7 @@ export interface System {
 	globalNodes: {
 		duel?: Node;
 		board?: Node;
+		fog?: Node;
 		turnRibbon?: Node;
 		duelRibbon?: Node;
 		cardTemplate?: Node;
