@@ -2,6 +2,7 @@ import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 
 import { showTurnRibbon } from '../tween';
 import { system } from '../util/system';
+import { updateGroundUnits } from '../util/unit';
 
 import { playDraw } from './draw';
 import { playFight } from './fight';
@@ -46,6 +47,7 @@ export const replay = async (): Promise<void> => {
 			await playGeneric(bundle);
 		}
 
+		updateGroundUnits();
 		system.historyLevel += 1;
 	}
 

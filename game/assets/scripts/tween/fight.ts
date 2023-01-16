@@ -2,15 +2,19 @@ import { Node, Quat, tween, Vec3 } from 'cc';
 
 import { playSoundOnce } from '../util/sound';
 import { system } from '../util/system';
+import { updateUnit } from '../util/unit';
 
 import { shakeGround } from './common';
 
 export const animateCardAttack = async (
-	node: Node,
+	cardId: string,
 	isDeath: boolean,
 	index: number,
 ): Promise<void> => {
 	return new Promise((resolve) => {
+		const node = system.cardRefs[cardId];
+		if (!node) return resolve();
+
 		let flipped = false;
 		const from = node.getPosition();
 		const backFace = node.getChildByPath('back');
@@ -28,6 +32,8 @@ export const animateCardAttack = async (
 			)
 			.to(0.2, { position: new Vec3(from.x, 0, 0) }, { easing: 'expoOut' })
 			.call(() => {
+				updateUnit(cardId);
+
 				if (index === 0) {
 					playSoundOnce('attack', 1);
 					shakeGround(10, 5);

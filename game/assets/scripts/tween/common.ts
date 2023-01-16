@@ -1,6 +1,6 @@
 import { Color, Label, Node, tween, UIOpacity, Vec3 } from 'cc';
 
-import { getAttributeColor } from '../util/helper';
+import { getPositiveColor } from '../util/helper';
 import { system } from '../util/system';
 
 export const simpleMove = async (
@@ -55,7 +55,7 @@ export const animateSwapLabel = async (
 	});
 };
 
-export const animateAttributeChange = async (
+export const animateAttribute = async (
 	node: Node,
 	value: number,
 	original: number,
@@ -64,7 +64,7 @@ export const animateAttributeChange = async (
 
 	return new Promise((resolve) => {
 		label.string = String(value);
-		label.color = getAttributeColor(value, original);
+		label.color = getPositiveColor(value, original);
 		resolve();
 	});
 };

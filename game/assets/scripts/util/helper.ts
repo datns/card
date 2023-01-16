@@ -147,11 +147,14 @@ export const getMyGround = (): string[] => {
 	return selectGround(system.duel, system.playerIds.me);
 };
 
-export const getAttributeColor = (value: number, origin: number): Color => {
+const positiveColor = Color.fromHEX(new Color(), '#1aab1a');
+const negativeColor = Color.fromHEX(new Color(), '#FF0000');
+
+export const getPositiveColor = (value: number, origin = 0): Color => {
 	if (value > origin) {
-		return Color.fromHEX(new Color(), '#66FF66');
+		return positiveColor;
 	} else if (value < origin) {
-		return Color.fromHEX(new Color(), '#FF0000');
+		return negativeColor;
 	}
 
 	return Color.fromHEX(new Color(), '#FFFFFF');
