@@ -1,8 +1,7 @@
 import Engine, { PlayerState } from '@metacraft/murg-engine';
 import { _decorator, Animation, Component, Label, Node } from 'cc';
 
-import { selectHandNode } from './util/helper';
-import { getHandExpos } from './util/layout';
+import { getPositionExpos } from './util/layout';
 import { switchSound } from './util/sound';
 import { system } from './util/system';
 import { sendConnect } from './network';
@@ -227,7 +226,10 @@ export class BoardManager extends Component {
 	}
 
 	reArrangeHand(owner: string, hand: []): void {
-		const handPositions = getHandExpos(selectHandNode(owner), hand.length);
+		const isMyPhase = system.playerIds.me === owner;
+		const handPositions = isMyPhase
+			? getPositionExpos(system.globalNodes.playerHandGuide, hand.length, 80)
+			: getPositionExpos(system.globalNodes.enemyHandGuide, hand.length, 60);
 
 		for (let i = 0; i < hand.length; i += 1) {
 			const cardNode = system.cardRefs[hand[i]];
