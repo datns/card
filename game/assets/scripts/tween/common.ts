@@ -69,8 +69,8 @@ export const animateAttributeChange = async (
 	});
 };
 
-export const shakeGround = (strength = 6, volume = 5): void => {
-	const instance = tween(system.globalNodes.board);
+export const shakeGround = (strength = 5, volume = 5): void => {
+	const instance = tween(system.globalNodes.board.getChildByPath('Surface'));
 
 	for (let i = 0; i < volume; i += 1) {
 		const x = Math.random() * strength;

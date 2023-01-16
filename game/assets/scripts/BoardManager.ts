@@ -40,15 +40,21 @@ export class BoardManager extends Component {
 		const cardTemplate = this.node.getChildByPath('Card Template') as Node;
 		const unitTemplate = this.node.getChildByPath('Unit Template') as Node;
 		const unitPreview = this.node.getChildByPath('Unit Preview') as Node;
-		const playerDeck = this.node.getChildByPath('Hud/Player Deck/foil') as Node;
-		const enemyDeck = this.node.getChildByPath('Hud/Enemy Deck/foil') as Node;
+		const playerDeck = this.node.getChildByPath(
+			'Surface/Player Deck/foil',
+		) as Node;
+		const enemyDeck = this.node.getChildByPath(
+			'Surface/Enemy Deck/foil',
+		) as Node;
 		const centerExpo = this.node.getChildByPath('Guide/centerExpo') as Node;
 		const leftExpo = this.node.getChildByPath('Guide/leftExpo') as Node;
 		const rightExpo = this.node.getChildByPath('Guide/rightExpo') as Node;
 		const playerHand = this.node.getChildByPath('playerHand') as Node;
-		const enemyHand = this.node.getChildByPath('enemyHand') as Node;
-		const playerGround = this.node.getChildByPath('playerGround') as Node;
-		const enemyGround = this.node.getChildByPath('enemyGround') as Node;
+		const enemyHand = this.node.getChildByPath('Surface/enemyHand') as Node;
+		const playerGround = this.node.getChildByPath(
+			'Surface/playerGround',
+		) as Node;
+		const enemyGround = this.node.getChildByPath('Surface/enemyGround') as Node;
 		const playerHandGuide = this.node.getChildByPath(
 			'Guide/playerHand',
 		) as Node;
@@ -67,11 +73,11 @@ export class BoardManager extends Component {
 		this.playerDeckCount = this.node
 			.getChildByPath('Hud/playerDeckCount')
 			.getComponent('cc.Label') as Label;
-		this.playerHealth = this.node
-			.getChildByPath('Hud/playerHealth')
-			.getComponent('cc.Label') as Label;
 		this.enemyDeckCount = this.node
 			.getChildByPath('Hud/enemyDeckCount')
+			.getComponent('cc.Label') as Label;
+		this.playerHealth = this.node
+			.getChildByPath('Hud/playerHealth')
 			.getComponent('cc.Label') as Label;
 		this.enemyHealth = this.node
 			.getChildByPath('Hud/enemyHealth')
