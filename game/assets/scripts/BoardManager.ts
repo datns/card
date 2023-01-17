@@ -214,17 +214,20 @@ export class BoardManager extends Component {
 
 		system.isCommandAble = isCommandAble;
 
-		if (isCommandAble) {
-			myHand.forEach((id) => {
-				const card = getCard(system.duel.cardMap, id);
-				const node = system.cardRefs[id];
-				const isHeroCard = card.kind === CardType.Hero;
-				const toggle =
-					isHeroCard && !isHeroAvailable ? animateGlowOff : animateGlowOn;
+		myHand.forEach((id) => {
+			const card = getCard(system.duel.cardMap, id);
+			const node = system.cardRefs[id];
+			const isHeroCard = card.kind === CardType.Hero;
+			const isTroopCard = card.kind === CardType.Troop;
 
-				toggle(node);
-			});
-		}
+			if (node) {
+				if (isTroopCard) {
+					system.isCommandAble ? animateGlowOn(node) : animateGlowOff(node);
+				} else if (isHeroCard) {
+					isHeroAvailable ? animateGlowOn(node) : animateGlowOff(node);
+				}
+			}
+		});
 	}
 
 	reArrangeHand(owner: string, hand: []): void {
