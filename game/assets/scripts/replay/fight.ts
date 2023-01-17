@@ -3,7 +3,6 @@ import lodash from 'lodash';
 
 import { animateCardAttack } from '../tween';
 import { extractGroundMove, GroundMoves } from '../util/command';
-import { system } from '../util/system';
 
 const { CommandSourceType } = Engine;
 
@@ -20,12 +19,9 @@ export const playFight = async ({
 		.uniqBy(unitCommands, (i) => i.target?.source?.id)
 		.forEach(({ target }, i) => {
 			const fromCardId = target.source.id;
-			const fromNode = system.cardRefs[fromCardId];
 			const isDeath = deathIds.findIndex((i) => i === fromCardId) >= 0;
 
-			if (fromNode) {
-				combatTweens.push(animateCardAttack(fromNode, isDeath, i));
-			}
+			combatTweens.push(animateCardAttack(fromCardId, isDeath, i));
 		});
 
 	await Promise.all(combatTweens);

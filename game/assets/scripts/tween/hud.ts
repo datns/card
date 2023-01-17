@@ -1,4 +1,4 @@
-import { Label, tween, UIOpacity, Vec3 } from 'cc';
+import { Label, Sprite, tween, UIOpacity, Vec3 } from 'cc';
 
 import { playSoundOnce, stopAndPlayOnce } from '../util/sound';
 import { system } from '../util/system';
@@ -38,9 +38,18 @@ export const showEndGameRibbon = async (isVictory: boolean): Promise<void> => {
 		const node = system.globalNodes.duelRibbon;
 		const sound = isVictory ? 'victory' : 'defeat';
 
+		node.getChildByPath('ribbon').getComponent(Sprite).grayscale = !isVictory;
+		node.getChildByPath('avatar/image').getComponent(Sprite).grayscale =
+			!isVictory;
 		node.getChildByPath('message').getComponent(Label).string = isVictory
 			? 'Victory!'
 			: 'Defeat!';
+
+		system.globalNodes.playerHand.parent =
+			system.globalNodes.board.getChildByPath('Surface');
+		tween(system.globalNodes.fog.getComponent(UIOpacity))
+			.to(2, { opacity: 255 })
+			.start();
 
 		tween(node)
 			.set({

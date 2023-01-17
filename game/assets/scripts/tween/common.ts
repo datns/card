@@ -1,6 +1,6 @@
 import { Color, Label, Node, tween, UIOpacity, Vec3 } from 'cc';
 
-import { getAttributeColor } from '../util/helper';
+import { getPositiveColor } from '../util/helper';
 import { system } from '../util/system';
 
 export const simpleMove = async (
@@ -55,7 +55,7 @@ export const animateSwapLabel = async (
 	});
 };
 
-export const animateAttributeChange = async (
+export const animateAttribute = async (
 	node: Node,
 	value: number,
 	original: number,
@@ -64,13 +64,13 @@ export const animateAttributeChange = async (
 
 	return new Promise((resolve) => {
 		label.string = String(value);
-		label.color = getAttributeColor(value, original);
+		label.color = getPositiveColor(value, original);
 		resolve();
 	});
 };
 
-export const shakeGround = (strength = 6, volume = 5): void => {
-	const instance = tween(system.globalNodes.board);
+export const shakeGround = (strength = 5, volume = 5): void => {
+	const instance = tween(system.globalNodes.board.getChildByPath('Surface'));
 
 	for (let i = 0; i < volume; i += 1) {
 		const x = Math.random() * strength;
