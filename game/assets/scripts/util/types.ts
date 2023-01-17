@@ -37,3 +37,9 @@ export interface PlayerIds {
 	me: string;
 	enemy: string;
 }
+
+export interface CardDuel {
+	id: string;
+	config: DuelConfig;
+	history: DuelCommandBundle[];
+}

@@ -2,22 +2,25 @@ import { Node, Quat, tween, Vec3 } from 'cc';
 
 import { playSoundOnce } from '../util/sound';
 import { system } from '../util/system';
+import { updateUnit } from '../util/unit';
 
 import { shakeGround } from './common';
 
 export const animateCardAttack = async (
-	node: Node,
+	cardId: string,
 	isDeath: boolean,
 	index: number,
 ): Promise<void> => {
-	const from = node.getPosition();
-	const backFace = node.getChildByPath('back');
-	const isMovingUp = from.y < 0;
-	const fastSeed = 12;
-	const fastDelta = isMovingUp ? -fastSeed : fastSeed;
-
 	return new Promise((resolve) => {
+		const node = system.cardRefs[cardId];
+		if (!node) return resolve();
+
 		let flipped = false;
+		const from = node.getPosition();
+		const backFace = node.getChildByPath('back');
+		const isMovingUp = from.y < 0;
+		const fastSeed = 12;
+		const fastDelta = isMovingUp ? -fastSeed : fastSeed;
 		const r1 = Quat.fromEuler(new Quat(), 0, 180, 0);
 		const r2 = Quat.fromEuler(new Quat(), 0, 0, 0);
 
@@ -27,11 +30,10 @@ export const animateCardAttack = async (
 				{ position: new Vec3(from.x, from.y + fastDelta, 0) },
 				{ easing: 'backOut' },
 			)
-			.call(() => {
-				if (backFace?.active) backFace.active = false;
-			})
 			.to(0.2, { position: new Vec3(from.x, 0, 0) }, { easing: 'expoOut' })
 			.call(() => {
+				updateUnit(cardId);
+
 				if (index === 0) {
 					playSoundOnce('attack', 1);
 					shakeGround(10, 5);
@@ -53,7 +55,8 @@ export const animateCardAttack = async (
 								node.rotation.getEulerAngles(angle);
 
 								if (angle.y < 90) {
-									node.getChildByPath('back').active = false;
+									node.getChildByPath('front').active = true;
+									backFace.active = false;
 									flipped = true;
 								}
 							},

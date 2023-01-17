@@ -34,7 +34,7 @@ export const sendBundles = (bundles: DuelCommandBundle[]): void => {
 
 	/* optimistic simulate command success, will be overrides by server response */
 	bundles.forEach((bundle) => {
-		system.remoteHistory.push(bundle);
+		system.history.push(bundle);
 	});
 
 	replay();

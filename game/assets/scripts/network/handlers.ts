@@ -1,11 +1,10 @@
-import Engine, { DuelCommandBundle, DuelConfig } from '@metacraft/murg-engine';
+import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 
 import { replay } from '../replay';
 import { showEndGameRibbon } from '../tween';
-import { CardDuel } from '../util/graphql';
 import { extractPlayerIds } from '../util/helper';
 import { system } from '../util/system';
-import { JwtPayload } from '../util/types';
+import { CardDuel, JwtPayload } from '../util/types';
 
 import { mergeRemoteHistory } from './util';
 
@@ -16,12 +15,14 @@ interface ConnectPayload {
 	duel: CardDuel;
 }
 
-export const connect = ({ jwt, context, duel }: ConnectPayload): void => {
-	if (system.winner) return;
+export const connect = (
+	{ jwt, context, duel }: ConnectPayload,
+	isMyCommand: boolean,
+): void => {
+	if (system.winner || !isMyCommand) return;
 
-	const state = getInitialState(duel.config as DuelConfig);
-	const config = duel.config as DuelConfig;
-	const history = duel.history as DuelCommandBundle[];
+	const { config, history } = duel;
+	const state = getInitialState(config);
 
 	mergeFragmentToState(system.duel, state);
 	system.serverState = { jwt, context, config, history: [] };

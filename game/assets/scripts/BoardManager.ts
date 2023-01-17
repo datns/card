@@ -1,8 +1,7 @@
 import Engine, { PlayerState } from '@metacraft/murg-engine';
 import { _decorator, Animation, Component, Label, Node } from 'cc';
 
-import { selectHandNode } from './util/helper';
-import { getHandExpos } from './util/layout';
+import { getPositionExpos } from './util/layout';
 import { switchSound } from './util/sound';
 import { system } from './util/system';
 import { sendConnect } from './network';
@@ -37,18 +36,27 @@ export class BoardManager extends Component {
 	props: Props = {};
 
 	start(): void {
+		const fog = this.node.getChildByPath('Air/fog');
 		const cardTemplate = this.node.getChildByPath('Card Template') as Node;
 		const unitTemplate = this.node.getChildByPath('Unit Template') as Node;
-		const unitPreview = this.node.getChildByPath('Unit Preview') as Node;
-		const playerDeck = this.node.getChildByPath('Hud/Player Deck/foil') as Node;
-		const enemyDeck = this.node.getChildByPath('Hud/Enemy Deck/foil') as Node;
+		const unitPreview = this.node.getChildByPath(
+			'Surface/Unit Preview',
+		) as Node;
+		const playerDeck = this.node.getChildByPath(
+			'Surface/Player Deck/foil',
+		) as Node;
+		const enemyDeck = this.node.getChildByPath(
+			'Surface/Enemy Deck/foil',
+		) as Node;
 		const centerExpo = this.node.getChildByPath('Guide/centerExpo') as Node;
 		const leftExpo = this.node.getChildByPath('Guide/leftExpo') as Node;
 		const rightExpo = this.node.getChildByPath('Guide/rightExpo') as Node;
 		const playerHand = this.node.getChildByPath('playerHand') as Node;
-		const enemyHand = this.node.getChildByPath('enemyHand') as Node;
-		const playerGround = this.node.getChildByPath('playerGround') as Node;
-		const enemyGround = this.node.getChildByPath('enemyGround') as Node;
+		const enemyHand = this.node.getChildByPath('Surface/enemyHand') as Node;
+		const playerGround = this.node.getChildByPath(
+			'Surface/playerGround',
+		) as Node;
+		const enemyGround = this.node.getChildByPath('Surface/enemyGround') as Node;
 		const playerHandGuide = this.node.getChildByPath(
 			'Guide/playerHand',
 		) as Node;
@@ -67,17 +75,18 @@ export class BoardManager extends Component {
 		this.playerDeckCount = this.node
 			.getChildByPath('Hud/playerDeckCount')
 			.getComponent('cc.Label') as Label;
-		this.playerHealth = this.node
-			.getChildByPath('Hud/playerHealth')
-			.getComponent('cc.Label') as Label;
 		this.enemyDeckCount = this.node
 			.getChildByPath('Hud/enemyDeckCount')
+			.getComponent('cc.Label') as Label;
+		this.playerHealth = this.node
+			.getChildByPath('Hud/playerHealth')
 			.getComponent('cc.Label') as Label;
 		this.enemyHealth = this.node
 			.getChildByPath('Hud/enemyHealth')
 			.getComponent('cc.Label') as Label;
 
 		system.globalNodes.board = this.node;
+		system.globalNodes.fog = fog;
 		system.globalNodes.cardTemplate = cardTemplate;
 		system.globalNodes.unitTemplate = unitTemplate;
 		system.globalNodes.unitPreview = unitPreview;
@@ -99,7 +108,7 @@ export class BoardManager extends Component {
 		system.globalNodes.board.on('stateReady', this.onStateReady.bind(this));
 		if (system.context) this.onStateReady();
 
-		this.animation.play('ground-reveal');
+		// this.animation.play('ground-reveal');
 		sendConnect();
 	}
 
@@ -205,21 +214,27 @@ export class BoardManager extends Component {
 
 		system.isCommandAble = isCommandAble;
 
-		if (isCommandAble) {
-			myHand.forEach((id) => {
-				const card = getCard(system.duel.cardMap, id);
-				const node = system.cardRefs[id];
-				const isHeroCard = card.kind === CardType.Hero;
-				const toggle =
-					isHeroCard && !isHeroAvailable ? animateGlowOff : animateGlowOn;
+		myHand.forEach((id) => {
+			const card = getCard(system.duel.cardMap, id);
+			const node = system.cardRefs[id];
+			const isHeroCard = card.kind === CardType.Hero;
+			const isTroopCard = card.kind === CardType.Troop;
 
-				toggle(node);
-			});
-		}
+			if (node) {
+				if (isTroopCard) {
+					system.isCommandAble ? animateGlowOn(node) : animateGlowOff(node);
+				} else if (isHeroCard) {
+					isHeroAvailable ? animateGlowOn(node) : animateGlowOff(node);
+				}
+			}
+		});
 	}
 
 	reArrangeHand(owner: string, hand: []): void {
-		const handPositions = getHandExpos(selectHandNode(owner), hand.length);
+		const isMyPhase = system.playerIds.me === owner;
+		const handPositions = isMyPhase
+			? getPositionExpos(system.globalNodes.playerHandGuide, hand.length, 80)
+			: getPositionExpos(system.globalNodes.enemyHandGuide, hand.length, 60);
 
 		for (let i = 0; i < hand.length; i += 1) {
 			const cardNode = system.cardRefs[hand[i]];

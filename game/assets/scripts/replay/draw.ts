@@ -3,8 +3,12 @@ import { instantiate } from 'cc';
 
 import { CardManager } from '../CardManager';
 import { animateDrawEnemyCard, animateDrawPlayerCard } from '../tween';
-import { selectDeckNode, selectHandNode } from '../util/helper';
-import { getCenterExpos, getHandExpos, getRightExpos } from '../util/layout';
+import { selectDeckNode } from '../util/helper';
+import {
+	getCenterExpos,
+	getPositionExpos,
+	getRightExpos,
+} from '../util/layout';
 import { system } from '../util/system';
 
 const { selectHand } = Engine;
@@ -16,7 +20,10 @@ export const playDraw = async ({
 	const promises = [];
 	const hand = selectHand(system.duel, phaseOf);
 	const fromPosition = selectDeckNode(phaseOf).parent.getPosition();
-	const handPositions = getHandExpos(selectHandNode(phaseOf), hand.length);
+	const isMyPhase = system.playerIds.me === phaseOf;
+	const handPositions = isMyPhase
+		? getPositionExpos(system.globalNodes.playerHandGuide, hand.length, 80)
+		: getPositionExpos(system.globalNodes.enemyHandGuide, hand.length, 60);
 	const expoCreator = commands.length > 3 ? getCenterExpos : getRightExpos;
 	const expoPositions = expoCreator(commands.length);
 

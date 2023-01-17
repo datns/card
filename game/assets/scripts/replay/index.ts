@@ -2,6 +2,7 @@ import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 
 import { showTurnRibbon } from '../tween';
 import { system } from '../util/system';
+import { updateGroundUnits } from '../util/unit';
 
 import { playDraw } from './draw';
 import { playFight } from './fight';
@@ -13,15 +14,15 @@ let replaying = false;
 const { BundleGroup, mergeFragmentToState, runCommand } = Engine;
 
 export const replay = async (): Promise<void> => {
-	const remoteHistoryLength = system.remoteHistory.length;
-	const isUpToDate = system.replayLevel >= remoteHistoryLength;
+	const remoteHistoryLength = system.history.length;
+	const isUpToDate = system.historyLevel >= remoteHistoryLength;
 
 	if (system.winner || replaying || isUpToDate) return;
 
 	replaying = true;
 
-	for (let i = system.replayLevel; i < remoteHistoryLength; i += 1) {
-		const bundle = system.remoteHistory[i];
+	for (let i = system.historyLevel; i < remoteHistoryLength; i += 1) {
+		const bundle = system.history[i];
 		const group = bundle?.group;
 		const isInitialDraw = group === BundleGroup.InitialDraw;
 		const isTurnDraw = group === BundleGroup.TurnDraw;
@@ -46,7 +47,8 @@ export const replay = async (): Promise<void> => {
 			await playGeneric(bundle);
 		}
 
-		system.replayLevel += 1;
+		updateGroundUnits();
+		system.historyLevel += 1;
 	}
 
 	replaying = false;

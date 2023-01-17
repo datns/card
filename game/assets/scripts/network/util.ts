@@ -15,11 +15,11 @@ export const mergeRemoteHistory = (
 	bundles: DuelCommandBundle[],
 	level: number,
 ): MergeHistoryResult => {
-	if (system.remoteHistory.length < level) {
+	if (system.history.length < level) {
 		return { conflict: true };
 	}
 
-	system.remoteHistory = system.remoteHistory.slice(0, level).concat(bundles);
+	system.history = system.history.slice(0, level).concat(bundles);
 
 	return {
 		conflict: false,

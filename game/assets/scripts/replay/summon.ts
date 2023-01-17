@@ -40,6 +40,7 @@ export const playSummon = async ({
 				promises.push(animatePlayerSummon(cardNode, unitNode, targetPosition));
 			} else {
 				unitNode.parent = system.globalNodes.enemyGround;
+				unitNode.getChildByPath('front').active = false;
 				unitNode.getChildByPath('back').active = true;
 				promises.push(animateEnemySummon(cardNode, unitNode, targetPosition));
 				setTimeout(() => cardNode.destroy(), 0);

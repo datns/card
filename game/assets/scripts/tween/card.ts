@@ -109,7 +109,7 @@ export const animateDrawEnemyCard = ({
 			.set({ position: from, rotation: r1, scale: new Vec3(0.18, 0.18, 1) })
 			.to(
 				1,
-				{ position: dest, rotation: r2, scale: new Vec3(0.22, 0.22, 1) },
+				{ position: dest, rotation: r2, scale: new Vec3(0.28, 0.28, 1) },
 				{ easing: 'expoInOut' },
 			)
 			.call(() => resolve())

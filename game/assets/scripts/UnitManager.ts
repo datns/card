@@ -13,10 +13,11 @@ import { getFoilUri, getVisualUri, setCursor } from './util/helper';
 import { playSoundOnce } from './util/sound';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
-import { animateAttributeChange, raiseUnitPreview } from './tween';
+import { animateAttribute, raiseUnitPreview } from './tween';
 
 const { ccclass } = _decorator;
-const { getCard, extractPassivePair, getFacingIdentifier } = Engine;
+const { getCard, getCardState, extractPassivePair, getFacingIdentifier } =
+	Engine;
 const NodeEvents = Node.EventType;
 
 @ccclass('UnitManager')
@@ -41,7 +42,7 @@ export class UnitManager extends Component {
 		this.cardHealth = this.node.getChildByPath('front/health') as Node;
 
 		if (this.cardId) {
-			this.subscribeCardChange();
+			this.onStateChange(getCardState(system.duel.stateMap, this.cardId));
 		}
 
 		this.node.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
@@ -51,7 +52,6 @@ export class UnitManager extends Component {
 	setCardId(id: string): void {
 		if (id === this.cardId) return;
 		this.cardId = id;
-		this.subscribeCardChange();
 	}
 
 	subscribeCardChange(): void {
@@ -63,7 +63,7 @@ export class UnitManager extends Component {
 		);
 	}
 
-	onStateChange(state: CardState, lastState: CardState): void {
+	onStateChange(state: CardState, lastState?: CardState): void {
 		if (!this.cardFoil) return;
 
 		const card = getCard(system.duel.cardMap, state.id);
@@ -74,15 +74,15 @@ export class UnitManager extends Component {
 		const health = state.health + passiveAttr.health;
 
 		if (state.health !== lastState?.health) {
-			animateAttributeChange(this.cardHealth, health, card.attribute.health);
+			animateAttribute(this.cardHealth, health, card.attribute.health);
 		}
 
 		if (state.attack !== lastState?.attack) {
-			animateAttributeChange(this.cardAttack, attack, card.attribute.attack);
+			animateAttribute(this.cardAttack, attack, card.attribute.attack);
 		}
 
 		if (state.defense !== lastState?.defense) {
-			animateAttributeChange(this.cardDefense, defense, card.attribute.defense);
+			animateAttribute(this.cardDefense, defense, card.attribute.defense);
 		}
 
 		if (!lastState) {
