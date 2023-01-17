@@ -8,15 +8,18 @@ import {
 	ScaledSizes,
 	Text,
 } from '@metacraft/ui';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import UnderRealmLogo from 'components/Home/visuals/UnderRealmLogo';
 import UnderRealmButton from 'components/Marketplace/Button';
 import GameSubscribe from 'components/modals/GameSubscribe';
+import { RootParamList } from 'stacks/Browser/shared';
 import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 
+type StackProps = NavigationProp<RootParamList>;
+
 const HeadingSection: FC = () => {
-	const navigation = useNavigation();
+	const navigation = useNavigation<StackProps>();
 	const { responsiveLevel, windowSize } =
 		useSnapshot<DimensionState>(dimensionState);
 	const logoSize = [720, 600, 500, 350][responsiveLevel];
@@ -28,6 +31,9 @@ const HeadingSection: FC = () => {
 			animateDirection: AnimateDirections.BottomRight,
 		});
 	};
+
+	const onPlayNowPress = () =>
+		navigation.navigate('Game', { screen: 'Dashboard' });
 
 	return (
 		<ImageBackground
@@ -44,7 +50,7 @@ const HeadingSection: FC = () => {
 				</Text>
 			</View>
 			<View style={styles.actionButtonContainer}>
-				<UnderRealmButton
+				{/* <UnderRealmButton
 					style={styles.actionButton}
 					onPress={() => navigation.navigate('Mint' as never)}
 				>
@@ -55,6 +61,9 @@ const HeadingSection: FC = () => {
 					onPress={showGameSubscribeModal}
 				>
 					<Text style={styles.actionButtonText}>Alpha Subscribe</Text>
+				</UnderRealmButton> */}
+				<UnderRealmButton style={styles.actionButton} onPress={onPlayNowPress}>
+					<Text style={styles.actionButtonText}>Play now</Text>
 				</UnderRealmButton>
 			</View>
 		</ImageBackground>

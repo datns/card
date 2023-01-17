@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { dimensionState, Text } from '@metacraft/ui';
+import { dimensionState, modalActions, Text } from '@metacraft/ui';
 import UnderRealmButton from 'components/Marketplace/Button';
+import SignInOptions from 'components/modals/SignInOptions';
 import { useSnapshot } from 'utils/hook';
 import { accountState } from 'utils/state/account';
 import { liveActions, liveState } from 'utils/state/live';
@@ -17,10 +18,17 @@ export const LeftSection: FC = () => {
 	const { findingMatch } = useSnapshot(liveState);
 
 	const onFindMatch = () => {
-		if (findingMatch) {
-			liveActions.stopMatchFind();
+		if (profile.id) {
+			if (findingMatch) {
+				liveActions.stopMatchFind();
+			} else {
+				liveActions.matchFind(profile.id);
+			}
 		} else {
-			liveActions.matchFind(profile.id);
+			modalActions.show({
+				id: 'signInOptions',
+				component: SignInOptions,
+			});
 		}
 	};
 
