@@ -31,7 +31,7 @@ export const replay = async (): Promise<void> => {
 
 		runCommandBundle(bundle);
 
-		if (isTurnDraw && isMyPhase) {
+		if (!system.winner && isTurnDraw && isMyPhase) {
 			await showTurnRibbon('Your Turn');
 		}
 
