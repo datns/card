@@ -10,6 +10,7 @@ const {
 	getFacingIdentifier,
 	getStateAfterCombat,
 	extractPassivePair,
+	combineAttribute,
 } = Engine;
 
 export const updateGroundUnits = (): void => {
@@ -34,9 +35,7 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 		cardId,
 		facingIdentifier.id,
 	);
-	const health = state.health + passive.health;
-	const defense = state.defense + passive.defense;
-	const attack = state.attack + passive.attack;
+	const { health, defense, attack } = combineAttribute(state, passive);
 	const healthNode = node.getChildByPath('front/health');
 	const healthLabel = healthNode.getComponent(Label);
 	const defenseNode = node.getChildByPath('front/defense');
