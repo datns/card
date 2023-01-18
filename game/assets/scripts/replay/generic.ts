@@ -1,12 +1,16 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
-import { getGroundExpos } from 'db://assets/scripts/util/layout';
+import { instantiate } from 'cc';
 
 import {
+	animateAirSummon,
 	animateGroundRemoval,
 	animateRelocate,
 	animateUnitRaise,
 } from '../tween';
+import { UnitManager } from '../UnitManager';
 import { extractGroundMove, GroundMoves } from '../util/command';
+import { selectGroundGuide, selectGroundNode } from '../util/helper';
+import { getGroundExpos } from '../util/layout';
 import { system } from '../util/system';
 
 const { CommandSourceType } = Engine;
@@ -34,6 +38,16 @@ export const playGeneric = async ({
 		if (groundMove === GroundMoves.Removal) {
 			const node = system.cardRefs[command.target.from.id];
 			if (node) await animateGroundRemoval(node);
+		} else if (groundMove === GroundMoves.GenerateFromAir) {
+			const cardId = command.target.from.id;
+			const unitNode = instantiate(system.globalNodes.unitTemplate);
+			const expos = getGroundExpos(selectGroundGuide(command.target.to.owner));
+
+			unitNode.getComponent(UnitManager).setCardId(cardId);
+			unitNode.parent = selectGroundNode(command.target.to.owner);
+			system.cardRefs[cardId] = unitNode;
+
+			await animateAirSummon(unitNode, expos[command.target.to.index]);
 		} else if (groundMove === GroundMoves.Relocate) {
 			const node = system.cardRefs[command.target.from.id];
 
