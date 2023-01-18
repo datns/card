@@ -1,4 +1,4 @@
-import Engine, { DuelCommandBundle, DuelState } from '@metacraft/murg-engine';
+import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
 import { instantiate } from 'cc';
 
 import { CardManager } from '../CardManager';
@@ -62,9 +62,4 @@ export const playDraw = async ({
 	}
 
 	await Promise.all(promises);
-};
-
-export const safeCardId = (duel: DuelState, id: string): string => {
-	if (id.indexOf('#') >= 0) return id;
-	return `${id}#${duel.uniqueCardCount}`;
 };

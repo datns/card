@@ -33,7 +33,7 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	const [passive] = extractPassivePair(
 		system.duel,
 		cardId,
-		facingIdentifier.id,
+		facingIdentifier?.id,
 	);
 	const { health, defense, attack } = combineAttribute(state, passive);
 	const healthNode = node.getChildByPath('front/health');
@@ -63,13 +63,13 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	defensePredictNode.active = false;
 	attackPredictNode.active = false;
 
-	const facingNode = system.cardRefs[facingIdentifier.id];
+	const facingNode = system.cardRefs[facingIdentifier?.id];
 	const nodeHided = node.getChildByPath('back')?.active;
 	const facingHided = facingNode?.getChildByPath('back')?.active;
 
 	if (!facingNode || nodeHided || facingHided) return;
 
-	const facingState = getCardState(system.duel.stateMap, facingIdentifier.id);
+	const facingState = getCardState(system.duel.stateMap, facingIdentifier?.id);
 	const predictedState = getStateAfterCombat(
 		system.duel,
 		state.id,
@@ -80,9 +80,9 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	const defenseDiff = predictedState.defense - defense;
 	const attackDiff = predictedState.attack - attack;
 
-	if (predictedState.health <= 0) {
-		deathPredictNode.active = true;
-	}
+	// if (predictedState.health <= 0) {
+	// 	deathPredictNode.active = true;
+	// }
 
 	if (healthDiff === 0) {
 		healthPredictNode.active = false;

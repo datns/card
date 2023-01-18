@@ -11,9 +11,7 @@ export const playFight = async ({
 }: DuelCommandBundle): Promise<void> => {
 	const combatTweens = [];
 	const unitCommands = commands.filter(filterUnitSourced);
-	const deathIds = commands
-		.filter((i) => extractGroundMove(i) === GroundMoves.Removal)
-		.map((i) => i.target.from?.id);
+	const deathIds = commands.filter(filterRemoval).map((i) => i.target.from?.id);
 
 	lodash
 		.uniqBy(unitCommands, (i) => i.target?.source?.id)
@@ -29,4 +27,8 @@ export const playFight = async ({
 
 const filterUnitSourced = (i) => {
 	return i.target?.source?.type === CommandSourceType.Unit;
+};
+
+const filterRemoval = (i) => {
+	return extractGroundMove(i) === GroundMoves.Removal;
 };

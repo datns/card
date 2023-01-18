@@ -67,8 +67,16 @@ export class UnitManager extends Component {
 		if (!this.cardFoil) return;
 
 		const card = getCard(system.duel.cardMap, state.id);
-		const facing = getFacingIdentifier(system.duel, state.owner, state.id);
-		const passiveAttr = extractPassivePair(system.duel, state.id, facing.id)[0];
+		const facingIdentifier = getFacingIdentifier(
+			system.duel,
+			state.owner,
+			state.id,
+		);
+		const passiveAttr = extractPassivePair(
+			system.duel,
+			state.id,
+			facingIdentifier?.id,
+		)[0];
 		const attack = state.attack + passiveAttr.attack;
 		const defense = state.defense + passiveAttr.defense;
 		const health = state.health + passiveAttr.health;

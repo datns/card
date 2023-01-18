@@ -82,3 +82,19 @@ export const animateGroundAppear = (node: Node, from: Vec3): Promise<void> => {
 			.start();
 	});
 };
+
+export const animateAirSummon = (unitNode: Node, to: Vec3): Promise<void> => {
+	return new Promise((resolve) => {
+		const randomOffset = Math.random() * 1280 - 640;
+
+		tween(unitNode)
+			.set({ position: new Vec3(randomOffset, to.y > 0 ? 600 : -600, 1) })
+			.to(1, { position: to }, { easing: 'expoOut' })
+			.call(() => {
+				playSoundOnce('ground-hit');
+				shakeGround();
+				resolve();
+			})
+			.start();
+	});
+};

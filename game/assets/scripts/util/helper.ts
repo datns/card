@@ -1,4 +1,8 @@
-import Engine, { DuelConfig, TemplateFragment } from '@metacraft/murg-engine';
+import Engine, {
+	DuelConfig,
+	DuelState,
+	TemplateFragment,
+} from '@metacraft/murg-engine';
 import { Color, Node, Vec2, Vec3 } from 'cc';
 
 import { CardManager } from '../CardManager';
@@ -125,11 +129,23 @@ export const selectDeckNode = (owner: string): Node => {
 
 export const selectGroundNode = (owner: string): Node => {
 	return system.playerIds.me === owner
+		? system.globalNodes.playerGround
+		: system.globalNodes.enemyGround;
+};
+
+export const selectGroundGuide = (owner: string): Node => {
+	return system.playerIds.me === owner
 		? system.globalNodes.playerGroundGuide
 		: system.globalNodes.enemyGroundGuide;
 };
 
 export const selectHandNode = (owner: string): Node => {
+	return system.playerIds.me === owner
+		? system.globalNodes.playerHand
+		: system.globalNodes.enemyHand;
+};
+
+export const selectHandGuide = (owner: string): Node => {
 	return system.playerIds.me === owner
 		? system.globalNodes.playerHandGuide
 		: system.globalNodes.enemyHandGuide;
@@ -158,4 +174,10 @@ export const getPositiveColor = (value: number, origin = 0): Color => {
 	}
 
 	return Color.fromHEX(new Color(), '#FFFFFF');
+};
+
+export const getInjectedCardId = (duel: DuelState, id: string): string => {
+	if (id.indexOf('#') >= 0) return id;
+
+	return `${id}#${duel.uniqueCardCount}`;
 };
