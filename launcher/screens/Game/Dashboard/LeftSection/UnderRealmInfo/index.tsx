@@ -34,7 +34,9 @@ export const UnderRealmInfo: FC = () => {
 			<TouchableOpacity
 				activeOpacity={0.7}
 				style={styles.bannerContainer}
-				onPress={() => Linking.openURL('https://underrealm.stormgate.io/guide')}
+				onPress={() =>
+					Linking.openURL('https://underrealm.stormgate.io/how-to-play')
+				}
 			>
 				<ImageBackground
 					source={resources.lobby.playBannerBackground}
