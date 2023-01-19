@@ -42,7 +42,7 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	const defenseLabel = defenseNode.getComponent(Label);
 	const attackNode = node.getChildByPath('front/attack');
 	const attackLabel = attackNode.getComponent(Label);
-	const deathPredictNode = node.getChildByPath('death');
+	// const deathPredictNode = node.getChildByPath('death');
 	const healthPredictNode = node.getChildByPath('prediction/health');
 	const healthPredictLabel = healthPredictNode.getComponent(Label);
 	const defensePredictNode = node.getChildByPath('prediction/defense');
@@ -75,10 +75,11 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 		state.id,
 		facingState.id,
 	);
+	const combinedPredict = combineAttribute(predictedState, passive);
 
-	const healthDiff = predictedState.health - health;
-	const defenseDiff = predictedState.defense - defense;
-	const attackDiff = predictedState.attack - attack;
+	const healthDiff = combinedPredict.health - health;
+	const defenseDiff = combinedPredict.defense - defense;
+	const attackDiff = combinedPredict.attack - attack;
 
 	// if (predictedState.health <= 0) {
 	// 	deathPredictNode.active = true;

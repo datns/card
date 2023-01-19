@@ -12,7 +12,6 @@ export enum GroundMoves {
 const generatedPlaces = [DuelPlace.Player, DuelPlace.Ability];
 
 export const extractGroundMove = (command: DuelCommand): GroundMoves => {
-	console.log(command.type);
 	if (command.type !== DuelCommandType.CardMove) return GroundMoves.No;
 
 	const { from, to } = command.target;
@@ -30,12 +29,15 @@ export const extractGroundMove = (command: DuelCommand): GroundMoves => {
 		} else if (fromDeck) {
 			console.log('Card from Deck to Ground not supported yet!');
 		} else if (fromGrave) {
-			console.log('Card from Grave to Ground (i.e reborn) not supported yet!');
+			/* Should be from Grave, but not the air! */
+			return GroundMoves.GenerateFromAir;
+		} else {
+			return GroundMoves.GenerateFromAir;
 		}
 	} else if (fromGround) {
 		return GroundMoves.Removal;
 	} else {
-		console.log('Generic move not (non-ground) supported yet!');
+		console.log('Generic move not (between non-ground) supported yet!');
 	}
 
 	return GroundMoves.No;
