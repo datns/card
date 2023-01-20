@@ -7,7 +7,9 @@
   },
   "dependencies": {
     "@metacraft/murg-engine": "^0.0.58",
-    "@types/lodash": "^4.14.191",
     "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.191"
   }
 }
