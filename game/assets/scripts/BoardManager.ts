@@ -246,4 +246,4 @@ export class BoardManager extends Component {
 	}
 }
 
-const peekHealthGap = 200;
+const peekHealthGap = 150;
