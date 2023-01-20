@@ -16,8 +16,13 @@ import { CardManager } from './CardManager';
 import { animateAttribute, raiseUnitPreview } from './tween';
 
 const { ccclass } = _decorator;
-const { getCard, getCardState, extractPassivePair, getFacingIdentifier } =
-	Engine;
+const {
+	combineAttribute,
+	getCard,
+	getCardState,
+	extractPassivePair,
+	getFacingIdentifier,
+} = Engine;
 const NodeEvents = Node.EventType;
 
 @ccclass('UnitManager')
@@ -67,11 +72,17 @@ export class UnitManager extends Component {
 		if (!this.cardFoil) return;
 
 		const card = getCard(system.duel.cardMap, state.id);
-		const facing = getFacingIdentifier(system.duel, state.owner, state.id);
-		const passiveAttr = extractPassivePair(system.duel, state.id, facing.id)[0];
-		const attack = state.attack + passiveAttr.attack;
-		const defense = state.defense + passiveAttr.defense;
-		const health = state.health + passiveAttr.health;
+		const facingIdentifier = getFacingIdentifier(
+			system.duel,
+			state.owner,
+			state.id,
+		);
+		const passiveAttr = extractPassivePair(
+			system.duel,
+			state.id,
+			facingIdentifier?.id,
+		)[0];
+		const { attack, defense, health } = combineAttribute(state, passiveAttr);
 
 		if (state.health !== lastState?.health) {
 			animateAttribute(this.cardHealth, health, card.attribute.health);

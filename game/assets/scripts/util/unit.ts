@@ -10,6 +10,7 @@ const {
 	getFacingIdentifier,
 	getStateAfterCombat,
 	extractPassivePair,
+	combineAttribute,
 } = Engine;
 
 export const updateGroundUnits = (): void => {
@@ -32,18 +33,16 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	const [passive] = extractPassivePair(
 		system.duel,
 		cardId,
-		facingIdentifier.id,
+		facingIdentifier?.id,
 	);
-	const health = state.health + passive.health;
-	const defense = state.defense + passive.defense;
-	const attack = state.attack + passive.attack;
+	const { health, defense, attack } = combineAttribute(state, passive);
 	const healthNode = node.getChildByPath('front/health');
 	const healthLabel = healthNode.getComponent(Label);
 	const defenseNode = node.getChildByPath('front/defense');
 	const defenseLabel = defenseNode.getComponent(Label);
 	const attackNode = node.getChildByPath('front/attack');
 	const attackLabel = attackNode.getComponent(Label);
-	const deathPredictNode = node.getChildByPath('death');
+	// const deathPredictNode = node.getChildByPath('death');
 	const healthPredictNode = node.getChildByPath('prediction/health');
 	const healthPredictLabel = healthPredictNode.getComponent(Label);
 	const defensePredictNode = node.getChildByPath('prediction/defense');
@@ -64,26 +63,27 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	defensePredictNode.active = false;
 	attackPredictNode.active = false;
 
-	const facingNode = system.cardRefs[facingIdentifier.id];
+	const facingNode = system.cardRefs[facingIdentifier?.id];
 	const nodeHided = node.getChildByPath('back')?.active;
 	const facingHided = facingNode?.getChildByPath('back')?.active;
 
 	if (!facingNode || nodeHided || facingHided) return;
 
-	const facingState = getCardState(system.duel.stateMap, facingIdentifier.id);
+	const facingState = getCardState(system.duel.stateMap, facingIdentifier?.id);
 	const predictedState = getStateAfterCombat(
 		system.duel,
 		state.id,
 		facingState.id,
 	);
+	const combinedPredict = combineAttribute(predictedState, passive);
 
-	const healthDiff = predictedState.health - health;
-	const defenseDiff = predictedState.defense - defense;
-	const attackDiff = predictedState.attack - attack;
+	const healthDiff = combinedPredict.health - health;
+	const defenseDiff = combinedPredict.defense - defense;
+	const attackDiff = combinedPredict.attack - attack;
 
-	if (predictedState.health <= 0) {
-		deathPredictNode.active = true;
-	}
+	// if (predictedState.health <= 0) {
+	// 	deathPredictNode.active = true;
+	// }
 
 	if (healthDiff === 0) {
 		healthPredictNode.active = false;

@@ -1,5 +1,5 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
-import { instantiate, UIOpacity } from 'cc';
+import { instantiate } from 'cc';
 
 import {
 	animateEnemySummon,
@@ -7,7 +7,7 @@ import {
 	animatePlayerSummon,
 } from '../tween';
 import { UnitManager } from '../UnitManager';
-import { selectGroundNode } from '../util/helper';
+import { selectGroundGuide } from '../util/helper';
 import { getGroundExpos } from '../util/layout';
 import { system } from '../util/system';
 
@@ -25,13 +25,12 @@ export const playSummon = async ({
 		if (isMoveCommand) {
 			const cardId = target.from.id;
 			const isMyCommand = owner === system.playerIds.me;
-			const groundPositions = getGroundExpos(selectGroundNode(owner));
+			const groundPositions = getGroundExpos(selectGroundGuide(owner));
 			const targetPosition = groundPositions[target.to.index];
 			const cardNode = system.cardRefs[cardId];
 			const unitNode = instantiate(system.globalNodes.unitTemplate);
 
 			unitNode.getComponent(UnitManager).setCardId(cardId);
-			unitNode.getComponent(UIOpacity);
 			system.cardRefs[cardId] = unitNode;
 
 			if (isMyCommand) {
