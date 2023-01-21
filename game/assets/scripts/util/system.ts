@@ -5,7 +5,7 @@ import Engine, {
 	PlayerState,
 } from '@metacraft/murg-engine';
 import { AudioSource, Node } from 'cc';
-import { isEqual } from 'lodash';
+import lodash from 'lodash';
 
 import { JwtPayload, PlayerIds, ServerState } from '../util/types';
 
@@ -57,7 +57,7 @@ export const makeDuelProxy = (duel: DuelProxy): DuelProxy => {
 
 	duel.stateMap = new Proxy(duel.stateMap, {
 		set: (target, key, value) => {
-			if (isEqual(target[key as string], value)) return true;
+			if (lodash.isEqual(target[key as string], value)) return true;
 			const registeredGroup = listenerMap[`state#${key as string}`];
 
 			if (registeredGroup) {
@@ -74,7 +74,7 @@ export const makeDuelProxy = (duel: DuelProxy): DuelProxy => {
 
 	return new Proxy(duel, {
 		set: (target, key, value) => {
-			if (isEqual(target[key as string], value)) return true;
+			if (lodash.isEqual(target[key as string], value)) return true;
 			const registeredGroup = listenerMap[key as string];
 
 			if (registeredGroup) {

@@ -1,5 +1,5 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
-import { cloneDeep } from 'lodash';
+import lodash from 'lodash';
 
 import { replay } from '../replay';
 import { system } from '../util/system';
@@ -42,7 +42,7 @@ export const sendBundles = (bundles: DuelCommandBundle[]): void => {
 
 export const sendCardSummon = (cardId: string, index: number): void => {
 	const state = getCardState(system.duel.stateMap, cardId);
-	const { commandBundles } = move.summonCard(cloneDeep(system.duel), {
+	const { commandBundles } = move.summonCard(lodash.cloneDeep(system.duel), {
 		from: {
 			owner: state.owner,
 			id: state.id,
