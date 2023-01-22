@@ -1,5 +1,7 @@
 import { _decorator, Component, director, ProgressBar } from 'cc';
 
+import { waitForSocket } from './network';
+
 const { ccclass, property } = _decorator;
 
 @ccclass('LoadingManager')
@@ -13,7 +15,8 @@ export class LoadingManager extends Component {
 			(completedCount: number, totalCount: number) => {
 				this.progressBar.progress = completedCount / totalCount;
 			},
-			() => {
+			async () => {
+				await waitForSocket();
 				director.loadScene('Duel');
 			},
 		);

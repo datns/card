@@ -92,6 +92,7 @@ export const makeDuelProxy = (duel: DuelProxy): DuelProxy => {
 
 export interface System {
 	jwt?: string;
+	isSocketReady: boolean;
 	winner?: string;
 	playerIds: PlayerIds;
 	serverState?: ServerState;
@@ -169,6 +170,7 @@ export const system: System = {
 		firstGrave: [],
 		secondGrave: [],
 	}),
+	isSocketReady: false,
 	serverState: {},
 	isCommandAble: false,
 	cardRefs: {},

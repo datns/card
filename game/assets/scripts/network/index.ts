@@ -1,3 +1,4 @@
+import { system } from '../util/system';
 import { DuelCommands } from '../util/types';
 
 import * as handlers from './handlers';
@@ -20,7 +21,25 @@ connectionInstance.onerror = (error) => {
 };
 
 connectionInstance.onopen = () => {
-	console.log('socket connected!');
+	system.isSocketReady = true;
+};
+
+export const waitForSocket = (maxRetry = 100): Promise<boolean> => {
+	let retryCount = 0;
+
+	return new Promise((resolve, reject) => {
+		const waitInterval = setInterval(() => {
+			if (system.isSocketReady) {
+				resolve(true);
+				clearInterval(waitInterval);
+			} else if (retryCount > maxRetry) {
+				reject('too many retries');
+				clearInterval(waitInterval);
+			}
+
+			retryCount += 1;
+		}, 500);
+	});
 };
 
 export * from './sender';
