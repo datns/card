@@ -37,11 +37,9 @@ export class DuelManager extends Component {
 		this.node.on(NodeEvents.MOUSE_UP, this.onMouseUp.bind(this));
 		this.node.on(NodeEvents.MOUSE_MOVE, this.onMouseMove.bind(this));
 
-		if (document?.getElementById) {
-			document
-				.getElementById('GameCanvas')
-				.addEventListener('mouseout', this.onMouseOut.bind(this));
-		}
+		document
+			?.getElementById('GameCanvas')
+			.addEventListener('mouseout', this.onMouseOut.bind(this));
 
 		playSound('bgm-dungeon-crawl', 0.3);
 	}

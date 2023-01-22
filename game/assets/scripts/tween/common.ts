@@ -1,6 +1,5 @@
 import { Color, Label, Node, tween, UIOpacity, Vec3 } from 'cc';
 
-import { getPositiveColor } from '../util/helper';
 import { system } from '../util/system';
 
 export const simpleMove = async (
@@ -55,20 +54,6 @@ export const animateSwapLabel = async (
 	});
 };
 
-export const animateAttribute = async (
-	node: Node,
-	value: number,
-	original: number,
-): Promise<void> => {
-	const label = node.getComponent(Label);
-
-	return new Promise((resolve) => {
-		label.string = String(value);
-		label.color = getPositiveColor(value, original);
-		resolve();
-	});
-};
-
 export const shakeGround = (strength = 5, volume = 5): void => {
 	const instance = tween(system.globalNodes.board.getChildByPath('Surface'));
 
@@ -80,4 +65,12 @@ export const shakeGround = (strength = 5, volume = 5): void => {
 	}
 
 	instance.to(0.5, { position: new Vec3(0, 0, 0) }).start();
+};
+
+export const animateSkillReady = (cardNode: Node): void => {
+	tween(cardNode)
+		.by(1, { position: new Vec3(0, 20, 0) }, { easing: 'expoOut' })
+		.by(1, { position: new Vec3(0, -20, 0) }, { easing: 'expoOut' })
+		.repeatForever()
+		.start();
 };

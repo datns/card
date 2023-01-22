@@ -37,9 +37,9 @@ export class UnitManager extends Component {
 		this.cardVisual = this.node
 			.getChildByPath('front/visual')
 			.getComponent(Sprite);
-		this.cardAttack = this.node.getChildByPath('front/attack') as Node;
-		this.cardDefense = this.node.getChildByPath('front/defense') as Node;
-		this.cardHealth = this.node.getChildByPath('front/health') as Node;
+		this.cardAttack = this.node.getChildByPath('front/attack');
+		this.cardDefense = this.node.getChildByPath('front/defense');
+		this.cardHealth = this.node.getChildByPath('front/health');
 
 		if (this.cardId) {
 			this.renderCard(getCardState(system.duel.stateMap, this.cardId));

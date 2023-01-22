@@ -21,10 +21,10 @@ export class TurnController extends Component {
 	orb: Node;
 
 	start(): void {
-		this.playerTurnGlow = this.node.getChildByPath('Orb/Player Glow') as Node;
-		this.enemyTurnGlow = this.node.getChildByPath('Orb/Enemy Glow') as Node;
+		this.playerTurnGlow = this.node.getChildByPath('Orb/Player Glow');
+		this.enemyTurnGlow = this.node.getChildByPath('Orb/Enemy Glow');
 		this.turnLabel = this.node.getChildByPath('Orb/Button/Label');
-		this.orb = this.node.getChildByPath('Orb') as Node;
+		this.orb = this.node.getChildByPath('Orb');
 
 		this.orb.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
 		this.orb.on(NodeEvents.MOUSE_LEAVE, this.onMouseLeave.bind(this));
