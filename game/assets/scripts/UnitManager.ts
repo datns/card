@@ -12,17 +12,12 @@ import {
 import { getFoilUri, getVisualUri, setCursor } from './util/helper';
 import { playSoundOnce } from './util/sound';
 import { system } from './util/system';
+import { updateUnit } from './util/unit';
 import { CardManager } from './CardManager';
-import { animateAttribute, raiseUnitPreview } from './tween';
+import { raiseUnitPreview } from './tween';
 
 const { ccclass } = _decorator;
-const {
-	combineAttribute,
-	getCard,
-	getCardState,
-	extractPassivePair,
-	getFacingIdentifier,
-} = Engine;
+const { getCard, getCardState, ActivationType } = Engine;
 const NodeEvents = Node.EventType;
 
 @ccclass('UnitManager')
@@ -47,7 +42,7 @@ export class UnitManager extends Component {
 		this.cardHealth = this.node.getChildByPath('front/health') as Node;
 
 		if (this.cardId) {
-			this.onStateChange(getCardState(system.duel.stateMap, this.cardId));
+			this.renderCard(getCardState(system.duel.stateMap, this.cardId));
 		}
 
 		this.node.on(NodeEvents.MOUSE_ENTER, this.onMouseEnter.bind(this));
@@ -59,57 +54,28 @@ export class UnitManager extends Component {
 		this.cardId = id;
 	}
 
-	subscribeCardChange(): void {
-		this.unsubscribe?.();
-		this.unsubscribe = system.duel.subscribe(
-			`state#${this.cardId}`,
-			this.onStateChange.bind(this),
-			true,
-		);
-	}
-
-	onStateChange(state: CardState, lastState?: CardState): void {
+	renderCard(state: CardState): void {
 		if (!this.cardFoil) return;
 
 		const card = getCard(system.duel.cardMap, state.id);
-		const facingIdentifier = getFacingIdentifier(
-			system.duel,
-			state.owner,
-			state.id,
-		);
-		const passiveAttr = extractPassivePair(
-			system.duel,
-			state.id,
-			facingIdentifier?.id,
-		)[0];
-		const { attack, defense, health } = combineAttribute(state, passiveAttr);
+		const visualUri = getVisualUri(card.id);
+		const foilUri = getFoilUri(card.id, '-ground');
 
-		if (state.health !== lastState?.health) {
-			animateAttribute(this.cardHealth, health, card.attribute.health);
+		resources.load<SpriteFrame>(visualUri, (err, frame) => {
+			if (err) return;
+			this.cardVisual.spriteFrame = frame;
+		});
+
+		resources.load<SpriteFrame>(foilUri, (err, frame) => {
+			if (err) return;
+			this.cardFoil.spriteFrame = frame;
+		});
+
+		if (card.skill?.activation === ActivationType.Charge) {
+			this.node.getChildByPath('front/charge').active = true;
 		}
 
-		if (state.attack !== lastState?.attack) {
-			animateAttribute(this.cardAttack, attack, card.attribute.attack);
-		}
-
-		if (state.defense !== lastState?.defense) {
-			animateAttribute(this.cardDefense, defense, card.attribute.defense);
-		}
-
-		if (!lastState) {
-			const visualUri = getVisualUri(card.id);
-			const foilUri = getFoilUri(card.id, '-ground');
-
-			resources.load<SpriteFrame>(visualUri, (err, frame) => {
-				if (err) return;
-				this.cardVisual.spriteFrame = frame;
-			});
-
-			resources.load<SpriteFrame>(foilUri, (err, frame) => {
-				if (err) return;
-				this.cardFoil.spriteFrame = frame;
-			});
-		}
+		updateUnit(state.id);
 	}
 
 	onMouseEnter(): void {

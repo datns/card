@@ -1,6 +1,7 @@
 import Engine from '@metacraft/murg-engine';
 import { Label } from 'cc';
-import { getPositiveColor } from 'db://assets/scripts/util/helper';
+
+import { getPositiveColor } from '../util/helper';
 
 import { system } from './system';
 
@@ -42,7 +43,9 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	const defenseLabel = defenseNode.getComponent(Label);
 	const attackNode = node.getChildByPath('front/attack');
 	const attackLabel = attackNode.getComponent(Label);
-	// const deathPredictNode = node.getChildByPath('death');
+	const chargeNode = node.getChildByPath('front/charge');
+	const chargeLabel = chargeNode.getComponent(Label);
+	const deathPredictNode = node.getChildByPath('death');
 	const healthPredictNode = node.getChildByPath('prediction/health');
 	const healthPredictLabel = healthPredictNode.getComponent(Label);
 	const defensePredictNode = node.getChildByPath('prediction/defense');
@@ -57,11 +60,16 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	attackLabel.string = String(attack);
 	attackLabel.color = getPositiveColor(attack, card.attribute.attack);
 
+	if (state.charge) {
+		chargeLabel.string = String(state.charge);
+	}
+
 	defensePredictNode.active = false;
 	defensePredictNode.active = false;
 	healthPredictNode.active = false;
 	defensePredictNode.active = false;
 	attackPredictNode.active = false;
+	deathPredictNode.active = false;
 
 	const facingNode = system.cardRefs[facingIdentifier?.id];
 	const nodeHided = node.getChildByPath('back')?.active;
@@ -81,9 +89,9 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	const defenseDiff = combinedPredict.defense - defense;
 	const attackDiff = combinedPredict.attack - attack;
 
-	// if (predictedState.health <= 0) {
-	// 	deathPredictNode.active = true;
-	// }
+	if (combinedPredict.health <= 0) {
+		deathPredictNode.active = true;
+	}
 
 	if (healthDiff === 0) {
 		healthPredictNode.active = false;
