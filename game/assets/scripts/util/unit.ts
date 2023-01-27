@@ -43,8 +43,9 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	const defenseLabel = defenseNode.getComponent(Label);
 	const attackNode = node.getChildByPath('front/attack');
 	const attackLabel = attackNode.getComponent(Label);
-	const chargeNode = node.getChildByPath('front/charge');
-	const chargeLabel = chargeNode.getComponent(Label);
+	const chargeLabel = node
+		.getChildByPath('front/charge/value')
+		.getComponent(Label);
 	const deathPredictNode = node.getChildByPath('death');
 	const healthPredictNode = node.getChildByPath('prediction/health');
 	const healthPredictLabel = healthPredictNode.getComponent(Label);
