@@ -1,4 +1,4 @@
-import { AudioClip, resources } from 'cc';
+import { AudioClip, instantiate, Node, Prefab, resources } from 'cc';
 
 import { delay } from './helper';
 import { system } from './system';
@@ -49,5 +49,17 @@ export const stopAndPlayOnce = (name: string, volume = 1): void => {
 			system.audioSource.stop();
 			system.audioSource.playOneShot(sound, volume);
 		}
+	});
+};
+
+export const instantiatePrefab = (uri: string): Promise<Node> => {
+	return new Promise((resolve, reject) => {
+		resources.load(uri, (err, prefab: Prefab) => {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(instantiate(prefab));
+			}
+		});
 	});
 };
