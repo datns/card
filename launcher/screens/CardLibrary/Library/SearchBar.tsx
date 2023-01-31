@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, ImageBackground, StyleSheet, TextInput } from 'react-native';
+import {
+	Image,
+	ImageBackground,
+	StyleSheet,
+	TextInput,
+	View,
+} from 'react-native';
 import resources from 'utils/resources';
 
 interface Props {
@@ -8,33 +14,39 @@ interface Props {
 }
 const SearchBar: React.FC<Props> = ({ onChangeText, value }) => {
 	return (
-		<ImageBackground
-			source={resources.cardLibrary.searchBackground}
-			style={styles.container}
-			resizeMode="stretch"
-		>
-			<TextInput
-				onChangeText={onChangeText}
-				value={value}
-				style={styles.textInput}
-				placeholder={'Search'}
-				placeholderTextColor="#76645e"
-			/>
-			<Image source={resources.cardLibrary.searchIcon} style={styles.icon} />
-		</ImageBackground>
+		<View style={styles.wrapper}>
+			<ImageBackground
+				source={resources.cardLibrary.searchBackground}
+				style={styles.container}
+				resizeMode="stretch"
+			>
+				<TextInput
+					onChangeText={onChangeText}
+					value={value}
+					style={styles.textInput}
+					placeholder={'Search'}
+					placeholderTextColor="#76645e"
+				/>
+				<Image source={resources.cardLibrary.searchIcon} style={styles.icon} />
+			</ImageBackground>
+		</View>
 	);
 };
 
 export default SearchBar;
 
 const styles = StyleSheet.create({
+	wrapper: {
+		height: 55,
+		padding: 6,
+	},
 	container: {
-		height: 50,
 		paddingHorizontal: 20,
-		width: 250,
+		width: 400,
 		backgroundColor: '#1e0f0d',
 		flexDirection: 'row',
 		alignItems: 'center',
+		height: '100%',
 	},
 	textInput: {
 		color: '#fff',

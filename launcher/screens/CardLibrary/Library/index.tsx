@@ -1,44 +1,68 @@
 import React from 'react';
 import { Image, ImageBackground, StyleSheet, View } from 'react-native';
-import { makeMeta } from '@metacraft/murg-engine';
+import {
+	Card as ICard,
+	CardType as ICardType,
+	makeMeta,
+} from '@metacraft/murg-engine';
 import { Text } from '@metacraft/ui';
 import Card from 'components/Card';
 import ScrollLayout from 'components/layouts/Scroll';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { navigationHeight } from 'components/Navigation/shared';
-import CustomizedButton from 'screens/CardLibrary/Library/CustomizedButton';
+import CardTypeButton from 'screens/CardLibrary/Library/CardTypeButton';
 import Dropdown from 'screens/CardLibrary/Library/Dropdown';
-import {
-	CardType,
-	Classes,
-	Elemental,
-} from 'screens/CardLibrary/Library/mocks';
+import FilterButton from 'screens/CardLibrary/Library/FilterButton';
 import SearchBar from 'screens/CardLibrary/Library/SearchBar';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
+import { Attribute, CardTypeContent, Classes, Elemental } from './content';
+
+enum AllCardType {
+	All = -1,
+}
+
+type ExtendedCardType = ICardType | AllCardType;
+
 const Library: React.FC = () => {
-	const [selectedType, setSelectedType] = React.useState<number>(0);
+	const [selectedType, setSelectedType] = React.useState<ExtendedCardType>(
+		AllCardType.All,
+	);
 	const [search, setSearch] = React.useState<string>('');
-	const [showFilter, setShowFilter] = React.useState<boolean>(false);
-	const { version, entities, map } = makeMeta('00001');
+	const [showSubFilter, setShowSubFilter] = React.useState<boolean>(false);
+	const { map } = makeMeta('00001');
+	const initialCardList = Object.values(map) as ICard[];
+	const [cardList, setCardList] = React.useState<ICard[]>(initialCardList);
+	console.log('map', map);
 
-	const card1: {
-		attribute: { attack: number; defense: number; health: number };
-		name: string;
-		rarity: number;
-		elemental: string;
-		class: string;
-		id: string;
-	} = map['000010001'];
+	const onChangeCardType = (cardType: ExtendedCardType) => {
+		setSelectedType(cardType);
+	};
 
-	console.log({
-		version,
-		entities,
-		map,
-	});
-	const renderAdditionalFilter = () => {
-		if (!showFilter) return null;
+	const onSearch = (text: string) => {
+		setSearch(text);
+	};
+
+	React.useEffect(() => {
+		let filteredByType = [];
+		if (selectedType === AllCardType.All) {
+			filteredByType = initialCardList;
+		} else {
+			filteredByType = initialCardList.filter(
+				(value) => value.kind == selectedType,
+			);
+		}
+		const searched = filteredByType.filter((card) =>
+			card.name
+				.toLowerCase()
+				.includes(search.toLowerCase().trim().replace(/\s/g, '')),
+		);
+		setCardList(searched);
+	}, [selectedType, search]);
+
+	const renderSubFilter = () => {
+		if (!showSubFilter) return null;
 		return (
 			<>
 				<View
@@ -46,7 +70,8 @@ const Library: React.FC = () => {
 						width: '70%',
 						height: 1,
 						backgroundColor: '#644d3d',
-						marginVertical: 20,
+						marginTop: 10,
+						marginBottom: 20,
 					}}
 				/>
 				<View style={{ flexDirection: 'row' }}>
@@ -65,21 +90,21 @@ const Library: React.FC = () => {
 						containerStyle={styles.dropdownContainer}
 					/>
 					<Dropdown
-						data={CardType}
+						data={Attribute}
 						onSelect={() => {}}
 						selectedIndex={0}
 						placeholder="Attack"
 						containerStyle={styles.dropdownContainer}
 					/>
 					<Dropdown
-						data={CardType}
+						data={Attribute}
 						onSelect={() => {}}
 						selectedIndex={0}
 						placeholder="Defense"
 						containerStyle={styles.dropdownContainer}
 					/>
 					<Dropdown
-						data={CardType}
+						data={Attribute}
 						onSelect={() => {}}
 						selectedIndex={0}
 						placeholder="HP"
@@ -87,6 +112,24 @@ const Library: React.FC = () => {
 					/>
 				</View>
 			</>
+		);
+	};
+
+	const renderCardTypeSelector = () => {
+		return (
+			<View style={{ flexDirection: 'row' }}>
+				{CardTypeContent.map((type) => {
+					const isSelected = type.value === selectedType;
+					return (
+						<CardTypeButton
+							key={type.value}
+							isSelected={isSelected}
+							type={type}
+							onPress={() => onChangeCardType(type.value)}
+						/>
+					);
+				})}
+			</View>
 		);
 	};
 
@@ -98,14 +141,6 @@ const Library: React.FC = () => {
 			/>
 			<ScrollLayout>
 				<View style={{ alignItems: 'center', paddingVertical: 40 }}>
-					<Card
-						attribute={card1.attribute}
-						elemental={card1.elemental}
-						class={card1.class}
-						rarity={5}
-						name={card1.name}
-						id={card1.id}
-					/>
 					<Image
 						source={resources.cardLibrary.cardsImage}
 						style={styles.cardsImage}
@@ -117,49 +152,39 @@ const Library: React.FC = () => {
 					<UnderRealmButton
 						style={styles.headerButton}
 						title={'Craft/Combine'}
+						disabled
 					/>
 				</View>
 				<ImageBackground
 					source={resources.cardLibrary.expandedSearchBarBackground}
 					style={[
 						styles.searchBarBackground,
-						{ height: showFilter ? 210 : 130 },
+						{ height: showSubFilter ? 210 : 130 },
 					]}
 					resizeMode="stretch"
 				>
-					<View
-						style={{
-							alignItems: 'center',
-							flexDirection: 'row',
-							justifyContent: 'center',
-						}}
-					>
-						<Dropdown
-							data={CardType}
-							onSelect={setSelectedType}
-							selectedIndex={selectedType}
-							placeholder="Card Type"
-							containerStyle={styles.dropdownContainer}
-						/>
-						<SearchBar value={search} onChangeText={setSearch} />
-						{selectedType === 1 && (
-							<CustomizedButton
-								onPress={() => setShowFilter((val) => !val)}
-								containerStyle={{ marginLeft: 8 }}
-							>
-								<View style={styles.filterContainer}>
-									<Image
-										source={resources.cardLibrary.activeFilterIcon}
-										style={{ width: 14, aspectRatio: 1, marginRight: 8 }}
-										resizeMode="contain"
-									/>
-									<Text style={styles.filterLabel}>Filter</Text>
-								</View>
-							</CustomizedButton>
-						)}
+					<View style={styles.cardTypeButtonContainer}>
+						{renderCardTypeSelector()}
+						<View style={{ flexDirection: 'row' }}>
+							<SearchBar value={search} onChangeText={onSearch} />
+							<FilterButton
+								isActive={selectedType === ICardType.Hero}
+								onPress={() => setShowSubFilter((value) => !value)}
+							/>
+						</View>
 					</View>
-					{renderAdditionalFilter()}
+					{renderSubFilter()}
 				</ImageBackground>
+				<View style={styles.content}>
+					<Text>{`${cardList.length} cards found for "${
+						CardTypeContent[selectedType + 1].displayName
+					}"`}</Text>
+					<View style={styles.cardListContainer}>
+						{cardList.map((card) => {
+							return <Card data={card} key={card.id} />;
+						})}
+					</View>
+				</View>
 			</ScrollLayout>
 		</View>
 	);
@@ -209,5 +234,20 @@ const styles = StyleSheet.create({
 	},
 	dropdownContainer: {
 		marginRight: 8,
+	},
+	cardTypeButtonContainer: {
+		alignItems: 'center',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		width: '75%',
+	},
+	content: {
+		marginTop: 40,
+		width: 180 * 8,
+		alignSelf: 'center',
+	},
+	cardListContainer: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
 	},
 });

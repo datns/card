@@ -15,7 +15,7 @@ import resources from 'utils/resources';
 import DropdownItem from './DropdownItem';
 
 interface Props {
-	data: Array<{ label: string; value: string }>;
+	data: Array<{ label: string; value: string } | number>;
 	onSelect: (index: number) => void;
 	selectedIndex: number;
 	placeholder: string;

@@ -116,7 +116,7 @@ export default CustomizedButton;
 const styles = StyleSheet.create({
 	container: {
 		width: 172,
-		height: 50,
+		height: 40,
 	},
 	childrenContainer: {
 		alignItems: 'center',

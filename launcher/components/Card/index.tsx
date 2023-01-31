@@ -6,55 +6,47 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import {
+	Card as ICard,
+	ClassType,
+	ElementalType,
+	TemplateFragment,
+} from '@metacraft/murg-engine';
 import { Text } from '@metacraft/ui';
 import resources from 'utils/resources';
 
-type ClassType = 'assassin' | 'knight' | 'tanker' | 'wizard' | 'summoner';
-// | 'beast';
+function getElementalByValue(value?: string): string {
+	const indexOfS = Object.values(ElementalType).indexOf(
+		value as unknown as ElementalType,
+	);
 
-const ClassMapping: Record<string, ClassType> = {
-	'01': 'assassin',
-	'02': 'knight',
-	'03': 'tanker',
-	'04': 'wizard',
-	'05': 'summoner',
-	// '06': 'beast',
-};
+	return Object.keys(ElementalType)[indexOfS];
+}
+function getClassByValue(value?: string): string {
+	const indexOfS = Object.values(ClassType).indexOf(
+		value as unknown as ClassType,
+	);
 
-type ElementalType =
-	| 'metal'
-	| 'wood'
-	| 'water'
-	| 'fire'
-	| 'earth'
-	| 'light'
-	| 'dark';
-
-const ElementalMapping: Record<string, ElementalType> = {
-	'01': 'metal',
-	'02': 'wood',
-	'03': 'water',
-	'04': 'fire',
-	'05': 'earth',
-	'06': 'light',
-	'07': 'dark',
-};
-
-interface Props {
-	attribute: {
-		attack: number;
-		defense: number;
-		health: number;
-	};
-	class: string;
-	elemental: string;
-	rarity: number;
-	name: string;
-	id: string;
+	return Object.keys(ClassType)[indexOfS];
 }
 
-const Card: React.FC<Props> = (props) => {
-	const { elemental, attribute, rarity, name, id } = props;
+interface Props {
+	data: ICard;
+}
+
+const Card: React.FC<Props> = ({ data }) => {
+	const { elemental, attribute, rarity, name, id, skill } = data;
+	const visualUri = `https://raw.githubusercontent.com/cocrafts/card/master/game/assets/resources/graphic/visuals/${id.slice(
+		0,
+		5,
+	)}.png`;
+
+	const sourceFoil = elemental
+		? resources.card.foil[getElementalByValue(elemental).toLowerCase()]
+		: resources.card.foil.dark;
+
+	const sourceClass =
+		resources.card.class[getClassByValue(data.class).toLowerCase()];
 
 	const renderRarity = () => {
 		const rarityArr = Array.from({ length: rarity }, (_, i) => i);
@@ -73,44 +65,59 @@ const Card: React.FC<Props> = (props) => {
 		);
 	};
 
+	const renderSkill = () => {
+		const fragments = skill?.template as TemplateFragment[];
+
+		return (
+			<Text style={styles.skill}>
+				{fragments.map((fragment, i) => {
+					return (
+						<Text
+							key={i}
+							style={{
+								...fragment.style,
+								color: fragment.style?.color || 'gray',
+							}}
+							responsiveSizes={[6]}
+						>
+							{fragment.text}
+						</Text>
+					);
+				})}
+			</Text>
+		);
+	};
+
 	return (
 		<TouchableOpacity style={styles.container}>
 			<View style={styles.visualContainer}>
 				<Image
 					source={{
-						uri: `https://raw.githubusercontent.com/cocrafts/card/master/game/assets/resources/graphic/visuals/${id.slice(
-							0,
-							5,
-						)}.png`,
+						uri: visualUri,
 					}}
 					style={styles.foil}
 					resizeMode="contain"
 				/>
 			</View>
 
-			<ImageBackground
-				source={resources.card.foil[ElementalMapping[elemental]]}
-				style={styles.foil}
-			>
+			<ImageBackground source={sourceFoil} style={styles.foil}>
 				{renderRarity()}
-				<Text responsiveSizes={[20]} style={styles.name}>
+				<Text responsiveSizes={[11]} style={styles.name}>
 					{name}
 				</Text>
 				<View style={styles.attributeContainer}>
-					<Text responsiveSizes={[20]} style={{ fontWeight: '600' }}>
-						{attribute.attack}
+					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
+						{attribute?.attack}
 					</Text>
-					<Text responsiveSizes={[20]} style={{ fontWeight: '600' }}>
-						{attribute.defense}
+					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
+						{attribute?.defense}
 					</Text>
-					<Text responsiveSizes={[20]} style={{ fontWeight: '600' }}>
-						{attribute.health}
+					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
+						{attribute?.health}
 					</Text>
 				</View>
-				<Image
-					source={resources.card.class[ClassMapping[props.class]]}
-					style={styles.classIcon}
-				/>
+				{renderSkill()}
+				<Image source={sourceClass} style={styles.classIcon} />
 			</ImageBackground>
 		</TouchableOpacity>
 	);
@@ -120,20 +127,20 @@ export default Card;
 
 const styles = StyleSheet.create({
 	container: {
-		width: 400,
-		height: 562,
+		width: 180,
+		aspectRatio: 400 / 562,
 	},
 	name: {
 		fontFamily: 'Volkhov',
 		textAlign: 'center',
 		color: '#000',
-		marginTop: 10,
+		marginTop: 16,
 	},
 	classIcon: {
 		aspectRatio: 1,
-		width: 28,
+		width: 10,
 		position: 'absolute',
-		bottom: 20,
+		bottom: 10,
 		alignSelf: 'center',
 	},
 	foil: {
@@ -150,18 +157,30 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		position: 'absolute',
-		bottom: 158,
+		bottom: 70,
 		width: '100%',
-		paddingHorizontal: 49,
+		paddingHorizontal: 20,
+	},
+	attributeLabel: {
+		fontWeight: '600',
+		width: 14,
+		textAlign: 'center',
 	},
 	rarityContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		marginTop: 14,
+		top: 6,
+		position: 'absolute',
+		alignSelf: 'center',
 	},
 	gem: {
-		width: 15,
-		height: 15,
-		marginHorizontal: 3,
+		width: 8,
+		height: 8,
+		marginHorizontal: 1,
+	},
+	skill: {
+		position: 'absolute',
+		top: 190,
+		paddingHorizontal: 25,
 	},
 });

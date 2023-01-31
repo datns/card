@@ -29,24 +29,24 @@ export const Classes = [
 	},
 ];
 
-export const CardType = [
-	{
-		label: 'Any',
-		value: 'any',
-	},
-	{
-		label: 'Hero',
-		value: 'hero',
-	},
-	{
-		label: 'Troop',
-		value: 'troop',
-	},
-	{
-		label: 'Spell',
-		value: 'spell',
-	},
-];
+// export const CardType = [
+// 	{
+// 		label: 'Any',
+// 		value: 'any',
+// 	},
+// 	{
+// 		label: 'Hero',
+// 		value: 'hero',
+// 	},
+// 	{
+// 		label: 'Troop',
+// 		value: 'troop',
+// 	},
+// 	{
+// 		label: 'Spell',
+// 		value: 'spell',
+// 	},
+// ];
 
 export const Elemental = [
 	{

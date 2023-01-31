@@ -240,6 +240,9 @@ export default {
 		expandedSearchBarBackground: {
 			uri: '/cardLibrary/expanded-search-bar-background.png',
 		},
+		effectSelectType: { uri: '/cardLibrary/effect-select-type.png' },
+		normalFilterButton: { uri: '/cardLibrary/normal-filter-button.png' },
+		activeFilterButton: { uri: '/cardLibrary/active-filter-button.png' },
 	},
 	card: {
 		back: { uri: '/card/back.png' },
