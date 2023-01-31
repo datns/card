@@ -2,7 +2,7 @@ import Engine, { PlayerState } from '@metacraft/murg-engine';
 import { _decorator, Animation, Component, Label } from 'cc';
 
 import { getPositionExpos } from './util/layout';
-import { switchSound } from './util/sound';
+import { switchSound } from './util/resources';
 import { system } from './util/system';
 import { sendConnect } from './network';
 import { animateGlowOff, animateGlowOn, simpleMove } from './tween';

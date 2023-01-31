@@ -1,6 +1,6 @@
 import { Label, Sprite, tween, UIOpacity, Vec3 } from 'cc';
 
-import { playSoundOnce, stopAndPlayOnce } from '../util/sound';
+import { playSoundOnce, stopAndPlayOnce } from '../util/resources';
 import { system } from '../util/system';
 
 export const showTurnRibbon = async (message: string): Promise<void> => {

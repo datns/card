@@ -1,6 +1,6 @@
-import { Node, Quat, tween, Vec3 } from 'cc';
+import { Animation, Node, Quat, tween, Vec3 } from 'cc';
 
-import { playSoundOnce } from '../util/sound';
+import { instantiatePrefab, playSoundOnce } from '../util/resources';
 import { system } from '../util/system';
 import { updateUnit } from '../util/unit';
 
@@ -38,6 +38,17 @@ export const animateCardAttack = async (
 					playSoundOnce('attack', 1);
 					shakeGround(10, 5);
 				}
+
+				instantiatePrefab('prefabs/HitEffect').then((hit) => {
+					hit.parent = node;
+					hit.setScale(new Vec3(5, 5, 1));
+					const animation = hit.getComponent(Animation);
+
+					animation.play('flip');
+					animation.on(Animation.EventType.FINISHED, () => {
+						hit.destroy();
+					});
+				});
 			})
 			.to(0.5, { position: from }, { easing: 'expoOut' });
 

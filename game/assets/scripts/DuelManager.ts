@@ -10,7 +10,7 @@ import {
 
 import { cardIdFromNode, getMyGround } from './util/helper';
 import { getGroundExpos, getHandExpos } from './util/layout';
-import { playSound, playSoundOnce } from './util/sound';
+import { playSound, playSoundOnce } from './util/resources';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
 import { sendCardSummon } from './network';
