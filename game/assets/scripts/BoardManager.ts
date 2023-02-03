@@ -16,6 +16,7 @@ const {
 	selectPlayer,
 	selectHand,
 	getCard,
+	version: engineVersion,
 } = Engine;
 
 interface Props {
@@ -28,9 +29,7 @@ interface Props {
 export class BoardManager extends Component {
 	unSubscribers: (() => void)[] = [];
 	playerDeckCount: Label;
-	playerHealth: Label;
 	enemyDeckCount: Label;
-	enemyHealth: Label;
 
 	props: Props = {};
 
@@ -53,19 +52,24 @@ export class BoardManager extends Component {
 		const enemyHandGuide = this.node.getChildByPath('Guide/enemyHand');
 		const enemyGroundGuide = this.node.getChildByPath('Guide/enemyGround');
 		const summonZoneGuide = this.node.getChildByPath('Guide/summonZone');
+		const version = this.node.getChildByPath('Hud/version');
+		const playerHealth = this.node.getChildByPath('Hud/playerHealth');
+		const playerHealthPredict = this.node.getChildByPath(
+			'Hud/playerHealthPredict',
+		);
+		const enemyHealth = this.node.getChildByPath('Hud/enemyHealth');
+		const enemyHealthPredict = this.node.getChildByPath(
+			'Hud/enemyHealthPredict',
+		);
 
 		this.playerDeckCount = this.node
-			.getChildByPath('Hud/playerDeckCount')
+			.getChildByPath('Surface/playerDeckCount')
 			.getComponent(Label);
 		this.enemyDeckCount = this.node
-			.getChildByPath('Hud/enemyDeckCount')
+			.getChildByPath('Surface/enemyDeckCount')
 			.getComponent(Label);
-		this.playerHealth = this.node
-			.getChildByPath('Hud/playerHealth')
-			.getComponent(Label);
-		this.enemyHealth = this.node
-			.getChildByPath('Hud/enemyHealth')
-			.getComponent(Label);
+
+		version.getComponent(Label).string = `version ${engineVersion}`;
 
 		system.globalNodes.board = this.node;
 		system.globalNodes.fog = fog;
@@ -86,6 +90,10 @@ export class BoardManager extends Component {
 		system.globalNodes.enemyHandGuide = enemyHandGuide;
 		system.globalNodes.enemyGroundGuide = enemyGroundGuide;
 		system.globalNodes.summonZoneGuide = summonZoneGuide;
+		system.globalNodes.playerHealth = playerHealth;
+		system.globalNodes.playerHealthPredict = playerHealthPredict;
+		system.globalNodes.enemyHealth = enemyHealth;
+		system.globalNodes.enemyHealthPredict = enemyHealthPredict;
 
 		system.globalNodes.board.on('stateReady', this.onStateReady.bind(this));
 		if (system.context) this.onStateReady();
@@ -102,14 +110,6 @@ export class BoardManager extends Component {
 			system.duel.subscribe(
 				selectStateKey(system.duel, system.playerIds.me, DuelPlace.Player),
 				this.onPlayerUpdate.bind(this),
-				true,
-			),
-		);
-
-		this.unSubscribers.push(
-			system.duel.subscribe(
-				selectStateKey(system.duel, system.playerIds.enemy, DuelPlace.Player),
-				this.onEnemyUpdate.bind(this),
 				true,
 			),
 		);
@@ -150,8 +150,6 @@ export class BoardManager extends Component {
 	}
 
 	onPlayerUpdate(player: PlayerState, old: PlayerState): void {
-		this.playerHealth.string = String(player.health);
-
 		if (player.perTurnHero !== old?.perTurnHero) {
 			setTimeout(() => this.updateInteractions(), 0);
 		}
@@ -163,10 +161,6 @@ export class BoardManager extends Component {
 
 	onPlayerDeckUpdate(deck: string[]): void {
 		this.playerDeckCount.string = String(deck.length);
-	}
-
-	onEnemyUpdate(enemy: PlayerState): void {
-		this.enemyHealth.string = String(enemy.health);
 	}
 
 	onEnemyDeckUpdate(deck: string[]): void {

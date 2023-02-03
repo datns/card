@@ -97,6 +97,7 @@ export interface System {
 	playerIds: PlayerIds;
 	serverState?: ServerState;
 	duel?: DuelProxy;
+	predict?: DuelState;
 	context?: JwtPayload;
 	config?: DuelConfig;
 	history?: DuelCommandBundle[];
@@ -125,6 +126,10 @@ export interface System {
 		enemyHandGuide?: Node;
 		enemyGroundGuide?: Node;
 		summonZoneGuide?: Node;
+		playerHealth?: Node;
+		playerHealthPredict?: Node;
+		enemyHealth?: Node;
+		enemyHealthPredict?: Node;
 	};
 	audioSource?: AudioSource;
 	cardRefs: Record<string, Node>;
@@ -145,31 +150,34 @@ const defaultPlayer: PlayerState = {
 	perTurnSpell: defaultSetting.perTurnSpell,
 };
 
+const defaultDuel = {
+	cardMap: {},
+	stateMap: {},
+	turn: 0,
+	phase: DuelPhases.Draw,
+	phaseOf: '',
+	uniqueCardCount: 0,
+	setting: defaultSetting,
+	firstMover: '',
+	firstPlayer: defaultPlayer,
+	secondPlayer: defaultPlayer,
+	firstDeck: [],
+	secondDeck: [],
+	firstHand: [],
+	secondHand: [],
+	firstGround: [],
+	secondGround: [],
+	firstGrave: [],
+	secondGrave: [],
+};
+
 export const system: System = {
 	playerIds: {
 		me: '',
 		enemy: '',
 	},
-	duel: makeDuelProxy({
-		cardMap: {},
-		stateMap: {},
-		turn: 0,
-		phase: DuelPhases.Draw,
-		phaseOf: '',
-		uniqueCardCount: 0,
-		setting: defaultSetting,
-		firstMover: '',
-		firstPlayer: defaultPlayer,
-		secondPlayer: defaultPlayer,
-		firstDeck: [],
-		secondDeck: [],
-		firstHand: [],
-		secondHand: [],
-		firstGround: [],
-		secondGround: [],
-		firstGrave: [],
-		secondGrave: [],
-	}),
+	duel: makeDuelProxy(defaultDuel),
+	predict: defaultDuel,
 	isSocketReady: false,
 	serverState: {},
 	isCommandAble: false,

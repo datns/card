@@ -1,8 +1,8 @@
 import { Animation, Node, Quat, tween, Vec3 } from 'cc';
 
+import { updatePlayers, updateUnit } from '../util/attribute';
 import { instantiatePrefab, playSoundOnce } from '../util/resources';
 import { system } from '../util/system';
-import { updateUnit } from '../util/unit';
 
 import { shakeGround } from './common';
 
@@ -37,6 +37,7 @@ export const animateCardAttack = async (
 				if (index === 0) {
 					playSoundOnce('attack', 1);
 					shakeGround(10, 5);
+					updatePlayers();
 				}
 
 				instantiatePrefab('prefabs/HitEffect').then((hit) => {

@@ -9,9 +9,10 @@ const {
 	getCard,
 	getCardState,
 	getFacingIdentifier,
-	getStateAfterCombat,
-	extractPassivePair,
-	combineAttribute,
+	getEnemyId,
+	selectPlayer,
+	selectGround,
+	getComputedAttribute,
 } = Engine;
 
 export const updateGroundUnits = (): void => {
@@ -25,18 +26,15 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	if (!node) return;
 
 	const card = getCard(system.duel.cardMap, cardId);
+	const origin = card.attribute;
 	const state = getCardState(system.duel.stateMap, cardId);
+	const current = getComputedAttribute(system.duel, cardId);
+	const future = getComputedAttribute(system.predict, cardId);
 	const facingIdentifier = getFacingIdentifier(
 		system.duel,
 		state.owner,
 		state.id,
 	);
-	const [passive] = extractPassivePair(
-		system.duel,
-		cardId,
-		facingIdentifier?.id,
-	);
-	const { health, defense, attack } = combineAttribute(state, passive);
 	const healthNode = node.getChildByPath('front/health');
 	const healthLabel = healthNode.getComponent(Label);
 	const defenseNode = node.getChildByPath('front/defense');
@@ -54,15 +52,15 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 	const attackPredictNode = node.getChildByPath('prediction/attack');
 	const attackPredictLabel = attackPredictNode.getComponent(Label);
 
-	healthLabel.string = String(health);
-	healthLabel.color = getPositiveColor(health, card.attribute.health);
-	defenseLabel.string = String(defense);
-	defenseLabel.color = getPositiveColor(defense, card.attribute.defense);
-	attackLabel.string = String(attack);
-	attackLabel.color = getPositiveColor(attack, card.attribute.attack);
+	healthLabel.string = String(current.health);
+	healthLabel.color = getPositiveColor(current.health, origin.health);
+	defenseLabel.string = String(current.defense);
+	defenseLabel.color = getPositiveColor(current.defense, origin.defense);
+	attackLabel.string = String(current.attack);
+	attackLabel.color = getPositiveColor(current.attack, origin.attack);
 
-	if (state.charge) {
-		chargeLabel.string = String(state.charge);
+	if (current.charge !== undefined) {
+		chargeLabel.string = String(current.charge);
 	}
 
 	defensePredictNode.active = false;
@@ -78,19 +76,11 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 
 	if (!facingNode || nodeHided || facingHided) return;
 
-	const facingState = getCardState(system.duel.stateMap, facingIdentifier?.id);
-	const predictedState = getStateAfterCombat(
-		system.duel,
-		state.id,
-		facingState.id,
-	);
-	const combinedPredict = combineAttribute(predictedState, passive);
+	const healthDiff = future.health - current.health;
+	const defenseDiff = future.defense - current.defense;
+	const attackDiff = future.attack - current.attack;
 
-	const healthDiff = combinedPredict.health - health;
-	const defenseDiff = combinedPredict.defense - defense;
-	const attackDiff = combinedPredict.attack - attack;
-
-	if (combinedPredict.health <= 0) {
+	if (future.health <= 0) {
 		deathPredictNode.active = true;
 	}
 
@@ -117,4 +107,44 @@ export const updateUnit = async (cardId: string): Promise<void> => {
 		attackPredictLabel.string = String(attackDiff);
 		attackPredictLabel.color = getPositiveColor(attackDiff);
 	}
+};
+
+export const updatePlayers = async (): Promise<void> => {
+	const promises = [
+		updatePlayer(system.duel.firstPlayer.id),
+		updatePlayer(system.duel.secondPlayer.id),
+	];
+
+	await Promise.all(promises);
+};
+
+export const updatePlayer = async (id: string): Promise<void> => {
+	const player = selectPlayer(system.duel, id);
+	const enemyId = getEnemyId(system.duel, id);
+	const ground = selectGround(system.duel, id);
+	const enemyGround = selectGround(system.duel, enemyId);
+	const isMe = player.id === system.playerIds.me;
+	const healthNode = isMe
+		? system.globalNodes.playerHealth
+		: system.globalNodes.enemyHealth;
+	const predictNode = isMe
+		? system.globalNodes.playerHealthPredict
+		: system.globalNodes.enemyHealthPredict;
+	const healthLabel = healthNode.getComponent(Label);
+	const predictLabel = predictNode.getComponent(Label);
+	let healthDiff = 0;
+
+	for (let i = 0; i < enemyGround.length; i += 1) {
+		const isPlayerAttack = enemyGround[i] && !ground[i];
+		const enemyNode = system.cardRefs[enemyGround[i]];
+
+		if (isPlayerAttack && !enemyNode?.getChildByPath('back')?.active) {
+			const attribute = getComputedAttribute(system.duel, enemyGround[i]);
+			healthDiff -= attribute.attack;
+		}
+	}
+
+	healthLabel.string = String(player.health);
+	predictLabel.string = String(healthDiff);
+	predictNode.active = healthDiff !== 0;
 };

@@ -1,8 +1,9 @@
 import Engine, { DuelCommandBundle } from '@metacraft/murg-engine';
+import lodash from 'lodash';
 
 import { showTurnRibbon } from '../tween';
+import { updateGroundUnits, updatePlayers } from '../util/attribute';
 import { system } from '../util/system';
-import { updateGroundUnits } from '../util/unit';
 
 import { playDraw } from './draw';
 import { playFight } from './fight';
@@ -11,7 +12,7 @@ import { playReinforce } from './reinforce';
 import { playSummon } from './summon';
 
 let replaying = false;
-const { BundleGroup, mergeFragmentToState, runCommand } = Engine;
+const { BundleGroup, mergeFragmentToState, runCommand, move } = Engine;
 
 export const replay = async (): Promise<void> => {
 	const remoteHistoryLength = system.history.length;
@@ -47,6 +48,7 @@ export const replay = async (): Promise<void> => {
 			await playGeneric(bundle);
 		}
 
+		updatePlayers();
 		updateGroundUnits();
 		system.historyLevel += 1;
 	}
@@ -63,4 +65,6 @@ export const runCommandBundle = (bundle: DuelCommandBundle): void => {
 			runCommand({ duel: system.duel, command }),
 		);
 	});
+
+	system.predict = move.fight(lodash.cloneDeep(system.duel)).duel;
 };
