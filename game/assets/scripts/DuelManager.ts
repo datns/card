@@ -13,7 +13,7 @@ import { getGroundExpos, getHandExpos } from './util/layout';
 import { playSound, playSoundOnce } from './util/resources';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
-import { sendCardSummon } from './network';
+import { sendCardHover, sendCardSummon } from './network';
 import { raiseHandCard, raiseHandPreview, simpleMove } from './tween';
 import { UnitManager } from './UnitManager';
 
@@ -185,12 +185,14 @@ export class DuelManager extends Component {
 		playSoundOnce('hand-slide', 0.2);
 		raiseHandCard(node, 100);
 		raiseHandPreview(system.globalNodes.cardPreview);
+		sendCardHover(cardId, true);
 		node.getComponent(UIOpacity).opacity = 20;
 	}
 
 	onCardLeave(node: Node): void {
 		system.globalNodes.cardPreview.setPosition(190, 740);
 		raiseHandCard(node, 0);
+		sendCardHover(cardIdFromNode(node), false);
 		node.getComponent(UIOpacity).opacity = 255;
 	}
 }

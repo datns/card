@@ -7,7 +7,7 @@ import { CommandPayload, DuelCommands } from '../util/types';
 
 import { connectionInstance } from './util';
 
-const { getCardState, move, DuelPlace } = Engine;
+const { getCardState, selectHand, move, DuelPlace } = Engine;
 
 export const sendCommand = (command: DuelCommands, payload?: any): void => {
 	const data: CommandPayload = {
@@ -61,3 +61,16 @@ export const sendCardSummon = (cardId: string, index: number): void => {
 export const sendEndTurn = (): void => {
 	sendBundles(move.endTurn(system.duel).commandBundles);
 };
+
+export const internalSendCardHover = (
+	cardId: string,
+	isMouseIn: boolean,
+): void => {
+	const state = getCardState(system.duel.stateMap, cardId);
+	const hand = selectHand(system.duel, state.owner);
+	const index = hand.indexOf(cardId);
+
+	sendCommand(DuelCommands.CardHover, { index, isMouseIn });
+};
+
+export const sendCardHover = lodash.throttle(internalSendCardHover, 200);

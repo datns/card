@@ -36,9 +36,10 @@ export const raiseHandCard = async (
 	node: Node,
 	to = 100,
 	duration = 0.1,
+	path = 'front',
 ): Promise<void> => {
 	return new Promise((resolve) => {
-		tween(node.getChildByPath('front'))
+		tween(node.getChildByPath(path))
 			.to(duration, { position: new Vec3(0, to, 0) }, { easing: 'cubicInOut' })
 			.call(() => resolve())
 			.start();
