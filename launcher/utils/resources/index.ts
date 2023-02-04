@@ -205,6 +205,7 @@ export default {
 		effectSelectType: require('../../../assets/cardLibrary/effect-select-type.png'),
 		normalFilterButton: require('../../../assets/cardLibrary/normal-filter-button.png'),
 		activeFilterButton: require('../../../assets/cardLibrary/active-filter-button.png'),
+		clearIcon: require('../../../assets/cardLibrary/clear-icon.png'),
 	},
 	card: {
 		back: require('../../../assets/card/back.png'),

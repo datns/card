@@ -1,3 +1,4 @@
+import { ClassType, ElementalType } from '@metacraft/murg-engine';
 import { CardTypeProps } from 'screens/CardLibrary/Library/shared';
 import resources from 'utils/resources';
 
@@ -28,72 +29,13 @@ export const CardTypeContent: CardTypeProps[] = [
 	},
 ];
 
-export const Classes: {
-	label: string;
-	value: string;
-}[] = [
-	{
-		label: 'All Classes',
-		value: 'all',
-	},
-	{
-		label: 'Assassin',
-		value: 'assassin',
-	},
-	{
-		label: 'Summoner',
-		value: 'summoner',
-	},
-	{
-		label: 'Tank',
-		value: 'tank',
-	},
-	{
-		label: 'Warrior',
-		value: 'warrior',
-	},
-	{
-		label: 'Wizard',
-		value: 'wizard',
-	},
+export const ClassTypeList = ['All Classes', ...Object.keys(ClassType)];
+export const ClassTypeValueList = ['00', ...Object.values(ClassType)];
+export const ElementalList = ['Any Elemental', ...Object.keys(ElementalType)];
+export const ElementalValueList = ['00', ...Object.values(ElementalType)];
+export const AttributeValues: number[] = [
+	0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
 ];
-
-export const Elemental: {
-	label: string;
-	value: string;
-}[] = [
-	{
-		label: 'Element',
-		value: 'element',
-	},
-	{
-		label: 'Dark',
-		value: 'dark',
-	},
-	{
-		label: 'Earth',
-		value: 'earth',
-	},
-	{
-		label: 'Fire',
-		value: 'fire',
-	},
-	{
-		label: 'Light',
-		value: 'light',
-	},
-	{
-		label: 'Metal',
-		value: 'metal',
-	},
-	{
-		label: 'Water',
-		value: 'water',
-	},
-	{
-		label: 'Wood',
-		value: 'wood',
-	},
-];
-
-export const Attribute: number[] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+export const AttackValuesList = ['Any Attack', ...AttributeValues];
+export const HpValuesList = ['Any Hp', ...AttributeValues];
+export const DefenseValuesList = ['Any Defense', ...AttributeValues];

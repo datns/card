@@ -243,6 +243,7 @@ export default {
 		effectSelectType: { uri: '/cardLibrary/effect-select-type.png' },
 		normalFilterButton: { uri: '/cardLibrary/normal-filter-button.png' },
 		activeFilterButton: { uri: '/cardLibrary/active-filter-button.png' },
+		clearIcon: { uri: '/cardLibrary/clear-icon.png' },
 	},
 	card: {
 		back: { uri: '/card/back.png' },

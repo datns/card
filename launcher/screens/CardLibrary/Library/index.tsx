@@ -1,7 +1,14 @@
 import React from 'react';
-import { Image, ImageBackground, StyleSheet, View } from 'react-native';
+import {
+	Image,
+	ImageBackground,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import {
 	Card as ICard,
+	CardType,
 	CardType as ICardType,
 	makeMeta,
 } from '@metacraft/murg-engine';
@@ -13,11 +20,21 @@ import { navigationHeight } from 'components/Navigation/shared';
 import CardTypeButton from 'screens/CardLibrary/Library/CardTypeButton';
 import Dropdown from 'screens/CardLibrary/Library/Dropdown';
 import FilterButton from 'screens/CardLibrary/Library/FilterButton';
+import FilterTag from 'screens/CardLibrary/Library/FilterTag';
 import SearchBar from 'screens/CardLibrary/Library/SearchBar';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
-import { Attribute, CardTypeContent, Classes, Elemental } from './content';
+import {
+	AttackValuesList,
+	CardTypeContent,
+	ClassTypeList,
+	ClassTypeValueList,
+	DefenseValuesList,
+	ElementalList,
+	ElementalValueList,
+	HpValuesList,
+} from './content';
 
 enum AllCardType {
 	All = -1,
@@ -31,10 +48,21 @@ const Library: React.FC = () => {
 	);
 	const [search, setSearch] = React.useState<string>('');
 	const [showSubFilter, setShowSubFilter] = React.useState<boolean>(false);
+	const [classType, setClassType] = React.useState<number>(-1);
+	const [elemental, setElemental] = React.useState<number>(-1);
+	const [attack, setAttack] = React.useState<number>(-1);
+	const [hp, setHp] = React.useState<number>(-1);
+	const [def, setDef] = React.useState<number>(-1);
 	const { map } = makeMeta('00001');
 	const initialCardList = Object.values(map) as ICard[];
 	const [cardList, setCardList] = React.useState<ICard[]>(initialCardList);
-	console.log('map', map);
+	const isVisibleSubFilter = showSubFilter && selectedType === CardType.Hero;
+
+	const numberOfFilters = [classType, elemental, attack, hp, def].filter(
+		(value) => value > 0,
+	).length;
+
+	console.log('map', cardList);
 
 	const onChangeCardType = (cardType: ExtendedCardType) => {
 		setSelectedType(cardType);
@@ -58,11 +86,80 @@ const Library: React.FC = () => {
 				.toLowerCase()
 				.includes(search.toLowerCase().trim().replace(/\s/g, '')),
 		);
-		setCardList(searched);
-	}, [selectedType, search]);
+		const filtered = searched.filter((card) => {
+			return (
+				(classType > 0 ? card.class == ClassTypeValueList[classType] : true) &&
+				(elemental > 0
+					? card.elemental == ElementalValueList[elemental]
+					: true) &&
+				(attack > 0
+					? card?.attribute?.attack === AttackValuesList[attack]
+					: true) &&
+				(hp > 0 ? card?.attribute?.health === HpValuesList[hp] : true) &&
+				(def > 0 ? card?.attribute?.defense === DefenseValuesList[def] : true)
+			);
+		});
+		setCardList(filtered);
+	}, [selectedType, search, classType, elemental, attack, hp, def]);
+
+	const clearAllFilter = () => {
+		setClassType(-1);
+		setElemental(-1);
+		setAttack(-1);
+		setHp(-1);
+		setDef(-1);
+	};
+
+	const renderFilterTags = () => {
+		if (classType <= 0 && elemental <= 0 && attack <= 0 && hp <= 0 && def <= 0)
+			return null;
+		return (
+			<>
+				{classType > 0 && (
+					<FilterTag
+						label={ClassTypeList[classType]}
+						onRemove={() => setClassType(-1)}
+					/>
+				)}
+				{elemental > 0 && (
+					<FilterTag
+						label={ElementalList[elemental]}
+						onRemove={() => setElemental(-1)}
+					/>
+				)}
+				{attack > 0 && (
+					<FilterTag
+						label={`Atk ${AttackValuesList[attack]}`}
+						onRemove={() => setAttack(-1)}
+					/>
+				)}
+				{hp > 0 && (
+					<FilterTag
+						label={`HP ${HpValuesList[hp]}`}
+						onRemove={() => setHp(-1)}
+					/>
+				)}
+				{def > 0 && (
+					<FilterTag
+						label={`Def ${DefenseValuesList[def]}`}
+						onRemove={() => setDef(-1)}
+					/>
+				)}
+				<TouchableOpacity style={styles.clearAllBtn} onPress={clearAllFilter}>
+					<Text responsiveSizes={[16]} style={{ color: 'black' }}>
+						Clear All
+					</Text>
+					<Image
+						source={resources.cardLibrary.clearIcon}
+						style={{ width: 14, height: 14 }}
+					/>
+				</TouchableOpacity>
+			</>
+		);
+	};
 
 	const renderSubFilter = () => {
-		if (!showSubFilter) return null;
+		if (!isVisibleSubFilter) return null;
 		return (
 			<>
 				<View
@@ -76,38 +173,38 @@ const Library: React.FC = () => {
 				/>
 				<View style={{ flexDirection: 'row' }}>
 					<Dropdown
-						data={Classes}
-						onSelect={() => {}}
-						selectedIndex={0}
+						data={ClassTypeList}
+						onSelect={setClassType}
+						selectedIndex={classType}
 						placeholder="Classes"
 						containerStyle={styles.dropdownContainer}
 					/>
 					<Dropdown
-						data={Elemental}
-						onSelect={() => {}}
-						selectedIndex={0}
+						data={ElementalList}
+						onSelect={setElemental}
+						selectedIndex={elemental}
 						placeholder="Elemental"
 						containerStyle={styles.dropdownContainer}
 					/>
 					<Dropdown
-						data={Attribute}
-						onSelect={() => {}}
-						selectedIndex={0}
+						data={AttackValuesList}
+						onSelect={setAttack}
+						selectedIndex={attack}
 						placeholder="Attack"
 						containerStyle={styles.dropdownContainer}
 					/>
 					<Dropdown
-						data={Attribute}
-						onSelect={() => {}}
-						selectedIndex={0}
-						placeholder="Defense"
+						data={HpValuesList}
+						onSelect={setHp}
+						selectedIndex={hp}
+						placeholder="HP"
 						containerStyle={styles.dropdownContainer}
 					/>
 					<Dropdown
-						data={Attribute}
-						onSelect={() => {}}
-						selectedIndex={0}
-						placeholder="HP"
+						data={DefenseValuesList}
+						onSelect={setDef}
+						selectedIndex={def}
+						placeholder="Defense"
 						containerStyle={styles.dropdownContainer}
 					/>
 				</View>
@@ -159,7 +256,7 @@ const Library: React.FC = () => {
 					source={resources.cardLibrary.expandedSearchBarBackground}
 					style={[
 						styles.searchBarBackground,
-						{ height: showSubFilter ? 210 : 130 },
+						{ height: isVisibleSubFilter ? 210 : 130 },
 					]}
 					resizeMode="stretch"
 				>
@@ -170,15 +267,21 @@ const Library: React.FC = () => {
 							<FilterButton
 								isActive={selectedType === ICardType.Hero}
 								onPress={() => setShowSubFilter((value) => !value)}
+								numberOfFilters={numberOfFilters}
 							/>
 						</View>
 					</View>
 					{renderSubFilter()}
 				</ImageBackground>
 				<View style={styles.content}>
-					<Text>{`${cardList.length} cards found for "${
-						CardTypeContent[selectedType + 1].displayName
-					}"`}</Text>
+					<View style={styles.filterInfo}>
+						<Text style={styles.numberOfCards}>{`${
+							cardList.length
+						} cards found for "${
+							CardTypeContent[selectedType + 1].displayName
+						}"`}</Text>
+						{renderFilterTags()}
+					</View>
 					<View style={styles.cardListContainer}>
 						{cardList.map((card) => {
 							return <Card data={card} key={card.id} />;
@@ -249,5 +352,25 @@ const styles = StyleSheet.create({
 	cardListContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
+		marginTop: 20,
+	},
+	filterInfo: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	numberOfCards: {
+		fontWeight: '600',
+	},
+	clearAllBtn: {
+		flexDirection: 'row',
+		backgroundColor: 'white',
+		paddingVertical: 2,
+		paddingHorizontal: 8,
+		borderRadius: 8,
+		width: 140,
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		marginLeft: 10,
+		height: 30,
 	},
 });

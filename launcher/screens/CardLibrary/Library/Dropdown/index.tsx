@@ -2,8 +2,10 @@ import React from 'react';
 import {
 	Image,
 	ImageStyle,
+	Modal,
 	StyleProp,
-	StyleSheet,
+	StyleSheet, TouchableOpacity,
+	TouchableWithoutFeedback,
 	View,
 	ViewStyle,
 } from 'react-native';
@@ -15,7 +17,7 @@ import resources from 'utils/resources';
 import DropdownItem from './DropdownItem';
 
 interface Props {
-	data: Array<{ label: string; value: string } | number>;
+	data: (string | number)[];
 	onSelect: (index: number) => void;
 	selectedIndex: number;
 	placeholder: string;
@@ -30,8 +32,10 @@ const Dropdown: React.FC<Props> = ({
 	containerStyle,
 }) => {
 	const [layout, setLayout] = React.useState(idleLayout);
-	const [dropdownButtonHeight, setDropdownButtonHeight] =
-		React.useState<number>(0);
+	const [dropdownPosition, setDropdownPosition] = React.useState<{
+		top: number;
+		left: number;
+	}>({ top: 0, left: 0 });
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const [dropdownHeight, setDropdownHeight] = React.useState<number>(0);
 	const ref = React.useRef<View>(null);
@@ -54,14 +58,13 @@ const Dropdown: React.FC<Props> = ({
 	} as ImageStyle;
 
 	const showDropdown = () => {
-		ref?.current?.measure((_fx, _fy, _w, h, _px, py) => {
-			console.log({
-				h,
-				py,
+		ref?.current?.measure((_fx, _fy, w, h, px, py) => {
+			setDropdownPosition({
+				top: py + h + 8,
+				left: px + 2,
 			});
-			setDropdownButtonHeight(h);
+			setVisible(true);
 		});
-		setVisible(true);
 	};
 
 	const toggleDropdown = (): void => {
@@ -70,40 +73,49 @@ const Dropdown: React.FC<Props> = ({
 
 	const renderDropDown = () => {
 		return (
-			<View
-				style={{
-					...styles.dropdownContainer,
-					top: dropdownButtonHeight + 8,
-					width: layout.width - 2,
-					left: 3,
-				}}
-				onLayout={(e) => setDropdownHeight(e.nativeEvent.layout.height)}
+			<Modal
+				visible={visible}
+				transparent
 			>
-				<Image
-					source={resources.cardLibrary.dropdownSide}
-					style={leftSide}
-					resizeMode="stretch"
-				/>
-				<Image
-					source={resources.cardLibrary.dropdownSide}
-					style={rightSide}
-					resizeMode="stretch"
-				/>
-				{data.map((value, index) => {
-					const onPressItem = () => {
-						onSelect(index);
-						setVisible(false);
-					};
-
-					return (
-						<DropdownItem
-							key={value.value}
-							onPress={onPressItem}
-							label={value.label}
+				<TouchableOpacity
+					style={{ width: '100%', height: '100%' }}
+					onPress={() => setVisible(false)}
+				>
+					<View
+						style={{
+							...styles.dropdownContainer,
+							...dropdownPosition,
+							width: layout.width - 2,
+						}}
+						onLayout={(e) => setDropdownHeight(e.nativeEvent.layout.height)}
+					>
+						<Image
+							source={resources.cardLibrary.dropdownSide}
+							style={leftSide}
+							resizeMode="stretch"
 						/>
-					);
-				})}
-			</View>
+						<Image
+							source={resources.cardLibrary.dropdownSide}
+							style={rightSide}
+							resizeMode="stretch"
+						/>
+						{data.map((value, index) => {
+							const onPressItem = () => {
+								onSelect(index);
+								setVisible(false);
+							};
+
+							return (
+								<DropdownItem
+									key={index}
+									onPress={onPressItem}
+									label={value.toString()}
+								/>
+							);
+						})}
+					</View>
+				</TouchableOpacity>
+			</Modal>
 		);
 	};
 
@@ -119,10 +131,10 @@ const Dropdown: React.FC<Props> = ({
 			>
 				<Image source={resources.cardLibrary.arrow} style={styles.arrow} />
 				<Text style={styles.labelButton} responsiveSizes={[12]}>
-					{selectedIndex > 0 ? data[selectedIndex].label : placeholder}
+					{selectedIndex > -1 ? data[selectedIndex] : placeholder}
 				</Text>
 			</CustomizedButton>
-			{visible && renderDropDown()}
+			{renderDropDown()}
 		</View>
 	);
 };
@@ -153,6 +165,5 @@ const styles = StyleSheet.create({
 		paddingVertical: 8,
 		borderColor: '#644d3d',
 		borderWidth: 3,
-		zIndex: 999,
 	},
 });
