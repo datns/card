@@ -1,10 +1,12 @@
 import React from 'react';
 import {
 	Image,
+	ImageBackground,
 	ImageStyle,
 	Modal,
 	StyleProp,
-	StyleSheet, TouchableOpacity,
+	StyleSheet,
+	TouchableOpacity,
 	TouchableWithoutFeedback,
 	View,
 	ViewStyle,
@@ -73,10 +75,7 @@ const Dropdown: React.FC<Props> = ({
 
 	const renderDropDown = () => {
 		return (
-			<Modal
-				visible={visible}
-				transparent
-			>
+			<Modal visible={visible} transparent>
 				<TouchableOpacity
 					style={{ width: '100%', height: '100%' }}
 					onPress={() => setVisible(false)}
@@ -125,15 +124,21 @@ const Dropdown: React.FC<Props> = ({
 			onLayout={(e) => setLayout(e.nativeEvent.layout)}
 			ref={ref}
 		>
-			<CustomizedButton
-				onPress={toggleDropdown}
-				containerStyle={styles.container}
-			>
-				<Image source={resources.cardLibrary.arrow} style={styles.arrow} />
-				<Text style={styles.labelButton} responsiveSizes={[12]}>
-					{selectedIndex > -1 ? data[selectedIndex] : placeholder}
-				</Text>
-			</CustomizedButton>
+			<TouchableOpacity onPress={toggleDropdown}>
+				<ImageBackground
+					source={
+						selectedIndex > 0
+							? resources.cardLibrary.dropdownButtonActive
+							: resources.cardLibrary.dropdownButtonNormal
+					}
+					style={styles.container}
+				>
+					<Image source={resources.cardLibrary.arrow} style={styles.arrow} />
+					<Text style={styles.labelButton} responsiveSizes={[12]}>
+						{selectedIndex > -1 ? data[selectedIndex] : placeholder}
+					</Text>
+				</ImageBackground>
+			</TouchableOpacity>
 			{renderDropDown()}
 		</View>
 	);
@@ -146,6 +151,8 @@ const styles = StyleSheet.create({
 		paddingVertical: 12,
 		paddingHorizontal: 10,
 		justifyContent: 'center',
+		width: 163,
+		height: 46,
 	},
 	labelButton: {
 		textAlign: 'center',

@@ -37,5 +37,5 @@ export const AttributeValues: number[] = [
 	0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
 ];
 export const AttackValuesList = ['Any Attack', ...AttributeValues];
-export const HpValuesList = ['Any Hp', ...AttributeValues];
+export const HpValuesList = ['Any HP', ...AttributeValues];
 export const DefenseValuesList = ['Any Defense', ...AttributeValues];

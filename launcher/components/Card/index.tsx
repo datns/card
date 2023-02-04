@@ -34,6 +34,8 @@ interface Props {
 	data: ICard;
 }
 
+export const CARD_WIDTH = 180;
+
 const Card: React.FC<Props> = ({ data }) => {
 	const { elemental, attribute, rarity, name, id, skill } = data;
 	const visualUri = `https://raw.githubusercontent.com/cocrafts/card/master/game/assets/resources/graphic/visuals/${id.slice(
@@ -127,7 +129,7 @@ export default Card;
 
 const styles = StyleSheet.create({
 	container: {
-		width: 180,
+		width: CARD_WIDTH,
 		aspectRatio: 400 / 562,
 	},
 	name: {

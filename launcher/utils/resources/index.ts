@@ -206,6 +206,8 @@ export default {
 		normalFilterButton: require('../../../assets/cardLibrary/normal-filter-button.png'),
 		activeFilterButton: require('../../../assets/cardLibrary/active-filter-button.png'),
 		clearIcon: require('../../../assets/cardLibrary/clear-icon.png'),
+		dropdownButtonNormal: require('../../../assets/cardLibrary/dropdown-button-normal.png'),
+		dropdownButtonActive: require('../../../assets/cardLibrary/dropdown-button-active.png'),
 	},
 	card: {
 		back: require('../../../assets/card/back.png'),

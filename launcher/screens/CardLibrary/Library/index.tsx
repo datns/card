@@ -12,8 +12,8 @@ import {
 	CardType as ICardType,
 	makeMeta,
 } from '@metacraft/murg-engine';
-import { Text } from '@metacraft/ui';
-import Card from 'components/Card';
+import { DimensionState, dimensionState, Text } from '@metacraft/ui';
+import Card, { CARD_WIDTH } from 'components/Card';
 import ScrollLayout from 'components/layouts/Scroll';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { navigationHeight } from 'components/Navigation/shared';
@@ -22,6 +22,7 @@ import Dropdown from 'screens/CardLibrary/Library/Dropdown';
 import FilterButton from 'screens/CardLibrary/Library/FilterButton';
 import FilterTag from 'screens/CardLibrary/Library/FilterTag';
 import SearchBar from 'screens/CardLibrary/Library/SearchBar';
+import { useSnapshot } from 'utils/hook';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
@@ -57,6 +58,9 @@ const Library: React.FC = () => {
 	const initialCardList = Object.values(map) as ICard[];
 	const [cardList, setCardList] = React.useState<ICard[]>(initialCardList);
 	const isVisibleSubFilter = showSubFilter && selectedType === CardType.Hero;
+	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
+
+	const contentWidth = Math.floor(windowSize.width / CARD_WIDTH) * CARD_WIDTH;
 
 	const numberOfFilters = [classType, elemental, attack, hp, def].filter(
 		(value) => value > 0,
@@ -111,6 +115,7 @@ const Library: React.FC = () => {
 	};
 
 	const renderFilterTags = () => {
+		if (selectedType !== CardType.Hero) return null;
 		if (classType <= 0 && elemental <= 0 && attack <= 0 && hp <= 0 && def <= 0)
 			return null;
 		return (
@@ -273,7 +278,7 @@ const Library: React.FC = () => {
 					</View>
 					{renderSubFilter()}
 				</ImageBackground>
-				<View style={styles.content}>
+				<View style={[styles.content, { width: contentWidth }]}>
 					<View style={styles.filterInfo}>
 						<Text style={styles.numberOfCards}>{`${
 							cardList.length
@@ -282,10 +287,28 @@ const Library: React.FC = () => {
 						}"`}</Text>
 						{renderFilterTags()}
 					</View>
-					<View style={styles.cardListContainer}>
-						{cardList.map((card) => {
-							return <Card data={card} key={card.id} />;
-						})}
+					<View style={{ minHeight: 500 }}>
+						<View style={styles.cardListContainer}>
+							{cardList.length === 0 && selectedType === CardType.Hero ? (
+								<View style={styles.noCardWrapper}>
+									<Text style={styles.noCardTitle} responsiveSizes={[20]}>
+										No cards found
+									</Text>
+									<Text responsiveSizes={[16]} style={styles.noCardDescription}>
+										{'Try removing search item(s) for better results. '}
+										<TouchableOpacity onPress={clearAllFilter}>
+											<Text responsiveSizes={[16]} style={styles.searchAllHero}>
+												Search all Hero cards
+											</Text>
+										</TouchableOpacity>
+									</Text>
+								</View>
+							) : (
+								cardList.map((card) => {
+									return <Card data={card} key={card.id} />;
+								})
+							)}
+						</View>
 					</View>
 				</View>
 			</ScrollLayout>
@@ -346,7 +369,6 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		marginTop: 40,
-		width: 180 * 8,
 		alignSelf: 'center',
 	},
 	cardListContainer: {
@@ -372,5 +394,23 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginLeft: 10,
 		height: 30,
+	},
+	noCardWrapper: {
+		width: '100%',
+		marginTop: 60,
+		alignItems: 'center',
+	},
+	noCardTitle: {
+		fontFamily: 'Volkhov',
+		textAlign: 'center',
+		alignSelf: 'center',
+		fontWeight: 'bold',
+	},
+	noCardDescription: {
+		color: '#7e7e7e',
+		marginTop: 20,
+	},
+	searchAllHero: {
+		color: '#c1ab6a',
 	},
 });

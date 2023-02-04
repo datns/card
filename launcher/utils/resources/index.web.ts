@@ -244,6 +244,8 @@ export default {
 		normalFilterButton: { uri: '/cardLibrary/normal-filter-button.png' },
 		activeFilterButton: { uri: '/cardLibrary/active-filter-button.png' },
 		clearIcon: { uri: '/cardLibrary/clear-icon.png' },
+		dropdownButtonNormal: { uri: '/cardLibrary/dropdown-button-normal.png' },
+		dropdownButtonActive: { uri: '/cardLibrary/dropdown-button-active.png' },
 	},
 	card: {
 		back: { uri: '/card/back.png' },
