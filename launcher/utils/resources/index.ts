@@ -1,10 +1,11 @@
 export default {
 	navigation: {
-		bg: require('../../../assets/marketplace/navigation-bg.png'),
+		bg: require('../../../assets/visual/navigation-bg.png'),
 		logo: require('../../../assets/marketplace/flag.png'),
 		mobileBackground: require('../../../assets/visual/mobile-navigation-bg.png'),
 		userIconBackground: require('../../../assets/visual/user-icon-bg.png'),
 		separator: require('../../../assets/visual/separator.png'),
+		highlightVisual: require('../../../assets/visual/navi-highlight-visual.png'),
 	},
 	mint: {
 		keyVisual: require('../../../assets/mint/key-visual.png'),

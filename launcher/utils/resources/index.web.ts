@@ -1,10 +1,11 @@
 export default {
 	navigation: {
-		bg: { uri: '/marketplace/navigation-bg.png' },
+		bg: { uri: '/visual/navigation-bg.png' },
 		logo: { uri: '/marketplace/flag.png' },
 		mobileBackground: { uri: '/visual/mobile-navigation-bg.png' },
 		userIconBackground: { uri: '/visual/user-icon-bg.png' },
 		separator: { uri: '/visual/separator.png' },
+		highlightVisual: { uri: '/visual/navi-highlight-visual.png' },
 	},
 	mint: {
 		keyVisual: { uri: '/mint/key-visual.png' },
