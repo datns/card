@@ -89,6 +89,7 @@ export default {
 		cardTypesBackground: { uri: '/home/card-type-background.png' },
 		cardTypesHeroVisual: { uri: '/home/card-type-hero-visual.png' },
 		cardTypesSpellVisual: { uri: '/home/card-type-spell-visual.png' },
+		cardTypesTroopVisual: { uri: '/home/card-type-troop-visual.png' },
 		classes: {
 			background: { uri: '/home/classes/background.png' },
 			logoBackground: { uri: '/home/classes/logo-background.png' },

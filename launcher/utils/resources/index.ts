@@ -83,6 +83,7 @@ export default {
 		cardTypesBackground: require('../../../assets/home/card-type-background.png'),
 		cardTypesHeroVisual: require('../../../assets/home/card-type-hero-visual.png'),
 		cardTypesSpellVisual: require('../../../assets/home/card-type-spell-visual.png'),
+		cardTypesTroopVisual: require('../../../assets/home/card-type-troop-visual.png'),
 		classes: {
 			background: require('../../../assets/home/classes/background.png'),
 			logoBackground: require('../../../assets/home/classes/logo-background.png'),
