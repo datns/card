@@ -1,13 +1,16 @@
+import { navigate } from 'stacks/Browser/shared';
+
 export interface ButtonText {
 	title: string;
 	isAvailable: boolean;
-	link?: string;
+	onPress?: () => void;
 }
 
 export const buttonList: ButtonText[] = [
 	{
 		title: 'Play on Web',
-		isAvailable: false,
+		isAvailable: true,
+		onPress: () => navigate('Game'),
 	},
 	{
 		title: 'Mobile App',
