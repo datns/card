@@ -5,6 +5,7 @@ export interface NavigationConfig {
 	url?: string;
 	route?: keyof RootParamList;
 	params?: RootParamList[keyof RootParamList];
+	active?: boolean;
 }
 
 export const stormGateNav = {
@@ -16,6 +17,7 @@ export const stormNavigations: NavigationConfig[] = [
 	{
 		title: 'Under Realm',
 		url: 'https://underrealm.stormgate.io',
+		active: true,
 	},
 	{
 		title: 'Bench',
