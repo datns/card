@@ -33,6 +33,6 @@ export const cardTypeList: CardTypeItem[] = [
 			'Troop cards can be used to reinforce the hero card on the battlefield.',
 			'The troop card is destroyed when its health is reduced to 0 and it is sent to the graveyard.',
 		],
-		image: resources.home.cardTypesSpellVisual,
+		image: resources.home.cardTypesTroopVisual,
 	},
 ];

@@ -122,7 +122,11 @@ export const NarrowScreen: FC = () => {
 						key={index}
 						style={[styles.visual, cardTypeVisualAnimatedStyleList[index]]}
 					>
-						<Image source={item.image} style={{ width: 300, height: 300 }} />
+						<Image
+							source={item.image}
+							resizeMode={index === 0 ? 'cover' : 'contain'}
+							style={{ width: 300, height: 300 }}
+						/>
 					</AnimatedView>
 				))}
 			</View>

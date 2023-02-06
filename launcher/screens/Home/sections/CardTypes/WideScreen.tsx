@@ -65,7 +65,6 @@ const WideScreen: FC = () => {
 	const secondCardTypeTitleAnimatedStyle = useAnimatedStyle(() => {
 		const contentSpace =
 			currentSelectCardType.value === 0 ? contentHeights[0].value : 0;
-		console.log('first content space', contentHeights[0].value);
 		return {
 			opacity: currentSelectCardType.value !== 1 ? 0.5 : 1,
 			transform: [{ translateY: 50 + contentSpace }],
@@ -170,6 +169,7 @@ const WideScreen: FC = () => {
 							>
 								<Image
 									source={item.image}
+									resizeMode={index === 0 ? 'cover' : 'contain'}
 									style={{ width: 600, height: 600 }}
 								/>
 							</AnimatedView>

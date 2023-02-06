@@ -3,23 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from '@metacraft/ui';
 import UnderRealmButton from 'components/Marketplace/Button';
 import { headingSize, sharedStyle } from 'screens/Home/shared';
-import { navigate } from 'stacks/Browser/shared';
 
-import { buttonList, ButtonText } from './shared';
+import { buttonList } from './shared';
 
 const PlayEverywhere: FC = () => {
-	const onButtonPress = (item: ButtonText) => {
-		if (item.title === 'Play on Web') {
-			navigate('Game', { screen: 'Duel', params: { id: 'demo' } });
-		}
-	};
-
 	const buttonSubText = (index: number, isAvailable: boolean) =>
-		index === 0
-			? 'Available in Dec 2022'
-			: isAvailable
-			? 'Now Available'
-			: 'Coming soon';
+		isAvailable ? 'Now Available' : 'Coming soon';
 
 	return (
 		<View style={styles.container}>
@@ -37,7 +26,7 @@ const PlayEverywhere: FC = () => {
 						style={styles.button}
 						isSubButton={!item.isAvailable}
 						disabled={!item.isAvailable}
-						onPress={() => onButtonPress(item)}
+						onPress={item?.onPress}
 					>
 						<View style={{ alignItems: 'center' }}>
 							<Text
