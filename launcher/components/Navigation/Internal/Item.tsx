@@ -1,6 +1,13 @@
 import React, { FC } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Text } from '@metacraft/ui';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import Animated, {
+	useAnimatedStyle,
+	useSharedValue,
+	withTiming,
+} from 'react-native-reanimated';
+import { Hoverable, Text } from '@metacraft/ui';
+import { useNavigation } from '@react-navigation/native';
+import resources from 'utils/resources';
 
 import { NavigationConfig, navigationHeight } from '../shared';
 
@@ -10,13 +17,42 @@ interface Props {
 }
 
 export const NavigationItem: FC<Props> = ({ item, onNavigate }) => {
+	const navigation = useNavigation();
+	const getRouteName = () => {
+		const routeState =
+			navigation.getParent()?.getState() || navigation.getState();
+		const name = routeState?.routes[routeState.index].name || null;
+		return name;
+	};
+	const isActive = item.route === getRouteName();
+	const isHovered = useSharedValue(false);
+	const imageAnimated = useAnimatedStyle(() => {
+		return {
+			opacity: withTiming(isActive || isHovered.value ? 1 : 0),
+			transform: [{ scale: withTiming(isActive || isHovered.value ? 1 : 0.5) }],
+		};
+	});
+
 	return (
-		<TouchableOpacity
+		<Hoverable
 			style={styles.container}
-			onPress={() => onNavigate?.(item)}
+			onHoverIn={() => {
+				isHovered.value = true;
+			}}
+			onHoverOut={() => {
+				isHovered.value = false;
+			}}
 		>
-			<Text style={styles.title}>{item.title}</Text>
-		</TouchableOpacity>
+			<TouchableOpacity onPress={() => onNavigate?.(item)}>
+				<Animated.Image
+					source={resources.navigation.highlightVisual}
+					style={[styles.highlightImage, imageAnimated]}
+				/>
+				<View>
+					<Text style={styles.title}>{item.title}</Text>
+				</View>
+			</TouchableOpacity>
+		</Hoverable>
 	);
 };
 
@@ -24,12 +60,18 @@ export default NavigationItem;
 
 const styles = StyleSheet.create({
 	container: {
-		marginHorizontal: 9,
-		paddingHorizontal: 9,
+		width: 100,
 		height: navigationHeight.local,
+		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	title: {
 		color: '#cdc8b5',
+	},
+	highlightImage: {
+		width: '100%',
+		aspectRatio: 97 / 33,
+		position: 'absolute',
+		left: 0,
 	},
 });
