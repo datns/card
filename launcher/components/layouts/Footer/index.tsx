@@ -9,7 +9,9 @@ import { footerLinkList } from './shared';
 export const FooterSection: FC = () => {
 	return (
 		<View style={[iStyles.wideContainer, styles.container]}>
-			<StormgateLogo style={styles.logo} colors={['#929292', '#000']} />
+			<Hyperlink href="https://stormgate.io/" target="_blank">
+				<StormgateLogo style={styles.logo} colors={['#929292', '#000']} />
+			</Hyperlink>
 			<Text style={styles.grayText}>The portal to ATEM fictional world</Text>
 			<View style={styles.hyperLinkContainer}>
 				{footerLinkList.map((item, index) => (
