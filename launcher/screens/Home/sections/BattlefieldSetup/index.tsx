@@ -63,7 +63,7 @@ const BattlefieldSetupSection: FC<Props> = ({ dimension, responsiveLevel }) => {
 					controls
 				>
 					<source
-						src="https://cdn.discordapp.com/attachments/950227963792728075/1075005146502807573/short_clip_for_web_1.mp4"
+						src="https://metacraft-cdn.s3.amazonaws.com/documents/homeStormgate/short_clip_for_web_1.mp4"
 						type="video/mp4"
 					/>
 				</video>
