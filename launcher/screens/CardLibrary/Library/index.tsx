@@ -10,6 +10,7 @@ import {
 	Card as ICard,
 	CardType,
 	CardType as ICardType,
+	getCardList,
 	makeMeta,
 } from '@metacraft/murg-engine';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
@@ -54,19 +55,16 @@ const Library: React.FC = () => {
 	const [attack, setAttack] = React.useState<number>(-1);
 	const [hp, setHp] = React.useState<number>(-1);
 	const [def, setDef] = React.useState<number>(-1);
-	const { map } = makeMeta('00001');
-	const initialCardList = Object.values(map) as ICard[];
+	const initialCardList = getCardList();
 	const [cardList, setCardList] = React.useState<ICard[]>(initialCardList);
 	const isVisibleSubFilter = showSubFilter && selectedType === CardType.Hero;
 	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
 
-	const contentWidth = Math.floor(windowSize.width / CARD_WIDTH) * CARD_WIDTH;
+	const contentWidth = Math.floor((windowSize.width - 20) / CARD_WIDTH) * CARD_WIDTH;
 
 	const numberOfFilters = [classType, elemental, attack, hp, def].filter(
 		(value) => value > 0,
 	).length;
-
-	console.log('map', cardList);
 
 	const onChangeCardType = (cardType: ExtendedCardType) => {
 		setSelectedType(cardType);
@@ -88,6 +86,7 @@ const Library: React.FC = () => {
 		const searched = filteredByType.filter((card) =>
 			card.name
 				.toLowerCase()
+				.replace(/\s/g, '')
 				.includes(search.toLowerCase().trim().replace(/\s/g, '')),
 		);
 		const filtered = searched.filter((card) => {
@@ -251,11 +250,6 @@ const Library: React.FC = () => {
 						Card Rarity
 					</Text>
 					<Text>Collect and complete your Card collection with 5 rarities</Text>
-					<UnderRealmButton
-						style={styles.headerButton}
-						title={'Craft/Combine'}
-						disabled
-					/>
 				</View>
 				<ImageBackground
 					source={resources.cardLibrary.expandedSearchBarBackground}
@@ -368,7 +362,7 @@ const styles = StyleSheet.create({
 		width: '75%',
 	},
 	content: {
-		marginTop: 40,
+		marginTop: 25,
 		alignSelf: 'center',
 	},
 	cardListContainer: {

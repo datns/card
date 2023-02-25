@@ -13,6 +13,7 @@ import {
 	TemplateFragment,
 } from '@metacraft/murg-engine';
 import { Text } from '@metacraft/ui';
+import { getRarityTitle } from 'screens/Mint/shared';
 import { navigate } from 'stacks/Browser/shared';
 import resources from 'utils/resources';
 
@@ -33,14 +34,26 @@ function getClassByValue(value?: string): string {
 
 interface Props {
 	data: ICard;
-	width?: number;
 }
 
-export const CARD_WIDTH = 180;
+export const CARD_WIDTH = 90;
 
-const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
-	const ratio = width / CARD_WIDTH;
-	const { attribute, rarity, name, id, skill, elemental } = data;
+const getRarity = (level: number) => {
+	if (level > 12) {
+		return 'Immortal';
+	} else if (level > 9) {
+		return 'Legendary';
+	} else if (level > 6) {
+		return 'Mythical';
+	} else if (level > 3) {
+		return 'Epic';
+	}
+
+	return 'Rare';
+};
+
+const CardInRarity: React.FC<Props> = ({ data }) => {
+	const { elemental, attribute, rarity, name, id, skill } = data;
 	const visualUri = `https://raw.githubusercontent.com/cocrafts/card/master/game/assets/resources/graphic/visuals/${id.slice(
 		0,
 		5,
@@ -58,9 +71,9 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 	};
 
 	const renderRarity = () => {
-		const rarityArr = Array.from({ length: rarity }, (_, i) => i);
+		const rarityArr = Array.from({ length: rarity / 3 }, (_, i) => i);
 		return (
-			<View style={[styles.rarityContainer, { top: 6 * ratio }]}>
+			<View style={styles.rarityContainer}>
 				{rarityArr.map((rarity) => {
 					return (
 						<Image
@@ -78,7 +91,7 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 		const fragments = skill?.template as TemplateFragment[];
 
 		return (
-			<Text style={[styles.skill, { top: 190 * ratio }]}>
+			<Text style={styles.skill}>
 				{fragments.map((fragment, i) => {
 					return (
 						<Text
@@ -87,7 +100,7 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 								...fragment.style,
 								color: fragment.style?.color || 'gray',
 							}}
-							responsiveSizes={[6]}
+							responsiveSizes={[3]}
 						>
 							{fragment.text}
 						</Text>
@@ -98,41 +111,44 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 	};
 
 	return (
-		<TouchableOpacity style={styles.container} onPress={onPress}>
-			<View style={styles.visualContainer}>
-				<Image
-					source={{
-						uri: visualUri,
-					}}
-					style={styles.foil}
-					resizeMode="contain"
-				/>
-			</View>
-
-			<ImageBackground source={sourceFoil} style={styles.foil}>
-				{renderRarity()}
-				<Text responsiveSizes={[11]} style={styles.name}>
-					{name}
-				</Text>
-				<View style={[styles.attributeContainer]}>
-					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
-						{attribute?.attack}
-					</Text>
-					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
-						{attribute?.defense}
-					</Text>
-					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
-						{attribute?.health}
-					</Text>
+		<View>
+			<TouchableOpacity style={styles.container} onPress={onPress}>
+				<View style={styles.visualContainer}>
+					<Image
+						source={{
+							uri: visualUri,
+						}}
+						style={styles.foil}
+						resizeMode="contain"
+					/>
 				</View>
-				{renderSkill()}
-				<Image source={sourceClass} style={styles.classIcon} />
-			</ImageBackground>
-		</TouchableOpacity>
+
+				<ImageBackground source={sourceFoil} style={styles.foil}>
+					{renderRarity()}
+					<Text responsiveSizes={[5]} style={styles.name}>
+						{name}
+					</Text>
+					<View style={styles.attributeContainer}>
+						<Text responsiveSizes={[4]} style={styles.attributeLabel}>
+							{attribute?.attack}
+						</Text>
+						<Text responsiveSizes={[4]} style={styles.attributeLabel}>
+							{attribute?.defense}
+						</Text>
+						<Text responsiveSizes={[4]} style={styles.attributeLabel}>
+							{attribute?.health}
+						</Text>
+					</View>
+					{renderSkill()}
+					<Image source={sourceClass} style={styles.classIcon} />
+				</ImageBackground>
+			</TouchableOpacity>
+			<Text style={styles.rarity}>{getRarity(rarity)}</Text>
+		</View>
 	);
 };
 
-export default Card;
+export default CardInRarity;
 
 const styles = StyleSheet.create({
 	container: {
@@ -143,13 +159,13 @@ const styles = StyleSheet.create({
 		fontFamily: 'Volkhov',
 		textAlign: 'center',
 		color: '#000',
-		marginTop: 16,
+		marginTop: 8,
 	},
 	classIcon: {
 		aspectRatio: 1,
-		width: 10,
+		width: 5,
 		position: 'absolute',
-		bottom: 10,
+		bottom: 5,
 		alignSelf: 'center',
 	},
 	foil: {
@@ -160,36 +176,41 @@ const styles = StyleSheet.create({
 		height: '100%',
 		alignSelf: 'center',
 		position: 'absolute',
-		padding: 15,
+		padding: 8,
 	},
 	attributeContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		position: 'absolute',
-		bottom: 70,
+		bottom: 35,
 		width: '100%',
-		paddingHorizontal: 20,
+		paddingHorizontal: 1,
 	},
 	attributeLabel: {
 		fontWeight: '600',
-		width: 14,
+		width: 25,
 		textAlign: 'center',
 	},
 	rarityContainer: {
 		flexDirection: 'row',
-		justifyContent: 'center',
-		top: 6,
+		top: 3,
 		position: 'absolute',
 		alignSelf: 'center',
+		width: 25,
 	},
 	gem: {
-		width: 8,
-		height: 8,
-		marginHorizontal: 1,
+		width: 4,
+		height: 4,
+		marginHorizontal: 0.6,
 	},
 	skill: {
 		position: 'absolute',
-		top: 190,
-		paddingHorizontal: 25,
+		top: 88,
+		paddingHorizontal: 15,
+	},
+	rarity: {
+		color: '#e0dfdf',
+		textAlign: 'center',
+		marginTop: 10,
 	},
 });

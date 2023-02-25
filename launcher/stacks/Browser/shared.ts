@@ -112,6 +112,7 @@ export const linking: LinkingOptions<RootParamList> = {
 				path: '/card-library',
 				screens: {
 					Library: '/',
+					DetailCard: '/detail/:id',
 				},
 			},
 			AuthResponse: '/authreponse',

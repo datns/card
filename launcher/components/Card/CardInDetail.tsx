@@ -33,14 +33,12 @@ function getClassByValue(value?: string): string {
 
 interface Props {
 	data: ICard;
-	width?: number;
 }
 
-export const CARD_WIDTH = 180;
+export const CARD_WIDTH = 387;
 
-const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
-	const ratio = width / CARD_WIDTH;
-	const { attribute, rarity, name, id, skill, elemental } = data;
+const CardInDetail: React.FC<Props> = ({ data}) => {
+	const { elemental, attribute, rarity, name, id, skill } = data;
 	const visualUri = `https://raw.githubusercontent.com/cocrafts/card/master/game/assets/resources/graphic/visuals/${id.slice(
 		0,
 		5,
@@ -60,7 +58,7 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 	const renderRarity = () => {
 		const rarityArr = Array.from({ length: rarity }, (_, i) => i);
 		return (
-			<View style={[styles.rarityContainer, { top: 6 * ratio }]}>
+			<View style={styles.rarityContainer}>
 				{rarityArr.map((rarity) => {
 					return (
 						<Image
@@ -78,7 +76,7 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 		const fragments = skill?.template as TemplateFragment[];
 
 		return (
-			<Text style={[styles.skill, { top: 190 * ratio }]}>
+			<Text style={styles.skill}>
 				{fragments.map((fragment, i) => {
 					return (
 						<Text
@@ -87,7 +85,7 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 								...fragment.style,
 								color: fragment.style?.color || 'gray',
 							}}
-							responsiveSizes={[6]}
+							responsiveSizes={[16]}
 						>
 							{fragment.text}
 						</Text>
@@ -111,17 +109,17 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 
 			<ImageBackground source={sourceFoil} style={styles.foil}>
 				{renderRarity()}
-				<Text responsiveSizes={[11]} style={styles.name}>
+				<Text responsiveSizes={[20]} style={styles.name}>
 					{name}
 				</Text>
-				<View style={[styles.attributeContainer]}>
-					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
+				<View style={styles.attributeContainer}>
+					<Text responsiveSizes={[18]} style={styles.attributeLabel}>
 						{attribute?.attack}
 					</Text>
-					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
+					<Text responsiveSizes={[18]} style={styles.attributeLabel}>
 						{attribute?.defense}
 					</Text>
-					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
+					<Text responsiveSizes={[18]} style={styles.attributeLabel}>
 						{attribute?.health}
 					</Text>
 				</View>
@@ -132,7 +130,7 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 	);
 };
 
-export default Card;
+export default CardInDetail;
 
 const styles = StyleSheet.create({
 	container: {
@@ -143,13 +141,13 @@ const styles = StyleSheet.create({
 		fontFamily: 'Volkhov',
 		textAlign: 'center',
 		color: '#000',
-		marginTop: 16,
+		marginTop: 34,
 	},
 	classIcon: {
 		aspectRatio: 1,
-		width: 10,
+		width: 25,
 		position: 'absolute',
-		bottom: 10,
+		bottom: 20,
 		alignSelf: 'center',
 	},
 	foil: {
@@ -166,30 +164,30 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		position: 'absolute',
-		bottom: 70,
+		bottom: 153,
 		width: '100%',
-		paddingHorizontal: 20,
+		paddingHorizontal: 46,
 	},
 	attributeLabel: {
 		fontWeight: '600',
-		width: 14,
+		width: 25,
 		textAlign: 'center',
 	},
 	rarityContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
-		top: 6,
+		top: 13,
 		position: 'absolute',
 		alignSelf: 'center',
 	},
 	gem: {
-		width: 8,
-		height: 8,
-		marginHorizontal: 1,
+		width: 14,
+		height: 14,
+		marginHorizontal: 3.5,
 	},
 	skill: {
 		position: 'absolute',
-		top: 190,
-		paddingHorizontal: 25,
+		top: 420,
+		paddingHorizontal: 50,
 	},
 });
