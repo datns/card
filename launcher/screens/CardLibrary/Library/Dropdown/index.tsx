@@ -7,12 +7,10 @@ import {
 	StyleProp,
 	StyleSheet,
 	TouchableOpacity,
-	TouchableWithoutFeedback,
 	View,
 	ViewStyle,
 } from 'react-native';
 import { Text } from '@metacraft/ui';
-import CustomizedButton from 'screens/CardLibrary/Library/CustomizedButton';
 import { idleLayout } from 'utils/helper';
 import resources from 'utils/resources';
 

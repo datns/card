@@ -9,9 +9,9 @@ import {
 import { CardType } from '@metacraft/murg-engine/dist/utils/type';
 import { Text } from '@metacraft/ui';
 import { useRoute } from '@react-navigation/native';
-import CardInDetail from 'components/Card/CardInDetail';
-import CardInRarity from 'components/Card/CardInRarity';
+import Card from 'components/Card';
 import ScrollLayout from 'components/layouts/Scroll';
+import { getRarity } from 'screens/CardLibrary/DetailCard/shared';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
@@ -32,13 +32,9 @@ const DetailCard: React.FC = () => {
 		Object.keys(CardType)[Object.values(CardType).indexOf(card.kind)];
 	const className =
 		Object.keys(ClassType)[Object.values(ClassType).indexOf(card.class)];
-	// const element =
-	// 	card?.elemental &&
-	// 	Object.keys(ElementalType)[
-	// 		Object.values(ElementalType).indexOf(card.elemental)
-	// 	];
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	//@ts-ignore
 	const sourceClass = resources.cardLibrary[`detail${className}Icon`];
-	// const sourceElement = resources.cardLibrary[`${element?.toLowerCase()}Icon`];
 
 	console.log('selected card', card);
 
@@ -64,7 +60,7 @@ const DetailCard: React.FC = () => {
 			{renderBreadCrumb()}
 			<View style={[styles.rowContainer, iStyles.contentContainer]}>
 				<View style={styles.innerContainer}>
-					<CardInDetail data={card} />
+					<Card data={card} width={387} />
 				</View>
 				<View style={styles.innerContainer}>
 					<ImageBackground
@@ -148,6 +144,8 @@ const DetailCard: React.FC = () => {
 							{Object.keys(ElementalType).map((elemental) => {
 								if (elemental === 'Dark' || elemental === 'Light') return null;
 								const source =
+									// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+									// @ts-ignore
 									resources.cardLibrary[`${elemental.toLowerCase()}Icon`];
 								return (
 									<View key={elemental} style={{ flexDirection: 'row' }}>
@@ -165,7 +163,12 @@ const DetailCard: React.FC = () => {
 						<View style={styles.rarityContainer}>
 							{RARITY_LEVEL.map((value) => {
 								const newCard = { ...card, rarity: value };
-								return <CardInRarity data={newCard} key={value} />;
+								return (
+									<View key={value}>
+										<Card data={newCard} width={90} />
+										<Text style={styles.rarityLabel}>{getRarity(value)}</Text>
+									</View>
+								);
 							})}
 						</View>
 					</View>
@@ -280,5 +283,10 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		borderTopColor: '#3e2c26',
 		borderTopWidth: 1,
+	},
+	rarityLabel: {
+		color: '#e0dfdf',
+		textAlign: 'center',
+		marginTop: 10,
 	},
 });

@@ -47,10 +47,14 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 	)}.png`;
 
 	const sourceFoil = elemental
-		? resources.card.foil[getElementalByValue(elemental).toLowerCase()]
+		? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		  // @ts-ignore
+		  resources.card.foil[getElementalByValue(elemental).toLowerCase()]
 		: resources.card.foil.dark;
 
 	const sourceClass =
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		resources.card.class[getClassByValue(data.class).toLowerCase()];
 
 	const onPress = () => {
@@ -58,15 +62,20 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 	};
 
 	const renderRarity = () => {
-		const rarityArr = Array.from({ length: rarity }, (_, i) => i);
+		const rarityArr = Array.from({ length: rarity / 3 }, (_, i) => i);
 		return (
-			<View style={[styles.rarityContainer, { top: 6 * ratio }]}>
+			<View
+				style={[styles.rarityContainer, { top: 6 * ratio, width: 50 * ratio }]}
+			>
 				{rarityArr.map((rarity) => {
 					return (
 						<Image
 							key={rarity}
 							source={resources.card.gem}
-							style={styles.gem}
+							style={[
+								styles.gem,
+								{ width: 8 * ratio, marginHorizontal: ratio },
+							]}
 						/>
 					);
 				})}
@@ -78,7 +87,12 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 		const fragments = skill?.template as TemplateFragment[];
 
 		return (
-			<Text style={[styles.skill, { top: 190 * ratio }]}>
+			<View
+				style={[
+					styles.skill,
+					{ top: 195 * ratio, paddingHorizontal: 25 * ratio },
+				]}
+			>
 				{fragments.map((fragment, i) => {
 					return (
 						<Text
@@ -87,19 +101,19 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 								...fragment.style,
 								color: fragment.style?.color || 'gray',
 							}}
-							responsiveSizes={[6]}
+							responsiveSizes={[6 * ratio]}
 						>
 							{fragment.text}
 						</Text>
 					);
 				})}
-			</Text>
+			</View>
 		);
 	};
 
 	return (
-		<TouchableOpacity style={styles.container} onPress={onPress}>
-			<View style={styles.visualContainer}>
+		<TouchableOpacity style={[styles.container, { width }]} onPress={onPress}>
+			<View style={[styles.visualContainer, { padding: 15 * ratio }]}>
 				<Image
 					source={{
 						uri: visualUri,
@@ -111,22 +125,42 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 
 			<ImageBackground source={sourceFoil} style={styles.foil}>
 				{renderRarity()}
-				<Text responsiveSizes={[11]} style={styles.name}>
+				<Text
+					responsiveSizes={[11 * ratio]}
+					style={[styles.name, { marginTop: 16 * ratio }]}
+				>
 					{name}
 				</Text>
-				<View style={[styles.attributeContainer]}>
-					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
+				<View
+					style={[
+						styles.attributeContainer,
+						{ bottom: 70.5 * ratio, paddingHorizontal: 20.5 * ratio },
+					]}
+				>
+					<Text
+						responsiveSizes={[9 * ratio]}
+						style={[styles.attributeLabel, { width: 14 * ratio }]}
+					>
 						{attribute?.attack}
 					</Text>
-					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
+					<Text
+						responsiveSizes={[9 * ratio]}
+						style={[styles.attributeLabel, { width: 14 * ratio }]}
+					>
 						{attribute?.defense}
 					</Text>
-					<Text responsiveSizes={[9]} style={styles.attributeLabel}>
+					<Text
+						responsiveSizes={[9 * ratio]}
+						style={[styles.attributeLabel, { width: 14 * ratio }]}
+					>
 						{attribute?.health}
 					</Text>
 				</View>
 				{renderSkill()}
-				<Image source={sourceClass} style={styles.classIcon} />
+				<Image
+					source={sourceClass}
+					style={[styles.classIcon, { width: 10 * ratio, bottom: 10 * ratio }]}
+				/>
 			</ImageBackground>
 		</TouchableOpacity>
 	);
@@ -172,24 +206,25 @@ const styles = StyleSheet.create({
 	},
 	attributeLabel: {
 		fontWeight: '600',
-		width: 14,
+		// width: 14,
 		textAlign: 'center',
 	},
 	rarityContainer: {
 		flexDirection: 'row',
-		justifyContent: 'center',
 		top: 6,
 		position: 'absolute',
 		alignSelf: 'center',
+		width: 50,
 	},
 	gem: {
 		width: 8,
-		height: 8,
+		aspectRatio: 1,
 		marginHorizontal: 1,
 	},
 	skill: {
 		position: 'absolute',
 		top: 190,
 		paddingHorizontal: 25,
+		flexDirection: 'row',
 	},
 });

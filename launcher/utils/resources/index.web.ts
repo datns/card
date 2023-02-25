@@ -224,15 +224,8 @@ export default {
 	cardLibrary: {
 		mainBackground: { uri: 'cardLibrary/main-background.png' },
 		cardsImage: { uri: 'cardLibrary/cards-image.png' },
-		searchBarBackground: { uri: '/cardLibrary/search-bar-background.png' },
 		arrow: { uri: '/cardLibrary/arrow.png' },
 		dropdownSide: { uri: '/cardLibrary/dropdown-side.png' },
-		dropdownButtonNormalRightEdge: {
-			uri: '/cardLibrary/dropdown-button-normal-right-edge.png',
-		},
-		dropdownButtonHoverRightEdge: {
-			uri: '/cardLibrary/dropdown-button-hover-right-edge.png',
-		},
 		searchBackground: { uri: '/cardLibrary/search-background.png' },
 		searchIcon: { uri: '/cardLibrary/search-icon.png' },
 		normalFilterIcon: { uri: '/cardLibrary/normal-filter-icon.png' },
@@ -246,7 +239,6 @@ export default {
 		clearIcon: { uri: '/cardLibrary/clear-icon.png' },
 		dropdownButtonNormal: { uri: '/cardLibrary/dropdown-button-normal.png' },
 		dropdownButtonActive: { uri: '/cardLibrary/dropdown-button-active.png' },
-		bannerDetail: { uri: '/cardLibrary/banner-detail.png' },
 		detailTankerIcon: { uri: '/cardLibrary/detail-tanker-icon.png' },
 		detailAssassinIcon: { uri: '/cardLibrary/detail-assassin-icon.png' },
 		detailKnightIcon: { uri: '/cardLibrary/detail-knight-icon.png' },
