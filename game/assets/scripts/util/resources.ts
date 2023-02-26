@@ -123,23 +123,8 @@ export const playEffectSound = async (
 	name: GameSounds,
 	volume = 1,
 ): Promise<void> => {
-	const { clip, buffer } = await getAudioSource(name);
-
-	if (useAudioContext) {
-		if (effectSource) {
-			effectSource.stop();
-			effectSource.buffer = null;
-			effectSource.disconnect();
-		}
-
-		effectSource = audioContext.createBufferSource();
-		effectSource.buffer = buffer;
-		effectSource.connect(effectGain);
-		effectGain.gain.value = volume;
-		effectSource.start(0);
-	} else {
-		system.audioSource.playOneShot(clip, volume);
-	}
+	const { clip } = await getAudioSource(name);
+	system.audioSource.playOneShot(clip, volume);
 };
 
 export const instantiatePrefab = (uri: string): Promise<Node> => {
