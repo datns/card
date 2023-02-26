@@ -1,6 +1,6 @@
 import { Node, Quat, tween, Vec3 } from 'cc';
 
-import { playSoundOnce } from '../util/resources';
+import { playEffectSound } from '../util/resources';
 
 import { shakeGround } from './common';
 
@@ -16,7 +16,7 @@ export const animatePlayerSummon = (
 
 		tween(cardNode)
 			.to(0.1, { scale: new Vec3(0.52, 0.52, 1) }, { easing: 'backOut' })
-			.call(() => playSoundOnce('light-fire', 0.5))
+			.call(() => playEffectSound('light-fire', 0.5))
 			.to(
 				0.4,
 				{ scale: new Vec3(0.23, 0.23, 1), position: aboveTo },
@@ -33,7 +33,7 @@ export const animatePlayerSummon = (
 						{ easing: 'expoOut' },
 					)
 					.call(() => {
-						playSoundOnce('ground-hit');
+						playEffectSound('ground-hit');
 						shakeGround();
 						resolve();
 					})
@@ -57,7 +57,7 @@ export const animateEnemySummon = (
 		tween(unitNode)
 			.set({ position: from, rotation: r1 })
 			.to(0.1, { scale: new Vec3(0.5, 0.5, 1) }, { easing: 'backOut' })
-			.call(() => playSoundOnce('light-fire', 0.5))
+			.call(() => playEffectSound('light-fire', 0.5))
 			.to(
 				0.4,
 				{ position: aboveTo, scale: new Vec3(0.23, 0.23, 1), rotation: r2 },
@@ -65,7 +65,7 @@ export const animateEnemySummon = (
 			)
 			.to(0.3, { position: to }, { easing: 'expoOut' })
 			.call(() => {
-				playSoundOnce('ground-hit');
+				playEffectSound('ground-hit');
 				shakeGround();
 				resolve();
 			})
@@ -91,7 +91,7 @@ export const animateAirSummon = (unitNode: Node, to: Vec3): Promise<void> => {
 			.set({ position: new Vec3(randomOffset, to.y > 0 ? 600 : -600, 1) })
 			.to(1, { position: to }, { easing: 'expoOut' })
 			.call(() => {
-				playSoundOnce('ground-hit');
+				playEffectSound('ground-hit');
 				shakeGround();
 				resolve();
 			})

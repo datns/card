@@ -1,6 +1,6 @@
 import { Label, Sprite, tween, UIOpacity, Vec3 } from 'cc';
 
-import { playSoundOnce, stopAndPlayOnce } from '../util/resources';
+import { playEffectSound, stopAndPlayOnce } from '../util/resources';
 import { system } from '../util/system';
 
 export const showTurnRibbon = async (message: string): Promise<void> => {
@@ -14,10 +14,10 @@ export const showTurnRibbon = async (message: string): Promise<void> => {
 				scale: new Vec3(0, 0, 1),
 				position: new Vec3(0, 25, 0),
 			})
-			.call(() => playSoundOnce('your-turn4', 0.5))
+			.call(() => playEffectSound('your-turn4', 0.5))
 			.to(0.5, { scale: new Vec3(1, 1, 1) }, { easing: 'backOut' })
 			.delay(1)
-			.call(() => playSoundOnce('your-turn3', 0.3))
+			.call(() => playEffectSound('your-turn3', 0.3))
 			.call(() => {
 				tween(uiOpacity)
 					.to(0.25, { opacity: 0 })

@@ -1,7 +1,7 @@
 import { Animation, Node, Quat, tween, Vec3 } from 'cc';
 
 import { updatePlayers, updateUnit } from '../util/attribute';
-import { instantiatePrefab, playSoundOnce } from '../util/resources';
+import { instantiatePrefab, playEffectSound } from '../util/resources';
 import { system } from '../util/system';
 
 import { shakeGround } from './common';
@@ -35,7 +35,7 @@ export const animateCardAttack = async (
 				updateUnit(cardId);
 
 				if (index === 0) {
-					playSoundOnce('attack', 1);
+					playEffectSound('attack', 1);
 					shakeGround(10, 5);
 					updatePlayers();
 				}
@@ -90,7 +90,7 @@ export const animateCardAttack = async (
 					{ easing: 'expoIn' },
 				)
 				.call(() => {
-					playSoundOnce('death', 0.5);
+					playEffectSound('death', 0.5);
 					node.destroy();
 				});
 		} else {
@@ -106,7 +106,7 @@ export const animateRelocate = async (node: Node, to: Vec3): Promise<void> => {
 		tween(node)
 			.to(0.2, { position: to }, { easing: 'expoOut' })
 			.call(() => {
-				playSoundOnce('light-fire', 0.5);
+				playEffectSound('light-fire', 0.5);
 				resolve();
 			})
 			.start();

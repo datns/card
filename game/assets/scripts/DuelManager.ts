@@ -10,7 +10,7 @@ import {
 
 import { cardIdFromNode, getMyGround } from './util/helper';
 import { getGroundExpos, getHandExpos } from './util/layout';
-import { playSound, playSoundOnce } from './util/resources';
+import { playBackgroundSound, playEffectSound } from './util/resources';
 import { system } from './util/system';
 import { CardManager } from './CardManager';
 import { sendCardHover, sendCardSummon } from './network';
@@ -41,7 +41,7 @@ export class DuelManager extends Component {
 			?.getElementById('GameCanvas')
 			.addEventListener('mouseout', this.onMouseOut.bind(this));
 
-		playSound('bgm-dungeon-crawl', 0.3);
+		playBackgroundSound('bgm-dungeon-crawl', 0.3);
 	}
 
 	onUnitPreview(): void {
@@ -182,7 +182,7 @@ export class DuelManager extends Component {
 		glowNode.active = isActive;
 		cardNode.getComponent(CardManager).setCardId(cardId.substring(0, 9));
 		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
-		playSoundOnce('hand-slide', 0.2);
+		playEffectSound('hand-slide', 0.2);
 		raiseHandCard(node, 100);
 		raiseHandPreview(system.globalNodes.cardPreview);
 		sendCardHover(cardId, true);

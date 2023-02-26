@@ -1,6 +1,6 @@
 import { Node, Quat, Tween, tween, UIOpacity, Vec3 } from 'cc';
 
-import { playSoundOnce } from '../util/resources';
+import { playEffectSound } from '../util/resources';
 
 export interface PlayerCardOption {
 	node: Node;
@@ -44,7 +44,7 @@ export const animateExpoCard = ({
 					node.rotation.getEulerAngles(angle);
 
 					if (angle.z < 30) {
-						playSoundOnce('card-flip', 0.3);
+						playEffectSound('card-flip', 0.3);
 						node.getChildByPath('back').active = false;
 						flipped = true;
 					}
@@ -79,7 +79,7 @@ export const animateDrawPlayerCard = ({
 				{ easing: 'expoOut' },
 			)
 			.call(() => {
-				playSoundOnce('light-fire', 0.3);
+				playEffectSound('light-fire', 0.3);
 				resolve();
 			})
 			.start();
@@ -105,7 +105,7 @@ export const animateDrawEnemyCard = ({
 
 		tween(node)
 			.delay(delay)
-			.call(() => playSoundOnce('card-flip', 0.3))
+			.call(() => playEffectSound('card-flip', 0.3))
 			.set({ position: from, rotation: r1, scale: new Vec3(0.18, 0.18, 1) })
 			.to(
 				1,
