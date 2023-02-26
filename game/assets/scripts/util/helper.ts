@@ -30,11 +30,11 @@ export const cardIdFromNode = (node: Node): string => {
 	return node.getComponent(CardManager)?.cardId;
 };
 
-export const delay = (seconds = 0): Promise<void> => {
+export const delay = (milliSeconds = 0): Promise<void> => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve();
-		}, seconds);
+		}, milliSeconds);
 	});
 };
 

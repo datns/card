@@ -1,47 +1,149 @@
-import { AudioClip, instantiate, Node, Prefab, resources } from 'cc';
+import {
+	Asset,
+	AudioClip,
+	instantiate,
+	Node,
+	Prefab,
+	resources,
+	sys,
+} from 'cc';
 
 import { delay } from './helper';
 import { system } from './system';
 
-export const playSound = (name: string, volume = 1, dimSpeed = 0.005): void => {
-	resources.load(`sound/${name}`, async (err, sound: AudioClip) => {
-		if (!err) {
-			system.audioSource.stop();
-			system.audioSource.clip = sound;
-			system.audioSource.volume = volume;
-			system.audioSource.loop = true;
-			system.audioSource.play();
+export interface AudioSource {
+	clip: AudioClip;
+	buffer?: AudioBuffer;
+}
 
-			for (let i = 0; i < volume; i += 0.01) {
-				system.audioSource.volume = i;
-				await delay(dimSpeed);
+const backgroundSounds = ['bgm-dungeon-crawl', 'bgm-dungeon-peak'] as const;
+const effectSounds = [
+	'attack',
+	'ground-hit',
+	'fire',
+	'light-fire',
+	'death',
+	'hand-slide',
+	'card-flip',
+	'card-raise',
+	'end-turn',
+	'your-turn3',
+	'your-turn4',
+	'victory',
+	'defeat',
+] as const;
+
+export type GameSounds =
+	| typeof backgroundSounds[number]
+	| typeof effectSounds[number];
+
+export const audioMap: Partial<Record<GameSounds, AudioSource>> = {};
+
+const isSafari = navigator.userAgent.indexOf('Safari') !== -1;
+const useAudioContext = sys.isBrowser && !isSafari;
+let audioContext: AudioContext;
+let backgroundSource: AudioBufferSourceNode;
+let effectSource: AudioBufferSourceNode;
+let backgroundGain: GainNode;
+let effectGain: GainNode;
+
+if (useAudioContext) {
+	audioContext = new AudioContext();
+	backgroundGain = audioContext.createGain();
+	backgroundGain.connect(audioContext.destination);
+	effectGain = audioContext.createGain();
+	effectGain.connect(audioContext.destination);
+}
+
+const dimBackgroundVolume = async (): Promise<void> => {
+	const currentVolume = useAudioContext
+		? backgroundGain.gain.value
+		: system.audioSource.volume;
+
+	for (let i = currentVolume; i > 0; i -= 0.01) {
+		if (useAudioContext) {
+			backgroundGain.gain.value = i;
+		} else {
+			system.audioSource.volume = i;
+		}
+
+		await delay(100);
+	}
+};
+
+const raiseBackgroundVolume = async (volume = 1) => {
+	for (let i = 0; i < volume; i += 0.01) {
+		if (useAudioContext) {
+			backgroundGain.gain.value = i;
+		} else {
+			system.audioSource.volume = i;
+		}
+
+		await delay(50);
+	}
+};
+
+export const playBackgroundSound = (name: GameSounds, volume = 1): void => {
+	resources.load(`sound/${name}`, async (err, clip: AudioClip) => {
+		if (!err) {
+			if (useAudioContext) {
+				const buffer = await bufferFromAsset(clip);
+				const audioBuffer = await extractAudioBuffer(buffer);
+
+				if (backgroundSource) {
+					backgroundSource.stop();
+					backgroundSource.buffer = null;
+					backgroundSource.disconnect();
+				}
+
+				backgroundSource = audioContext.createBufferSource();
+				backgroundSource.buffer = audioBuffer;
+				backgroundSource.connect(backgroundGain);
+				backgroundSource.loop = true;
+				backgroundSource.start(0);
+			} else {
+				system.audioSource.stop();
+				system.audioSource.clip = clip;
+				system.audioSource.play();
 			}
 		}
+
+		await raiseBackgroundVolume(volume);
 	});
 };
 
-export const switchSound = async (
-	name: string,
+export const switchBackgroundSound = async (
+	name: GameSounds,
 	volume = 1,
-	dimSpeed = 100,
 ): Promise<void> => {
-	for (let i = volume; i > 0; i -= 0.005) {
-		system.audioSource.volume = i;
-		await delay(dimSpeed);
-	}
-
-	playSound(name, volume);
+	await dimBackgroundVolume();
+	playBackgroundSound(name, volume);
 };
 
-export const playSoundOnce = (name: string, volume = 1): void => {
-	resources.load(`sound/${name}`, (err, sound: AudioClip) => {
-		if (!err) {
-			system.audioSource.playOneShot(sound, volume);
+export const playEffectSound = (name: GameSounds, volume = 1): void => {
+	resources.load(`sound/${name}`, async (err, clip: AudioClip) => {
+		if (useAudioContext) {
+			const buffer = await bufferFromAsset(clip);
+			const audioBuffer = await extractAudioBuffer(buffer);
+
+			if (effectSource) {
+				effectSource.stop();
+				effectSource.buffer = null;
+				effectSource.disconnect();
+			}
+
+			effectGain.gain.value = volume;
+			effectSource = audioContext.createBufferSource();
+			effectSource.buffer = audioBuffer;
+			effectSource.connect(effectGain);
+			effectSource.start(0);
+		} else {
+			system.audioSource.playOneShot(clip, volume);
 		}
 	});
 };
 
-export const stopAndPlayOnce = (name: string, volume = 1): void => {
+export const stopAndPlayOnce = (name: GameSounds, volume = 1): void => {
 	system.audioSource.stop();
 
 	resources.load(`sound/${name}`, (err, sound: AudioClip) => {
@@ -61,5 +163,29 @@ export const instantiatePrefab = (uri: string): Promise<Node> => {
 				resolve(instantiate(prefab));
 			}
 		});
+	});
+};
+
+export const bufferFromAsset = async (asset: Asset): Promise<ArrayBuffer> => {
+	return new Promise((resolve, reject) => {
+		const request = new XMLHttpRequest();
+
+		request.open('GET', asset.nativeUrl, true);
+		request.responseType = 'arraybuffer';
+		request.onload = () => resolve(request.response);
+		request.onerror = () => reject();
+		request.send();
+	});
+};
+
+export const extractAudioBuffer = async (
+	buffer: ArrayBuffer,
+): Promise<AudioBuffer> => {
+	return new Promise((resolve, reject) => {
+		audioContext.decodeAudioData(
+			buffer,
+			(audio) => resolve(audio),
+			(err) => reject(err),
+		);
 	});
 };
