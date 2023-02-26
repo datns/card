@@ -1,6 +1,6 @@
 import { Label, Sprite, tween, UIOpacity, Vec3 } from 'cc';
 
-import { playEffectSound, stopAndPlayOnce } from '../util/resources';
+import { playBackgroundSound, playEffectSound } from '../util/resources';
 import { system } from '../util/system';
 
 export const showTurnRibbon = async (message: string): Promise<void> => {
@@ -57,7 +57,7 @@ export const showEndGameRibbon = async (isVictory: boolean): Promise<void> => {
 				position: new Vec3(0, -54, 0),
 			})
 			.call(() => {
-				stopAndPlayOnce(sound, 0.5);
+				playBackgroundSound(sound, 0.5, false);
 			})
 			.to(0.5, { scale: new Vec3(1, 1, 1) }, { easing: 'backOut' })
 			.call(resolve)

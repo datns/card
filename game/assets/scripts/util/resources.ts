@@ -37,7 +37,7 @@ export type GameSounds =
 	| typeof backgroundSounds[number]
 	| typeof effectSounds[number];
 
-export const audioMap: Partial<Record<GameSounds, AudioSource>> = {};
+const audioCache: Partial<Record<GameSounds, AudioSource>> = {};
 
 const isSafari = navigator.userAgent.indexOf('Safari') !== -1;
 const useAudioContext = sys.isBrowser && !isSafari;
@@ -83,33 +83,32 @@ const raiseBackgroundVolume = async (volume = 1) => {
 	}
 };
 
-export const playBackgroundSound = (name: GameSounds, volume = 1): void => {
-	resources.load(`sound/${name}`, async (err, clip: AudioClip) => {
-		if (!err) {
-			if (useAudioContext) {
-				const buffer = await bufferFromAsset(clip);
-				const audioBuffer = await extractAudioBuffer(buffer);
+export const playBackgroundSound = async (
+	name: GameSounds,
+	volume = 1,
+	loop = true,
+): Promise<void> => {
+	const { clip, buffer } = await getAudioSource(name);
 
-				if (backgroundSource) {
-					backgroundSource.stop();
-					backgroundSource.buffer = null;
-					backgroundSource.disconnect();
-				}
-
-				backgroundSource = audioContext.createBufferSource();
-				backgroundSource.buffer = audioBuffer;
-				backgroundSource.connect(backgroundGain);
-				backgroundSource.loop = true;
-				backgroundSource.start(0);
-			} else {
-				system.audioSource.stop();
-				system.audioSource.clip = clip;
-				system.audioSource.play();
-			}
+	if (useAudioContext) {
+		if (backgroundSource) {
+			backgroundSource.stop();
+			backgroundSource.buffer = null;
+			backgroundSource.disconnect();
 		}
 
-		await raiseBackgroundVolume(volume);
-	});
+		backgroundSource = audioContext.createBufferSource();
+		backgroundSource.buffer = buffer;
+		backgroundSource.connect(backgroundGain);
+		backgroundSource.loop = loop;
+		backgroundSource.start(0);
+	} else {
+		system.audioSource.stop();
+		system.audioSource.clip = clip;
+		system.audioSource.play();
+	}
+
+	await raiseBackgroundVolume(volume);
 };
 
 export const switchBackgroundSound = async (
@@ -120,38 +119,27 @@ export const switchBackgroundSound = async (
 	playBackgroundSound(name, volume);
 };
 
-export const playEffectSound = (name: GameSounds, volume = 1): void => {
-	resources.load(`sound/${name}`, async (err, clip: AudioClip) => {
-		if (useAudioContext) {
-			const buffer = await bufferFromAsset(clip);
-			const audioBuffer = await extractAudioBuffer(buffer);
+export const playEffectSound = async (
+	name: GameSounds,
+	volume = 1,
+): Promise<void> => {
+	const { clip, buffer } = await getAudioSource(name);
 
-			if (effectSource) {
-				effectSource.stop();
-				effectSource.buffer = null;
-				effectSource.disconnect();
-			}
-
-			effectGain.gain.value = volume;
-			effectSource = audioContext.createBufferSource();
-			effectSource.buffer = audioBuffer;
-			effectSource.connect(effectGain);
-			effectSource.start(0);
-		} else {
-			system.audioSource.playOneShot(clip, volume);
+	if (useAudioContext) {
+		if (effectSource) {
+			effectSource.stop();
+			effectSource.buffer = null;
+			effectSource.disconnect();
 		}
-	});
-};
 
-export const stopAndPlayOnce = (name: GameSounds, volume = 1): void => {
-	system.audioSource.stop();
-
-	resources.load(`sound/${name}`, (err, sound: AudioClip) => {
-		if (!err) {
-			system.audioSource.stop();
-			system.audioSource.playOneShot(sound, volume);
-		}
-	});
+		effectSource = audioContext.createBufferSource();
+		effectSource.buffer = buffer;
+		effectSource.connect(effectGain);
+		effectGain.gain.value = volume;
+		effectSource.start(0);
+	} else {
+		system.audioSource.playOneShot(clip, volume);
+	}
 };
 
 export const instantiatePrefab = (uri: string): Promise<Node> => {
@@ -187,5 +175,32 @@ export const extractAudioBuffer = async (
 			(audio) => resolve(audio),
 			(err) => reject(err),
 		);
+	});
+};
+
+export const getAudioSource = async (
+	name: GameSounds,
+): Promise<AudioSource> => {
+	return new Promise((resolve, reject) => {
+		const cache = audioCache[name];
+
+		if (cache) {
+			resolve(cache);
+		} else {
+			resources.load(`sound/${name}`, async (err, clip: AudioClip) => {
+				if (err) {
+					reject(err);
+				} else {
+					audioCache[name] = { clip };
+
+					if (useAudioContext) {
+						const buffer = await bufferFromAsset(clip);
+						audioCache[name].buffer = await extractAudioBuffer(buffer);
+					}
+
+					resolve(audioCache[name]);
+				}
+			});
+		}
 	});
 };
