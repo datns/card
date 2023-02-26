@@ -39,20 +39,21 @@ export type GameSounds =
 
 const audioCache: Partial<Record<GameSounds, AudioSource>> = {};
 
-const isSafari = navigator.userAgent.indexOf('Safari') !== -1;
-const useAudioContext = sys.isBrowser && !isSafari;
+const useAudioContext = sys.isBrowser;
 let audioContext: AudioContext;
 let backgroundSource: AudioBufferSourceNode;
-let effectSource: AudioBufferSourceNode;
 let backgroundGain: GainNode;
-let effectGain: GainNode;
 
 if (useAudioContext) {
 	audioContext = new AudioContext();
 	backgroundGain = audioContext.createGain();
 	backgroundGain.connect(audioContext.destination);
-	effectGain = audioContext.createGain();
-	effectGain.connect(audioContext.destination);
+
+	document.addEventListener('click', () => {
+		if (audioContext.state !== 'running') {
+			audioContext.resume();
+		}
+	});
 }
 
 const dimBackgroundVolume = async (): Promise<void> => {
