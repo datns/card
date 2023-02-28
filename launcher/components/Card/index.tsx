@@ -87,10 +87,13 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 		const fragments = skill?.template as TemplateFragment[];
 
 		return (
-			<View
+			<Text
 				style={[
 					styles.skill,
-					{ top: 195 * ratio, paddingHorizontal: 25 * ratio },
+					{
+						top: 195 * ratio,
+						paddingHorizontal: 25 * ratio,
+					},
 				]}
 			>
 				{fragments.map((fragment, i) => {
@@ -107,7 +110,7 @@ const Card: React.FC<Props> = ({ data, width = CARD_WIDTH }) => {
 						</Text>
 					);
 				})}
-			</View>
+			</Text>
 		);
 	};
 

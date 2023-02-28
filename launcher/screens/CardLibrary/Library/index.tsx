@@ -11,12 +11,10 @@ import {
 	CardType,
 	CardType as ICardType,
 	getCardList,
-	makeMeta,
 } from '@metacraft/murg-engine';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
 import Card, { CARD_WIDTH } from 'components/Card';
 import ScrollLayout from 'components/layouts/Scroll';
-import UnderRealmButton from 'components/Marketplace/Button';
 import { navigationHeight } from 'components/Navigation/shared';
 import CardTypeButton from 'screens/CardLibrary/Library/CardTypeButton';
 import Dropdown from 'screens/CardLibrary/Library/Dropdown';
@@ -60,7 +58,11 @@ const Library: React.FC = () => {
 	const isVisibleSubFilter = showSubFilter && selectedType === CardType.Hero;
 	const { windowSize } = useSnapshot<DimensionState>(dimensionState);
 
-	const contentWidth = Math.floor((windowSize.width - 20) / CARD_WIDTH) * CARD_WIDTH;
+	const contentWidth =
+		Math.floor(
+			(Math.min(windowSize.width, iStyles.contentContainer.maxWidth) - 20) /
+				CARD_WIDTH,
+		) * CARD_WIDTH;
 
 	const numberOfFilters = [classType, elemental, attack, hp, def].filter(
 		(value) => value > 0,
@@ -259,20 +261,35 @@ const Library: React.FC = () => {
 					]}
 					resizeMode="stretch"
 				>
-					<View style={styles.cardTypeButtonContainer}>
-						{renderCardTypeSelector()}
-						<View style={{ flexDirection: 'row' }}>
-							<SearchBar value={search} onChangeText={onSearch} />
-							<FilterButton
-								isActive={selectedType === ICardType.Hero}
-								onPress={() => setShowSubFilter((value) => !value)}
-								numberOfFilters={numberOfFilters}
-							/>
+					<View
+						style={[
+							iStyles.contentContainer,
+							{
+								alignItems: 'center',
+							},
+						]}
+					>
+						<View style={styles.cardTypeButtonContainer}>
+							{renderCardTypeSelector()}
+							<View style={{ flexDirection: 'row' }}>
+								<SearchBar value={search} onChangeText={onSearch} />
+								<FilterButton
+									isActive={selectedType === ICardType.Hero}
+									onPress={() => setShowSubFilter((value) => !value)}
+									numberOfFilters={numberOfFilters}
+								/>
+							</View>
 						</View>
+						{renderSubFilter()}
 					</View>
-					{renderSubFilter()}
 				</ImageBackground>
-				<View style={[styles.content, { width: contentWidth }]}>
+				<View
+					style={[
+						styles.content,
+						iStyles.contentContainer,
+						{ width: contentWidth },
+					]}
+				>
 					<View style={styles.filterInfo}>
 						<Text style={styles.numberOfCards}>{`${
 							cardList.length

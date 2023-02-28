@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, ImageBackground, StyleSheet, View } from 'react-native';
+import {
+	Image,
+	ImageBackground,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import {
 	ClassType,
 	ElementalType,
@@ -12,6 +18,7 @@ import { useRoute } from '@react-navigation/native';
 import Card from 'components/Card';
 import ScrollLayout from 'components/layouts/Scroll';
 import { getRarity } from 'screens/CardLibrary/DetailCard/shared';
+import { navigate } from 'stacks/Browser/shared';
 import resources from 'utils/resources';
 import { iStyles } from 'utils/styles';
 
@@ -32,9 +39,20 @@ const DetailCard: React.FC = () => {
 		Object.keys(CardType)[Object.values(CardType).indexOf(card.kind)];
 	const className =
 		Object.keys(ClassType)[Object.values(ClassType).indexOf(card.class)];
+	const elemental =
+		Object.keys(ElementalType)[
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore
+			Object.values(ElementalType).indexOf(card.elemental)
+		];
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	//@ts-ignore
 	const sourceClass = resources.cardLibrary[`detail${className}Icon`];
+
+	const sourceElemental =
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
+		resources.cardLibrary[`${elemental.toLowerCase()}Icon`];
 
 	console.log('selected card', card);
 
@@ -43,9 +61,13 @@ const DetailCard: React.FC = () => {
 	const renderBreadCrumb = () => {
 		return (
 			<View style={styles.breadCrumb}>
-				<Text style={styles.breadCrumbLabel} responsiveSizes={[16]}>
-					{'Card Library'}
-				</Text>
+				<TouchableOpacity
+					onPress={() => navigate('CardLibrary', { screen: 'Library' })}
+				>
+					<Text style={styles.breadCrumbLabel} responsiveSizes={[16]}>
+						{'Card Library'}
+					</Text>
+				</TouchableOpacity>
 				<Image
 					source={resources.cardLibrary.rightArrow}
 					style={styles.breadCrumbIcon}
@@ -57,119 +79,107 @@ const DetailCard: React.FC = () => {
 
 	return (
 		<ScrollLayout contentContainerStyle={{ backgroundColor: '#251515' }}>
-			{renderBreadCrumb()}
-			<View style={[styles.rowContainer, iStyles.contentContainer]}>
-				<View style={styles.innerContainer}>
-					<Card data={card} width={387} />
-				</View>
-				<View style={styles.innerContainer}>
-					<ImageBackground
-						source={resources.marketplace.titleSeparator}
-						style={styles.nameContainer}
-					>
-						<Text responsiveSizes={[20]} style={styles.name}>
-							{card.name}
-						</Text>
-					</ImageBackground>
-					<View style={styles.section}>
-						<Text style={styles.sectionTitle}>Skill</Text>
-						<Text>
-							{fragments.map((fragment, i) => {
-								return <Text key={i}>{fragment.text}</Text>;
-							})}
-						</Text>
+			<View style={iStyles.contentContainer}>
+				{renderBreadCrumb()}
+				<View style={[styles.rowContainer]}>
+					<View style={styles.innerContainer}>
+						<Card data={card} width={387} />
 					</View>
-					{keyword && (
+					<View style={styles.innerContainer}>
+						<ImageBackground
+							source={resources.marketplace.titleSeparator}
+							style={styles.nameContainer}
+						>
+							<Text responsiveSizes={[20]} style={styles.name}>
+								{card.name}
+							</Text>
+						</ImageBackground>
 						<View style={styles.section}>
-							<Text style={styles.sectionTitle}>Keyword</Text>
-							<Text>{keyword}</Text>
+							<Text style={styles.sectionTitle}>Skill</Text>
+							<Text>
+								{fragments.map((fragment, i) => {
+									return <Text key={i}>{fragment.text}</Text>;
+								})}
+							</Text>
 						</View>
-					)}
-					<View style={styles.section}>
-						<Text style={styles.sectionTitle}>Properties</Text>
-						<View style={{ flexDirection: 'row' }}>
-							<View>
-								<Text style={styles.propertyKey}>Type</Text>
-								<Text>{type}</Text>
+						{keyword && (
+							<View style={styles.section}>
+								<Text style={styles.sectionTitle}>Keyword</Text>
+								<Text>{keyword}</Text>
 							</View>
-							<View>
-								<Text style={styles.propertyKey}>Class</Text>
-								<View style={styles.propertyValue}>
-									<Image source={sourceClass} style={styles.iconClass} />
-									<Text>{className}</Text>
+						)}
+						<View style={styles.section}>
+							<Text style={styles.sectionTitle}>Properties</Text>
+							<View style={{ flexDirection: 'row' }}>
+								<View>
+									<Text style={styles.propertyKey}>Type</Text>
+									<Text>{type}</Text>
+								</View>
+								<View>
+									<Text style={styles.propertyKey}>Class</Text>
+									<View style={styles.propertyValue}>
+										<Image source={sourceClass} style={styles.iconClass} />
+										<Text>{className}</Text>
+									</View>
+								</View>
+								<View>
+									<Text style={styles.propertyKey}>Element</Text>
+									<View style={styles.propertyValue}>
+										<Image
+											source={sourceElemental}
+											style={styles.iconElement}
+										/>
+										<Text>{elemental}</Text>
+									</View>
 								</View>
 							</View>
 						</View>
-					</View>
-					<View style={styles.section}>
-						<Text style={styles.sectionTitle}>Rarity</Text>
-						<Text>Common</Text>
-					</View>
-					<View style={styles.section}>
-						<Text style={styles.sectionTitle}>Attribute</Text>
-						<View style={styles.attribute}>
-							<Image
-								source={resources.cardLibrary.attackIcon}
-								style={styles.attributeIcon}
-							/>
-							<Text style={styles.attributeLabel}>Attack</Text>
-							<Text>{card.attribute?.attack}</Text>
+						<View style={styles.section}>
+							<Text style={styles.sectionTitle}>Rarity</Text>
+							<Text>Common</Text>
 						</View>
-						<View style={styles.attribute}>
-							<Image
-								source={resources.cardLibrary.defenseIcon}
-								style={styles.attributeIcon}
-							/>
-							<Text style={styles.attributeLabel}>Defense</Text>
-							<Text>{card.attribute?.defense}</Text>
+						<View style={[styles.section, { borderBottomWidth: 0 }]}>
+							<Text style={styles.sectionTitle}>Attribute</Text>
+							<View style={styles.attribute}>
+								<Image
+									source={resources.cardLibrary.attackIcon}
+									style={styles.attributeIcon}
+								/>
+								<Text style={styles.attributeLabel}>Attack</Text>
+								<Text>{card.attribute?.attack}</Text>
+							</View>
+							<View style={styles.attribute}>
+								<Image
+									source={resources.cardLibrary.defenseIcon}
+									style={styles.attributeIcon}
+								/>
+								<Text style={styles.attributeLabel}>Defense</Text>
+								<Text>{card.attribute?.defense}</Text>
+							</View>
+							<View style={styles.attribute}>
+								<Image
+									source={resources.cardLibrary.hpIcon}
+									style={styles.attributeIcon}
+								/>
+								<Text style={styles.attributeLabel}>HP</Text>
+								<Text>{card.attribute?.health}</Text>
+							</View>
 						</View>
-						<View style={styles.attribute}>
-							<Image
-								source={resources.cardLibrary.hpIcon}
-								style={styles.attributeIcon}
-							/>
-							<Text style={styles.attributeLabel}>HP</Text>
-							<Text>{card.attribute?.health}</Text>
-						</View>
-					</View>
-					<View style={[styles.section, { borderBottomWidth: 0 }]}>
-						<Text style={styles.sectionTitle}>Elemental</Text>
-						<View
-							style={{
-								flexDirection: 'row',
-								justifyContent: 'space-between',
-								flexWrap: 'wrap',
-							}}
-						>
-							{Object.keys(ElementalType).map((elemental) => {
-								if (elemental === 'Dark' || elemental === 'Light') return null;
-								const source =
-									// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-									// @ts-ignore
-									resources.cardLibrary[`${elemental.toLowerCase()}Icon`];
-								return (
-									<View key={elemental} style={{ flexDirection: 'row' }}>
-										<Image source={source} style={styles.iconElement} />
-										<Text>{elemental}</Text>
-									</View>
-								);
-							})}
-						</View>
-					</View>
-					<View>
-						<Text style={styles.rarityTitle} responsiveSizes={[16]}>
-							Rarity Level
-						</Text>
-						<View style={styles.rarityContainer}>
-							{RARITY_LEVEL.map((value) => {
-								const newCard = { ...card, rarity: value };
-								return (
-									<View key={value}>
-										<Card data={newCard} width={90} />
-										<Text style={styles.rarityLabel}>{getRarity(value)}</Text>
-									</View>
-								);
-							})}
+						<View>
+							<Text style={styles.rarityTitle} responsiveSizes={[16]}>
+								Rarity Level
+							</Text>
+							<View style={styles.rarityContainer}>
+								{RARITY_LEVEL.map((value) => {
+									const newCard = { ...card, rarity: value };
+									return (
+										<View key={value}>
+											<Card data={newCard} width={90} />
+											<Text style={styles.rarityLabel}>{getRarity(value)}</Text>
+										</View>
+									);
+								})}
+							</View>
 						</View>
 					</View>
 				</View>
@@ -190,7 +200,7 @@ const styles = StyleSheet.create({
 	breadCrumb: {
 		flexDirection: 'row',
 		marginVertical: 80,
-		marginLeft: 80,
+		marginLeft: 60,
 		alignItems: 'center',
 	},
 	breadCrumbIcon: {
@@ -255,7 +265,7 @@ const styles = StyleSheet.create({
 	iconElement: {
 		width: 18,
 		height: 18,
-		marginRight: 8,
+		marginRight: 4,
 	},
 	attribute: {
 		flexDirection: 'row',
