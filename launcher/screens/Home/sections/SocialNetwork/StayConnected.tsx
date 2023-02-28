@@ -2,9 +2,6 @@ import React, { FC, useState } from 'react';
 import { ActivityIndicator, StyleSheet, TextInput, View } from 'react-native';
 import { useMutation } from '@apollo/client';
 import { Hyperlink, modalActions, Text } from '@metacraft/ui';
-import DiscordIcon from 'components/icons/Discord';
-import GithubIcon from 'components/icons/GithubSolid';
-import TwitterIcon from 'components/icons/Twitter';
 import UnderRealmButton from 'components/Marketplace/Button';
 import Subscribed from 'components/modals/GameSubscribe/Subscribed';
 import { headingSize, sharedStyle } from 'screens/Home/shared';
@@ -12,6 +9,8 @@ import * as mutations from 'utils/graphql/mutation';
 import { useInput } from 'utils/hook';
 import { MetacraftGames } from 'utils/types';
 import { validateEmail } from 'utils/validation';
+
+import { socialLinkList } from './shared';
 
 export const StayConnected: FC = () => {
 	const [loading, setLoading] = useState(false);
@@ -30,7 +29,7 @@ export const StayConnected: FC = () => {
 				variables: {
 					input: {
 						email: emailInput.value,
-						game: MetacraftGames.Card,
+						game: MetacraftGames.Murg,
 					},
 				},
 				onCompleted: () => {
@@ -60,27 +59,16 @@ export const StayConnected: FC = () => {
 				Stay connected - Stay updated!
 			</Text>
 			<View style={styles.hyperLinkContainer}>
-				<Hyperlink
-					style={styles.hyperLink}
-					href="https://discord.gg/sXcz9Em4AR"
-					target="_blank"
-				>
-					<DiscordIcon size={42} />
-				</Hyperlink>
-				<Hyperlink
-					style={styles.hyperLink}
-					href="https://twitter.com/PlayUnderRealm"
-					target="_blank"
-				>
-					<TwitterIcon size={40} />
-				</Hyperlink>
-				<Hyperlink
-					style={styles.hyperLink}
-					href="https://github.com/cocrafts"
-					target="_blank"
-				>
-					<GithubIcon size={32} />
-				</Hyperlink>
+				{socialLinkList.map(({ href, Component, props }, index) => (
+					<Hyperlink
+						key={index}
+						style={styles.hyperLink}
+						href={href}
+						target="_blank"
+					>
+						<Component {...props} />
+					</Hyperlink>
+				))}
 			</View>
 			<View style={styles.inputContainer}>
 				<View style={styles.inputBackgroundOverlay} />

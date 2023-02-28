@@ -3,6 +3,8 @@ import { DuelCommandBundle, DuelConfig } from '@metacraft/murg-engine';
 export enum DuelCommands {
 	ConnectMatch = 'ConnectMatch',
 	SendBundle = 'SendBundle',
+	CardHover = 'CardHover',
+	GameOver = 'GameOver',
 }
 
 export interface JwtPayload {
@@ -35,4 +37,10 @@ export interface ServerState {
 export interface PlayerIds {
 	me: string;
 	enemy: string;
+}
+
+export interface CardDuel {
+	id: string;
+	config: DuelConfig;
+	history: DuelCommandBundle[];
 }

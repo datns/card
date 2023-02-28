@@ -72,7 +72,6 @@ export default Concept;
 
 const styles = StyleSheet.create({
 	conceptContainer: {
-		justifyContent: 'space-between',
 		paddingTop: 40,
 		paddingHorizontal: 20,
 		paddingBottom: 40,
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
 		height: 1,
 		backgroundColor: '#423c36',
 		position: 'absolute',
-		top: 146.5,
+		top: 126.5,
 	},
 	descriptionContainer: {
 		paddingHorizontal: 40,

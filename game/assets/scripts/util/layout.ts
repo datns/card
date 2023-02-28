@@ -41,15 +41,15 @@ const getAlignOffset = (
 };
 
 export const getCenterExpos = (size: number): Vec3[] => {
-	return getPositionExpos(system.globalNodes.centerExpo, size, 220);
+	return getPositionExpos(system.globalNodes.centerExpo, size, 210);
 };
 
 export const getLeftExpos = (size: number): Vec3[] => {
-	return getPositionExpos(system.globalNodes.leftExpo, size, 220, 'left');
+	return getPositionExpos(system.globalNodes.leftExpo, size, 210, 'left');
 };
 
 export const getRightExpos = (size: number): Vec3[] => {
-	return getPositionExpos(system.globalNodes.rightExpo, size, 220, 'right');
+	return getPositionExpos(system.globalNodes.rightExpo, size, 210, 'right');
 };
 
 export const getHandExpos = (at: Node, size: number): Vec3[] => {

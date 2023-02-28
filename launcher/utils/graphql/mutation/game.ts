@@ -23,3 +23,9 @@ export const subscribeGame = gql`
 		}
 	}
 `;
+
+export const stopMatchFind = gql`
+	mutation StopMatchFind {
+		stopMatchFind
+	}
+`;

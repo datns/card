@@ -25,7 +25,10 @@ export const HomeScreen: FC = () => {
 				dimension={windowSize}
 				responsiveLevel={responsiveLevel}
 			/>
-			<BattlefieldSetupSection dimension={windowSize} />
+			<BattlefieldSetupSection
+				dimension={windowSize}
+				responsiveLevel={responsiveLevel}
+			/>
 			<CardTypeSection responsiveLevel={responsiveLevel} />
 			<CardExplainSection
 				dimension={windowSize}

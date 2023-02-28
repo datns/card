@@ -1,10 +1,11 @@
 export default {
 	navigation: {
-		bg: require('../../../assets/marketplace/navigation-bg.png'),
+		bg: require('../../../assets/visual/navigation-bg.png'),
 		logo: require('../../../assets/marketplace/flag.png'),
 		mobileBackground: require('../../../assets/visual/mobile-navigation-bg.png'),
 		userIconBackground: require('../../../assets/visual/user-icon-bg.png'),
 		separator: require('../../../assets/visual/separator.png'),
+		highlightVisual: require('../../../assets/visual/navi-highlight-visual.png'),
 	},
 	mint: {
 		keyVisual: require('../../../assets/mint/key-visual.png'),
@@ -83,6 +84,7 @@ export default {
 		cardTypesBackground: require('../../../assets/home/card-type-background.png'),
 		cardTypesHeroVisual: require('../../../assets/home/card-type-hero-visual.png'),
 		cardTypesSpellVisual: require('../../../assets/home/card-type-spell-visual.png'),
+		cardTypesTroopVisual: require('../../../assets/home/card-type-troop-visual.png'),
 		classes: {
 			background: require('../../../assets/home/classes/background.png'),
 			logoBackground: require('../../../assets/home/classes/logo-background.png'),

@@ -15,17 +15,21 @@ import { iStyles } from 'utils/styles';
 
 interface Props {
 	dimension: ScaledSize;
+	responsiveLevel: number;
 }
 
-const BattlefieldSetupSection: FC<Props> = ({ dimension }) => {
+const BattlefieldSetupSection: FC<Props> = ({ dimension, responsiveLevel }) => {
 	const width = Math.min(dimension.width, iStyles.contentContainer.maxWidth);
 	const backgroundContainer = {
 		width,
 		height: (width * 1033) / 1728,
+		minHeight: 450,
 		alignItems: 'center',
 		justifyContent: 'center',
 		paddingHorizontal: 15,
 	} as ViewStyle;
+
+	const responsiveVideo = [800, 600, 450, 400][responsiveLevel];
 
 	const onHowToPlayButtonPressed = () =>
 		navigate('Guide', { screen: 'Dashboard' });
@@ -53,6 +57,16 @@ const BattlefieldSetupSection: FC<Props> = ({ dimension }) => {
 				>
 					<Text style={styles.buttonText}>How to play</Text>
 				</UnderRealmButton>
+				<video
+					style={{ width: responsiveVideo, aspectRatio: '800 / 450' }}
+					loop
+					controls
+				>
+					<source
+						src="https://metacraft-cdn.s3.amazonaws.com/documents/homeStormgate/short_clip_for_web_1.mp4"
+						type="video/mp4"
+					/>
+				</video>
 			</ImageBackground>
 		</View>
 	);
@@ -66,6 +80,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		width: 220,
+		marginBottom: 40,
 	},
 	textShadow: {
 		textShadow: '0 0 10px black',

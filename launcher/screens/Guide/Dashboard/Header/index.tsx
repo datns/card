@@ -1,11 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
-import {
-	Dimensions,
-	Image,
-	ImageBackground,
-	StyleSheet,
-	View,
-} from 'react-native';
+import React, { FC, useState } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 import { DimensionState, dimensionState, Text } from '@metacraft/ui';
 import { headingSize, sharedStyle } from 'screens/Guide/shared';
 import { useSnapshot } from 'utils/hook';
@@ -49,7 +43,7 @@ const Header: FC<Props> = ({ onPress }) => {
 	};
 
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, sharedStyle.sectionContainer]}>
 			<Image
 				source={resources.guide.headingBackground}
 				style={[styles.headingBackground, headingBackgroundStyle]}

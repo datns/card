@@ -1,4 +1,4 @@
-import { Card } from '@metacraft/murg-engine';
+import Engine, { CardState } from '@metacraft/murg-engine';
 import {
 	_decorator,
 	Animation,
@@ -23,17 +23,12 @@ import {
 import { system } from './util/system';
 
 const { ccclass } = _decorator;
-
-export interface CardData {
-	cardId: string;
-	owner: string;
-	card: Card;
-}
+const { getCard } = Engine;
 
 @ccclass('CardManager')
 export class CardManager extends Component {
+	unsubscribe: () => void;
 	isMouseInside = false;
-	data: CardData;
 	cardId: string;
 	animation: Animation;
 	uiOpacity: UIOpacity;
@@ -72,38 +67,84 @@ export class CardManager extends Component {
 			.getChildByPath('front/class')
 			.getComponent(Sprite);
 
-		this.node.on('data', (data: CardData) => {
-			this.data = data;
-			this.cardId = data.cardId;
-			this.renderAll(this.data);
-		});
+		if (this.cardId) {
+			this.subscribeCardChange();
+		}
 	}
 
-	renderAll({ card }: CardData): void {
-		const title = card.title ? ` - ${card.title}` : '';
-		this.cardName.string = `${card.name}${title}`;
-		this.cardAttack.string = String(card.attribute.attack);
-		this.cardDefense.string = String(card.attribute.defense);
-		this.cardHealth.string = String(card.attribute.health);
-		this.cardSkill.string = getSkillDesc(card.skill.template as never);
+	onDestroy(): void {
+		this.unsubscribe?.();
+	}
 
-		resources.load(getVisualUri(card.id), (err, spriteFrame: SpriteFrame) => {
-			if (!err) {
-				this.cardVisual.spriteFrame = spriteFrame;
-			}
-		});
+	setCardId(id: string): void {
+		if (id === this.cardId) return;
+		this.cardId = id;
 
-		resources.load(getFoilUri(card.id), (err, spriteFrame: SpriteFrame) => {
-			if (!err) {
-				this.cardFoil.spriteFrame = spriteFrame;
+		if (id.indexOf('#') > 0) {
+			if (this.cardFront) {
+				this.subscribeCardChange();
 			}
-		});
+		} else {
+			setTimeout(() => {
+				const card = getCard(system.duel.cardMap, id);
+				this.onStateChange({ id, ...card.attribute } as never, null);
+			}, 200);
+		}
+	}
 
-		resources.load(getClassUri(card.class), (err, spriteFrame: SpriteFrame) => {
-			if (!err) {
-				this.cardClass.spriteFrame = spriteFrame;
-			}
-		});
+	subscribeCardChange(): void {
+		this.unsubscribe?.();
+		this.unsubscribe = system.duel.subscribe(
+			`state#${this.cardId}`,
+			this.onStateChange.bind(this),
+			true,
+		);
+	}
+
+	onStateChange(state: CardState, lastState: CardState): void {
+		const card = getCard(system.duel.cardMap, state.id);
+		const cardChanged =
+			state.id.substring(0, 9) !== this.cardId.substring(0, 9);
+
+		if (!lastState) {
+			const title = card.title ? ` - ${card.title}` : '';
+
+			this.cardName.string = `${card.name}${title}`;
+			this.cardSkill.string = getSkillDesc(card.skill.template as never);
+		}
+
+		if (state.health !== lastState?.health) {
+			this.cardHealth.string = String(state.health);
+		}
+
+		if (state.defense !== lastState?.defense) {
+			this.cardDefense.string = String(state.defense);
+		}
+
+		if (state.attack !== lastState?.attack) {
+			this.cardAttack.string = String(state.attack);
+		}
+
+		if (!lastState || cardChanged) {
+			const visualUri = getVisualUri(card.id);
+			const foilUri = getFoilUri(card.id);
+			const classUri = getClassUri(card.class);
+
+			resources.load<SpriteFrame>(visualUri, (err, frame) => {
+				if (err) return;
+				this.cardVisual.spriteFrame = frame;
+			});
+
+			resources.load<SpriteFrame>(foilUri, (err, frame) => {
+				if (err) return;
+				this.cardFoil.spriteFrame = frame;
+			});
+
+			resources.load<SpriteFrame>(classUri, (err, frame) => {
+				if (err) return;
+				this.cardClass.spriteFrame = frame;
+			});
+		}
 	}
 
 	showPreview(): void {

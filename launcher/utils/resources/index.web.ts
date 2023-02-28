@@ -1,10 +1,11 @@
 export default {
 	navigation: {
-		bg: { uri: '/marketplace/navigation-bg.png' },
+		bg: { uri: '/visual/navigation-bg.png' },
 		logo: { uri: '/marketplace/flag.png' },
 		mobileBackground: { uri: '/visual/mobile-navigation-bg.png' },
 		userIconBackground: { uri: '/visual/user-icon-bg.png' },
 		separator: { uri: '/visual/separator.png' },
+		highlightVisual: { uri: '/visual/navi-highlight-visual.png' },
 	},
 	mint: {
 		keyVisual: { uri: '/mint/key-visual.png' },
@@ -89,6 +90,7 @@ export default {
 		cardTypesBackground: { uri: '/home/card-type-background.png' },
 		cardTypesHeroVisual: { uri: '/home/card-type-hero-visual.png' },
 		cardTypesSpellVisual: { uri: '/home/card-type-spell-visual.png' },
+		cardTypesTroopVisual: { uri: '/home/card-type-troop-visual.png' },
 		classes: {
 			background: { uri: '/home/classes/background.png' },
 			logoBackground: { uri: '/home/classes/logo-background.png' },

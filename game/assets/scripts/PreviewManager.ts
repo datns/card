@@ -1,9 +1,9 @@
 import Engine from '@metacraft/murg-engine';
 import { _decorator, Component, EventMouse, Node, UIOpacity, Vec2 } from 'cc';
 
-import { raiseCardAnimate } from './tween/card';
 import { cardIdFromNode, setCursor } from './util/helper';
 import { system } from './util/system';
+import { raiseHandCard } from './tween';
 
 const { ccclass } = _decorator;
 const NodeEvents = Node.EventType;
@@ -48,7 +48,7 @@ export class PreviewManager extends Component {
 	}
 
 	onMouseMove(e: EventMouse): void {
-		if (!this.props.dragging) return;
+		if (!this.props.dragging || !system.isCommandAble) return;
 
 		const location = e.getLocation();
 		const distance = Vec2.distance(location, this.props.dragOffset);
@@ -62,11 +62,6 @@ export class PreviewManager extends Component {
 
 			this.hidePreview();
 			system.dragging = true;
-			system.globalNodes.unitTemplate.getChildByPath('back').active = false;
-			system.globalNodes.unitTemplate.emit(
-				'data',
-				cardIdFromNode(system.activeCard),
-			);
 		}
 	}
 
@@ -74,7 +69,7 @@ export class PreviewManager extends Component {
 		this.node.setPosition(190, 740);
 
 		if (system.activeCard) {
-			raiseCardAnimate(system.activeCard, 0, 0.02);
+			raiseHandCard(system.activeCard, 0, 0.02);
 			const uiOpacity = system.activeCard.getComponent(
 				'cc.UIOpacity',
 			) as UIOpacity;

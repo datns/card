@@ -1,24 +1,25 @@
 import Engine from '@metacraft/murg-engine';
-import { _decorator, Component, EventMouse, Node, UIOpacity } from 'cc';
-
 import {
-	raiseCardAnimate,
-	raisePreviewAnimate,
-	simpleMove,
-} from './tween/card';
+	_decorator,
+	AudioSource,
+	Component,
+	EventMouse,
+	Node,
+	UIOpacity,
+} from 'cc';
+
 import { cardIdFromNode, getMyGround } from './util/helper';
 import { getGroundExpos, getHandExpos } from './util/layout';
+import { playBackgroundSound, playEffectSound } from './util/resources';
 import { system } from './util/system';
-import { sendCardSummon } from './network';
+import { CardManager } from './CardManager';
+import { sendCardHover, sendCardSummon } from './network';
+import { raiseHandCard, raiseHandPreview, simpleMove } from './tween';
+import { UnitManager } from './UnitManager';
 
 const { ccclass } = _decorator;
-const {
-	selectHand,
-	selectGround,
-	getCard,
-	getFirstEmptyLeft,
-	getFirstEmptyRight,
-} = Engine;
+const { selectHand, selectGround, getFirstEmptyLeft, getFirstEmptyRight } =
+	Engine;
 const NodeEvents = Node.EventType;
 
 @ccclass('DuelManager')
@@ -27,16 +28,29 @@ export class DuelManager extends Component {
 	previewingRight = false;
 
 	start(): void {
+		system.audioSource = this.node.getComponent(AudioSource);
 		system.globalNodes.duel = this.node;
 		system.globalNodes.cardPreview = this.node.getChildByPath('Card Preview');
+		system.globalNodes.turnRibbon = this.node.getChildByPath('turnRibbon');
+		system.globalNodes.duelRibbon = this.node.getChildByPath('duelRibbon');
 
 		this.node.on(NodeEvents.MOUSE_UP, this.onMouseUp.bind(this));
 		this.node.on(NodeEvents.MOUSE_MOVE, this.onMouseMove.bind(this));
+
+		document
+			?.getElementById('GameCanvas')
+			.addEventListener('mouseout', this.onMouseOut.bind(this));
+
+		playBackgroundSound('bgm-dungeon-crawl', 0.3);
 	}
 
 	onUnitPreview(): void {
-		const previewNode = system.globalNodes.unitTemplate;
-		const expoPositions = getGroundExpos(system.globalNodes.playerGround);
+		const previewNode = system.globalNodes.unitPreview;
+		const expoPositions = getGroundExpos(system.globalNodes.playerGroundGuide);
+
+		previewNode
+			.getComponent(UnitManager)
+			.setCardId(cardIdFromNode(system.activeCard));
 
 		if (this.previewingLeft) {
 			const myGround = selectGround(system.duel, system.playerIds.me);
@@ -53,7 +67,7 @@ export class DuelManager extends Component {
 
 	onCardDrag(e: EventMouse): void {
 		const { x, y } = e.getUILocation();
-		const zonePosition = system.globalNodes.summonZone.getWorldPosition();
+		const zonePosition = system.globalNodes.summonZoneGuide.getWorldPosition();
 		system.activeCard?.setWorldPosition(x, y, 0);
 
 		if (y > zonePosition.y) {
@@ -75,12 +89,12 @@ export class DuelManager extends Component {
 
 	onCardDrop(e: EventMouse): void {
 		const { x, y } = e.getUILocation();
-		const zonePosition = system.globalNodes.summonZone.getWorldPosition();
+		const zonePosition = system.globalNodes.summonZoneGuide.getWorldPosition();
 		const cardId = cardIdFromNode(system.activeCard);
 		const hand = selectHand(system.duel, system.playerIds.me);
 		const indexInHand = hand.indexOf(cardId);
 		const expoPositions = getHandExpos(
-			system.globalNodes.playerHand,
+			system.globalNodes.playerHandGuide,
 			hand.length,
 		);
 
@@ -94,7 +108,7 @@ export class DuelManager extends Component {
 			}
 		}
 
-		system.globalNodes.unitTemplate.setPosition(120, 680);
+		system.globalNodes.unitPreview.setPosition(120, 680);
 	}
 
 	onMouseUp(e: EventMouse): void {
@@ -107,11 +121,14 @@ export class DuelManager extends Component {
 	}
 
 	onMouseMove(e: EventMouse): void {
+		if (system.winner || system.duel.firstMover.length === 0) return;
+
 		if (system.dragging && system.activeCard) {
 			this.onCardDrag(e);
 		} else if (system.duel && system.playerIds) {
 			const handCardIds = selectHand(system.duel, system.playerIds.me);
-			const handPosition = system.globalNodes.playerHand.getWorldPosition();
+			const handPosition =
+				system.globalNodes.playerHandGuide.getWorldPosition();
 			const mousePosition = e.getUILocation();
 			let chosen: { node: Node; distance: number; cardId: string };
 
@@ -122,12 +139,12 @@ export class DuelManager extends Component {
 					const card = system.cardRefs[cardId];
 					if (card) {
 						const cardPosition = card.getWorldPosition();
-						// if (cardPosition.y < handPosition.y + 10) {
-						const distance = Math.abs(mousePosition.x - cardPosition.x);
-						if (distance < (chosen?.distance || 70)) {
-							chosen = { node: card, cardId, distance };
+						if (cardPosition.y < handPosition.y + 10) {
+							const distance = Math.abs(mousePosition.x - cardPosition.x);
+							if (distance < (chosen?.distance || 70)) {
+								chosen = { node: card, cardId, distance };
+							}
 						}
-						// }
 					}
 				}
 			}
@@ -148,21 +165,34 @@ export class DuelManager extends Component {
 		}
 	}
 
-	onCardHover(node: Node, cardId: string): void {
-		const card = getCard(system.duel.cardMap, cardId);
+	onMouseOut(): void {
+		if (system.dragging) {
+			system.activeCard?.setPosition(9999, 9999, 0);
+		} else if (system.activeCard) {
+			this.onCardLeave(system.activeCard);
+			system.activeCard = null;
+		}
+	}
 
-		system.globalNodes.cardPreview
-			.getChildByPath('Card')
-			.emit('data', { card });
+	onCardHover(node: Node, cardId: string): void {
+		const isActive = node.getChildByPath('glow').active;
+		const glowNode = system.globalNodes.cardPreview.getChildByPath('Card/glow');
+		const cardNode = system.globalNodes.cardPreview.getChildByPath('Card');
+
+		glowNode.active = isActive;
+		cardNode.getComponent(CardManager).setCardId(cardId.substring(0, 9));
 		system.globalNodes.cardPreview.setPosition(node.position.x, -180);
-		raiseCardAnimate(node, 100);
-		raisePreviewAnimate(system.globalNodes.cardPreview);
+		playEffectSound('hand-slide', 0.2);
+		raiseHandCard(node, 100);
+		raiseHandPreview(system.globalNodes.cardPreview);
+		sendCardHover(cardId, true);
 		node.getComponent(UIOpacity).opacity = 20;
 	}
 
 	onCardLeave(node: Node): void {
-		raiseCardAnimate(node, 0);
 		system.globalNodes.cardPreview.setPosition(190, 740);
+		raiseHandCard(node, 0);
+		sendCardHover(cardIdFromNode(node), false);
 		node.getComponent(UIOpacity).opacity = 255;
 	}
 }

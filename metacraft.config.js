@@ -1,25 +1,6 @@
 const { resolve } = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
-
-const compatible = (configs, { modules }) => {
-	const { webpack } = modules;
-	const bufferPlugin = { Buffer: ['buffer', 'Buffer'] };
-
-	configs.plugins.push(new webpack.ProvidePlugin(bufferPlugin));
-	configs.ignoreWarnings = [/Failed to parse source map/];
-	configs.resolve.fallback = {
-		crypto: require.resolve('crypto-browserify'),
-		stream: require.resolve('stream-browserify'),
-		util: require.resolve('util'),
-		assert: require.resolve('assert'),
-		fs: false,
-		process: false,
-		path: false,
-		zlib: false,
-	};
-
-	return configs;
-};
+const { web3Polyfills } = require('@metacraft/cli-web3-polyfills');
 
 const setEnvironments = (configs, internal) => {
 	const { webpack } = internal.modules;
@@ -56,21 +37,6 @@ const copyAssets = (configs) => {
 	return configs;
 };
 
-const externals = (configs) => {
-	configs.externals = {
-		rxjs: 'rxjs',
-		react: 'React',
-		lodash: '_',
-		'amazon-cognito-identity-js': 'AmazonCognitoIdentity',
-		'react-dom': 'ReactDOM',
-		'react-art': 'ReactART',
-		'@blocto/sdk': 'BloctoSDK',
-		'@solana/web3.js': 'solanaWeb3',
-	};
-
-	return configs;
-};
-
 const splitBundle = (configs) => {
 	configs.entry = {
 		app: {
@@ -97,7 +63,7 @@ module.exports = {
 	publicPath: () => process.env.PUBLIC_URL || '/',
 	keepPreviousBuild: () => true,
 	buildId: () => 'app',
-	webpackMiddlewares: [compatible, setEnvironments, copyAssets, splitBundle],
+	webpackMiddlewares: [web3Polyfills, setEnvironments, copyAssets, splitBundle],
 	moduleAlias: {
 		global: {
 			'react-native': 'react-native-web',

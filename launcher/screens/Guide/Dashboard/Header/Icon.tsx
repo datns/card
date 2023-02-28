@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text } from '@metacraft/ui';
+import Animated from 'react-native-reanimated';
+import { Hoverable, Text } from '@metacraft/ui';
+import { sharedStyle, useHoveredStyle } from 'screens/Guide/shared';
 
 import resources from '../../../../utils/resources';
 
 import { ViewType } from '.';
-import {sharedStyle} from "screens/Guide/shared";
 
 interface Props {
 	type: ViewType;
@@ -40,8 +41,12 @@ const Icon: FC<Props> = ({ type, onPress, isActive = false }: Props) => {
 
 	return (
 		<TouchableOpacity onPress={onPress}>
-			<Image source={resource} style={styles.image} resizeMode="contain" />
-			<Text style={[styles.label, sharedStyle.textShadow]}>{label}</Text>
+			<Hoverable animatedStyle={useHoveredStyle}>
+				<Animated.View>
+					<Image source={resource} style={styles.image} resizeMode="contain" />
+					<Text style={[styles.label, sharedStyle.textShadow]}>{label}</Text>
+				</Animated.View>
+			</Hoverable>
 		</TouchableOpacity>
 	);
 };
